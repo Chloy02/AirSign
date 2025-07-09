@@ -1,0 +1,473 @@
+.
+├── ASL-Words-Project
+│   └── run_10_words
+│       ├── args.yaml
+│       ├── confusion_matrix_normalized.png
+│       ├── confusion_matrix.png
+│       ├── F1_curve.png
+│       ├── labels_correlogram.jpg
+│       ├── labels.jpg
+│       ├── P_curve.png
+│       ├── PR_curve.png
+│       ├── R_curve.png
+│       ├── results.csv
+│       ├── results.png
+│       ├── train_batch0.jpg
+│       ├── train_batch1.jpg
+│       ├── train_batch2.jpg
+│       ├── train_batch650.jpg
+│       ├── train_batch651.jpg
+│       ├── train_batch652.jpg
+│       ├── val_batch0_labels.jpg
+│       ├── val_batch0_pred.jpg
+│       ├── val_batch1_labels.jpg
+│       ├── val_batch1_pred.jpg
+│       └── weights
+│           ├── best.pt
+│           └── last.pt
+├── ASL_Words_Project_words.yolov8
+│   ├── data.yaml
+│   ├── README.dataset.txt
+│   ├── README.roboflow.txt
+│   ├── test
+│   │   ├── images
+│   │   │   ├── before_05727_frame_22_jpg.rf.67ffcca4d3665b6e324991a7818b9249.jpg
+│   │   │   ├── before_05727_frame_26_jpg.rf.ca3da62a4064a638e7ba935684935e9a.jpg
+│   │   │   ├── before_05727_frame_27_jpg.rf.c152d17d76cf8f1a0d5d29aff68794f6.jpg
+│   │   │   ├── before_05727_frame_47_jpg.rf.e3381d2022bb88c3ca5e0258e9739def.jpg
+│   │   │   ├── before_05728_frame_14_jpg.rf.c3545bb7489ad2af06e461e9e9ccdc29.jpg
+│   │   │   ├── before_05728_frame_21_jpg.rf.09c5f9117b32194ab8cdadbab0130033.jpg
+│   │   │   ├── before_05728_frame_5_jpg.rf.a8b1393f265b9f057368e3113d9e2a36.jpg
+│   │   │   ├── before_05728_frame_8_jpg.rf.6f23981d32351a8d68559a5e5c97431d.jpg
+│   │   │   ├── before_05729_frame_14_jpg.rf.6692852bd97889b663ee7829d3ca7d7c.jpg
+│   │   │   ├── before_05729_frame_15_jpg.rf.706bb48d9d8139815a7bdfd163a6e342.jpg
+│   │   │   ├── before_05732_frame_20_jpg.rf.a82c8aad242f4c0dbfa55f06608c444a.jpg
+│   │   │   ├── before_05739_frame_38_jpg.rf.19cf281d617f9df93a5af3ae05046f59.jpg
+│   │   │   ├── before_05739_frame_6_jpg.rf.b46388851382830eff5abf5ecf347c66.jpg
+│   │   │   ├── before_05739_frame_8_jpg.rf.0707883adb0a8982fcb05b712f8cedb1.jpg
+│   │   │   ├── before_05740_frame_10_jpg.rf.d4089a4b8806ad42b4a4a3d8d64ab3a9.jpg
+│   │   │   ├── before_05740_frame_22_jpg.rf.1bb5edca419cac1f90edce5dcc12ab3f.jpg
+│   │   │   ├── before_05741_frame_8_jpg.rf.eb94b369a6a5031b4ea64d917969bdab.jpg
+│   │   │   ├── before_05742_frame_12_jpg.rf.cb68071da3c243e277d691c5003b4664.jpg
+│   │   │   ├── before_05742_frame_14_jpg.rf.1a475019c4ba16d0affd7a1e56d52640.jpg
+│   │   │   ├── before_05742_frame_5_jpg.rf.3e29adb593d04e93f1e53bfb46151537.jpg
+│   │   │   └── before_65167_frame_19_jpg.rf.a34d0c9d2e498365f59cf12cb1a8dea7.jpg
+│   │   └── labels
+│   │       ├── before_05727_frame_22_jpg.rf.67ffcca4d3665b6e324991a7818b9249.txt
+│   │       ├── before_05727_frame_26_jpg.rf.ca3da62a4064a638e7ba935684935e9a.txt
+│   │       ├── before_05727_frame_27_jpg.rf.c152d17d76cf8f1a0d5d29aff68794f6.txt
+│   │       ├── before_05727_frame_47_jpg.rf.e3381d2022bb88c3ca5e0258e9739def.txt
+│   │       ├── before_05728_frame_14_jpg.rf.c3545bb7489ad2af06e461e9e9ccdc29.txt
+│   │       ├── before_05728_frame_21_jpg.rf.09c5f9117b32194ab8cdadbab0130033.txt
+│   │       ├── before_05728_frame_5_jpg.rf.a8b1393f265b9f057368e3113d9e2a36.txt
+│   │       ├── before_05728_frame_8_jpg.rf.6f23981d32351a8d68559a5e5c97431d.txt
+│   │       ├── before_05729_frame_14_jpg.rf.6692852bd97889b663ee7829d3ca7d7c.txt
+│   │       ├── before_05729_frame_15_jpg.rf.706bb48d9d8139815a7bdfd163a6e342.txt
+│   │       ├── before_05732_frame_20_jpg.rf.a82c8aad242f4c0dbfa55f06608c444a.txt
+│   │       ├── before_05739_frame_38_jpg.rf.19cf281d617f9df93a5af3ae05046f59.txt
+│   │       ├── before_05739_frame_6_jpg.rf.b46388851382830eff5abf5ecf347c66.txt
+│   │       ├── before_05739_frame_8_jpg.rf.0707883adb0a8982fcb05b712f8cedb1.txt
+│   │       ├── before_05740_frame_10_jpg.rf.d4089a4b8806ad42b4a4a3d8d64ab3a9.txt
+│   │       ├── before_05740_frame_22_jpg.rf.1bb5edca419cac1f90edce5dcc12ab3f.txt
+│   │       ├── before_05741_frame_8_jpg.rf.eb94b369a6a5031b4ea64d917969bdab.txt
+│   │       ├── before_05742_frame_12_jpg.rf.cb68071da3c243e277d691c5003b4664.txt
+│   │       ├── before_05742_frame_14_jpg.rf.1a475019c4ba16d0affd7a1e56d52640.txt
+│   │       ├── before_05742_frame_5_jpg.rf.3e29adb593d04e93f1e53bfb46151537.txt
+│   │       └── before_65167_frame_19_jpg.rf.a34d0c9d2e498365f59cf12cb1a8dea7.txt
+│   ├── train
+│   │   ├── images
+│   │   │   ├── before_05727_frame_21_jpg.rf.9cdb1cf8a82265ba051a96dec3d46c9e.jpg
+│   │   │   ├── before_05727_frame_24_jpg.rf.7fb3a1808f3c60b547c552c155b1d6df.jpg
+│   │   │   ├── before_05727_frame_28_jpg.rf.6b5415ff65cc2c9935533bb2165998dd.jpg
+│   │   │   ├── before_05727_frame_29_jpg.rf.62f79234f4e0a3ab8ad57d6ada4d0a7a.jpg
+│   │   │   ├── before_05727_frame_30_jpg.rf.43c1136e202cf4df1c2143f58eb4f5ea.jpg
+│   │   │   ├── before_05727_frame_32_jpg.rf.dc244085aeabf4465468b4a88c9bb594.jpg
+│   │   │   ├── before_05727_frame_33_jpg.rf.0fad04bd3db423a5d620e3b6c8bc7077.jpg
+│   │   │   ├── before_05727_frame_34_jpg.rf.8d543207f9bf83a59670a52a5898d191.jpg
+│   │   │   ├── before_05727_frame_35_jpg.rf.33d9bcff36bb8ecf7533f439537f2ec1.jpg
+│   │   │   ├── before_05727_frame_37_jpg.rf.351dc832b39ead7e068ad81b84ce066d.jpg
+│   │   │   ├── before_05727_frame_39_jpg.rf.fd26bdec2bb6c242c9df574b19d8b794.jpg
+│   │   │   ├── before_05727_frame_40_jpg.rf.74096ffedc1f2d2bc39b25ba54b974cb.jpg
+│   │   │   ├── before_05727_frame_41_jpg.rf.84e956a41286bf084f5dd3f417f89077.jpg
+│   │   │   ├── before_05727_frame_43_jpg.rf.ca1a21b3bab77fbfc209d22881a017cf.jpg
+│   │   │   ├── before_05727_frame_44_jpg.rf.75be6707ddb11c5b300581191c6728f2.jpg
+│   │   │   ├── before_05727_frame_45_jpg.rf.313a5f37c6c14f35a7b847e585f046c9.jpg
+│   │   │   ├── before_05727_frame_46_jpg.rf.aaa17fb08c3fe83eb668416b97f6e122.jpg
+│   │   │   ├── before_05727_frame_48_jpg.rf.43f13274c39db2cb14e2222770ecd5f5.jpg
+│   │   │   ├── before_05727_frame_49_jpg.rf.6cfe333b0e7597d33249a2ffa5e00b0c.jpg
+│   │   │   ├── before_05728_frame_10_jpg.rf.8298a9ca5be3a34e255fe01fe888e476.jpg
+│   │   │   ├── before_05728_frame_12_jpg.rf.63207c8007c667b4645a99f7f8f7041e.jpg
+│   │   │   ├── before_05728_frame_15_jpg.rf.4fc4195aeb6025377d47267064cec93b.jpg
+│   │   │   ├── before_05728_frame_17_jpg.rf.0480f86868d4b7ec3d42adafbe0533e9.jpg
+│   │   │   ├── before_05728_frame_18_jpg.rf.faafad14353e2fe702680ea379966c8e.jpg
+│   │   │   ├── before_05728_frame_19_jpg.rf.e040b810300ec1d097ad9f9b6a9d3fb0.jpg
+│   │   │   ├── before_05728_frame_20_jpg.rf.7370aa3d711d0d5ee714e8f820c5d519.jpg
+│   │   │   ├── before_05728_frame_3_jpg.rf.6f73b5d48428c92307dccf8f09fe592e.jpg
+│   │   │   ├── before_05728_frame_4_jpg.rf.74fecb779b9ac11973e01ea1d0984b22.jpg
+│   │   │   ├── before_05728_frame_6_jpg.rf.d411d7a317e806aa4c87e6745ab50276.jpg
+│   │   │   ├── before_05728_frame_7_jpg.rf.b7efba5bd2d4ac71de84cff7f41ec16e.jpg
+│   │   │   ├── before_05728_frame_9_jpg.rf.65d8c7c2b8fa31448394a84804d01662.jpg
+│   │   │   ├── before_05729_frame_10_jpg.rf.5ba8721fc616719f9eff8d21225e83ab.jpg
+│   │   │   ├── before_05729_frame_11_jpg.rf.3df3718770407dddf0f7f7bf55651001.jpg
+│   │   │   ├── before_05729_frame_13_jpg.rf.051cf9a72ea18b615a94d3e5b3e6da30.jpg
+│   │   │   ├── before_05729_frame_16_jpg.rf.bbeeb40391e1ffd916ed6f2ef178f190.jpg
+│   │   │   ├── before_05729_frame_17_jpg.rf.2d6d5e7c358c7311e14977e8634e7fd9.jpg
+│   │   │   ├── before_05729_frame_18_jpg.rf.9022912993c9fe53ef5864eb2f0df036.jpg
+│   │   │   ├── before_05729_frame_19_jpg.rf.857f494bdbb67aca3aa64fa7e750d91f.jpg
+│   │   │   ├── before_05729_frame_20_jpg.rf.6bedb5f69385027a562e0c8de5e32061.jpg
+│   │   │   ├── before_05729_frame_22_jpg.rf.2bdd7460361050d173a74edaf52fc54c.jpg
+│   │   │   ├── before_05729_frame_24_jpg.rf.ec0f4f9b9d320bce76607f5bb25e9387.jpg
+│   │   │   ├── before_05730_frame_11_jpg.rf.7db69e174c47306d865880d7bac64aa3.jpg
+│   │   │   ├── before_05730_frame_12_jpg.rf.99e9a8755fa7da4b5b9fc3bf44bb9bc0.jpg
+│   │   │   ├── before_05730_frame_14_jpg.rf.0800029dd0e9a524838318837c7c6083.jpg
+│   │   │   ├── before_05730_frame_19_jpg.rf.80526f5b8bcfb541bc6078f98312226c.jpg
+│   │   │   ├── before_05730_frame_20_jpg.rf.8ca735c83ec29f492642c6836f39c1a0.jpg
+│   │   │   ├── before_05732_frame_13_jpg.rf.b9ae7614ff04ee7323dd166e5382bcb2.jpg
+│   │   │   ├── before_05732_frame_17_jpg.rf.c4a1976bf372243fe63b0bf7105610a6.jpg
+│   │   │   ├── before_05732_frame_18_jpg.rf.5058ce422dc72195f4ede61bc20365ab.jpg
+│   │   │   ├── before_05732_frame_19_jpg.rf.85351336fbe61f04456c1b8f143dff55.jpg
+│   │   │   ├── before_05732_frame_21_jpg.rf.5444e763e0eb31f66633f3edb34dfb45.jpg
+│   │   │   ├── before_05732_frame_22_jpg.rf.69642b489abf30acc52d69ad0c3df6f9.jpg
+│   │   │   ├── before_05732_frame_24_jpg.rf.f077b78a68ebdd8c1feb1c6a124c9d7d.jpg
+│   │   │   ├── before_05732_frame_26_jpg.rf.e9a5eb34f0b5697616d78e23ee604487.jpg
+│   │   │   ├── before_05732_frame_27_jpg.rf.8f516648265c2a61e224f0064ee1c7e5.jpg
+│   │   │   ├── before_05732_frame_28_jpg.rf.0385b0e43d00052478a40b71a14097f4.jpg
+│   │   │   ├── before_05732_frame_29_jpg.rf.52540b26db8d43b0c7a1b85574f21e28.jpg
+│   │   │   ├── before_05732_frame_31_jpg.rf.dcc2b4415ac7668c8392761203358c5b.jpg
+│   │   │   ├── before_05732_frame_33_jpg.rf.5ec1b5f88d72ef6239451c0bf03f86dd.jpg
+│   │   │   ├── before_05732_frame_34_jpg.rf.386a26bcf59f19daaca0ce4dd39a2ea8.jpg
+│   │   │   ├── before_05732_frame_35_jpg.rf.85149887ae6d55b940794eb99aa32417.jpg
+│   │   │   ├── before_05732_frame_36_jpg.rf.46517593435dafebcac1549001582898.jpg
+│   │   │   ├── before_05732_frame_37_jpg.rf.f8981816feb80b0463dc182dc307ee65.jpg
+│   │   │   ├── before_05732_frame_38_jpg.rf.d63f70bf797843a9adeb9d859f90b1ef.jpg
+│   │   │   ├── before_05732_frame_42_jpg.rf.1399968de54534405c4f672e4f75af44.jpg
+│   │   │   ├── before_05732_frame_43_jpg.rf.f1cf0e5180064eb0f5ee660d815d7773.jpg
+│   │   │   ├── before_05732_frame_44_jpg.rf.8f369b5296cb0998aae627da3243ce51.jpg
+│   │   │   ├── before_05732_frame_46_jpg.rf.2db473a1ed0854e0072d7a78017266a0.jpg
+│   │   │   ├── before_05732_frame_47_jpg.rf.f5c30124b9caf52978c21ff39bbf7ffd.jpg
+│   │   │   ├── before_05732_frame_50_jpg.rf.30be20a1642c9057935da7f0f59f0fd7.jpg
+│   │   │   ├── before_05732_frame_52_jpg.rf.c88594fd4cc8aad186b9abf74f1bb4fa.jpg
+│   │   │   ├── before_05733_frame_25_jpg.rf.0f6b3a7daa01eb8f58a9f68100a0ffd7.jpg
+│   │   │   ├── before_05739_frame_28_jpg.rf.b2fbd26f106a99cdd6455021e511c293.jpg
+│   │   │   ├── before_05739_frame_29_jpg.rf.7bab841c25adaa60e62304ce561893a5.jpg
+│   │   │   ├── before_05739_frame_32_jpg.rf.06e76bd3dd573a81778a0c4a237175bc.jpg
+│   │   │   ├── before_05739_frame_34_jpg.rf.307fadd25df6474856cde00acd530d3a.jpg
+│   │   │   ├── before_05739_frame_36_jpg.rf.7433fc45edc5127911064352a94d4081.jpg
+│   │   │   ├── before_05739_frame_37_jpg.rf.6069475655bd0f272d2b7cd5446322f8.jpg
+│   │   │   ├── before_05739_frame_39_jpg.rf.7e4f1ad18de92eab519771a74badca2c.jpg
+│   │   │   ├── before_05739_frame_3_jpg.rf.12a9c930995906f875489985c9d9692e.jpg
+│   │   │   ├── before_05739_frame_40_jpg.rf.5cf3857c2c813338ad460de7f0c8846d.jpg
+│   │   │   ├── before_05739_frame_41_jpg.rf.926752e310bded859464c444f98422e0.jpg
+│   │   │   ├── before_05739_frame_42_jpg.rf.e20ff82e62290986cf302a8784ddb225.jpg
+│   │   │   ├── before_05739_frame_43_jpg.rf.3fbc7ce243bd0cf2a0b8c57b9b954e14.jpg
+│   │   │   ├── before_05739_frame_45_jpg.rf.8ba11f7d2ab60e97ed9aecf1edda8f5c.jpg
+│   │   │   ├── before_05739_frame_47_jpg.rf.30d3c9bb1196fde9b85035f461e32363.jpg
+│   │   │   ├── before_05739_frame_49_jpg.rf.822fdbc3d21d14818a5098b0adb9857b.jpg
+│   │   │   ├── before_05739_frame_50_jpg.rf.6f475d082b56c31c725e21030382fdc3.jpg
+│   │   │   ├── before_05739_frame_5_jpg.rf.1979ba20e96f744c409215e5fc7ac3a7.jpg
+│   │   │   ├── before_05739_frame_7_jpg.rf.284c1b3e3247315216e5ad75a10ef6cb.jpg
+│   │   │   ├── before_05740_frame_0_jpg.rf.2d8bb0f28f163798f0e126fc17ac5a13.jpg
+│   │   │   ├── before_05740_frame_11_jpg.rf.6bb095e2829cfbcfab8cb06ea7f547b1.jpg
+│   │   │   ├── before_05740_frame_12_jpg.rf.fec6af39c89861d404cef728e47a3653.jpg
+│   │   │   ├── before_05740_frame_13_jpg.rf.39aa0c38e497c2b86dcc268a93e589d0.jpg
+│   │   │   ├── before_05740_frame_14_jpg.rf.cdb64fdd86417e562516c3bbd76c84bb.jpg
+│   │   │   ├── before_05740_frame_16_jpg.rf.7a237ff95b532d09a965df71643a71f6.jpg
+│   │   │   ├── before_05740_frame_17_jpg.rf.3c202dd9e10d8aed6a9e6d2bdb61aeb6.jpg
+│   │   │   ├── before_05740_frame_18_jpg.rf.7f7f6bb083f5684605c74d53cc935652.jpg
+│   │   │   ├── before_05740_frame_19_jpg.rf.a92f9737da500ac7cb5f23007a7ec9d2.jpg
+│   │   │   ├── before_05740_frame_1_jpg.rf.2a194c1fb7387af0f06d540b2a969242.jpg
+│   │   │   ├── before_05740_frame_20_jpg.rf.46ccb34d0cf9dfe2c53be44cb7bc6b78.jpg
+│   │   │   ├── before_05740_frame_21_jpg.rf.3d8f139a6c06eb0da4b349d3d88b331c.jpg
+│   │   │   ├── before_05740_frame_23_jpg.rf.fbb85dae832d79ed034ac80798f8ad75.jpg
+│   │   │   ├── before_05740_frame_24_jpg.rf.93a7478f3cce901a231d77302d23a191.jpg
+│   │   │   ├── before_05740_frame_25_jpg.rf.1bcc83d8857ee35c45e51e6c733cf283.jpg
+│   │   │   ├── before_05740_frame_26_jpg.rf.c101c12ff717d81daa5aadb8cbeb49a8.jpg
+│   │   │   ├── before_05740_frame_29_jpg.rf.ed6020771aa77bed6329766e4a38b30a.jpg
+│   │   │   ├── before_05740_frame_2_jpg.rf.80eac2e5dc5d97e230f27f499e51a61f.jpg
+│   │   │   ├── before_05740_frame_36_jpg.rf.7f57888d3bef2d067622a50b9d324c78.jpg
+│   │   │   ├── before_05741_frame_0_jpg.rf.1f829e7e2e496b324117efcffc656aeb.jpg
+│   │   │   ├── before_05741_frame_12_jpg.rf.6a2928fe019772aad2f1f3cc57b8e4be.jpg
+│   │   │   ├── before_05741_frame_14_jpg.rf.8102e3b0738769a130d8aecd0be5424b.jpg
+│   │   │   ├── before_05741_frame_16_jpg.rf.a80af1ca8e45f9553f61420150958929.jpg
+│   │   │   ├── before_05741_frame_17_jpg.rf.9c8e2f5f2fd88a95ecc265b049373e35.jpg
+│   │   │   ├── before_05741_frame_18_jpg.rf.918d350e19b1a06639b7aa3330f8ef7f.jpg
+│   │   │   ├── before_05741_frame_19_jpg.rf.07e58c151f89cf45e2e652c6bc58a241.jpg
+│   │   │   ├── before_05741_frame_1_jpg.rf.a78177a9c71223de576e830b13f504be.jpg
+│   │   │   ├── before_05741_frame_20_jpg.rf.2676f1894b5b2fc25f48425ada40f1b2.jpg
+│   │   │   ├── before_05741_frame_21_jpg.rf.63c1045c29a3a1ad831ba2f6770dc8d2.jpg
+│   │   │   ├── before_05741_frame_22_jpg.rf.d77dafb466508ddeaeee172431b732e5.jpg
+│   │   │   ├── before_05741_frame_23_jpg.rf.46cfcbe7bbabb532fbb431361eca7dda.jpg
+│   │   │   ├── before_05741_frame_24_jpg.rf.f45e3b1805faf6431f6ed9d243c2bdc2.jpg
+│   │   │   ├── before_05741_frame_25_jpg.rf.0f57cbfca63b85225746a6e35630fc76.jpg
+│   │   │   ├── before_05741_frame_26_jpg.rf.5bba4afc2b8043056fc1089f8952bb7f.jpg
+│   │   │   ├── before_05741_frame_28_jpg.rf.36da410fe2c1382b2367ed630ee3ea9b.jpg
+│   │   │   ├── before_05741_frame_29_jpg.rf.ef1555781de856bfb16311df3b42ea8a.jpg
+│   │   │   ├── before_05741_frame_2_jpg.rf.dd795ec06a8a76dc18e521815ba63eab.jpg
+│   │   │   ├── before_05741_frame_30_jpg.rf.5273e16ae8aa1a4c9f6534fd93e5f6bd.jpg
+│   │   │   ├── before_05741_frame_3_jpg.rf.223a94eaa75d429af5e0b308f087e634.jpg
+│   │   │   ├── before_05741_frame_4_jpg.rf.5232da8adf847ca8e172d9ed1f3a5430.jpg
+│   │   │   ├── before_05741_frame_5_jpg.rf.08816dbaf8db8f9242e9f7c3fc55b6b8.jpg
+│   │   │   ├── before_05741_frame_6_jpg.rf.aa43b03726a6027210c1159b455e9a27.jpg
+│   │   │   ├── before_05742_frame_10_jpg.rf.7f1d25e82c7d871c55676cd93f37ed57.jpg
+│   │   │   ├── before_05742_frame_11_jpg.rf.45b53700b99860ccb524a508941cef0a.jpg
+│   │   │   ├── before_05742_frame_17_jpg.rf.a92100b569b679b9f2064b487d842e54.jpg
+│   │   │   ├── before_05742_frame_23_jpg.rf.23b953b05e6f42e342fc47b9ec840c7e.jpg
+│   │   │   ├── before_05742_frame_25_jpg.rf.ad92f345289b24e9077abced62b2d1af.jpg
+│   │   │   ├── before_05742_frame_27_jpg.rf.8d8298f5429ec6e365b44608d4c5be8d.jpg
+│   │   │   ├── before_05742_frame_2_jpg.rf.863ceee7a770e4748c159ed476b97751.jpg
+│   │   │   ├── before_05742_frame_4_jpg.rf.8cb2867f6768df4c780dd6cb695a6a34.jpg
+│   │   │   ├── before_05742_frame_8_jpg.rf.a970d14d35d7c88c85f427ff98698a04.jpg
+│   │   │   ├── before_05743_frame_10_jpg.rf.65b7d89f940591b35efdd39481e0a210.jpg
+│   │   │   ├── before_05743_frame_19_jpg.rf.fe09a109fe4d633a367843fd7503054c.jpg
+│   │   │   ├── before_05743_frame_1_jpg.rf.f0a49e6eba074f57bda6c2013a27f446.jpg
+│   │   │   ├── before_05743_frame_27_jpg.rf.0d5ac66b23d5932d193d3cead17d1287.jpg
+│   │   │   ├── before_65167_frame_13_jpg.rf.06159643f83435db17092a2339bd0ef3.jpg
+│   │   │   ├── before_65167_frame_23_jpg.rf.e017da2a819f0e81adef67e1337cf02a.jpg
+│   │   │   └── before_65167_frame_29_jpg.rf.9fc3ee5a3c42ef8f30c2da2e70dfa39e.jpg
+│   │   ├── labels
+│   │   │   ├── before_05727_frame_21_jpg.rf.9cdb1cf8a82265ba051a96dec3d46c9e.txt
+│   │   │   ├── before_05727_frame_24_jpg.rf.7fb3a1808f3c60b547c552c155b1d6df.txt
+│   │   │   ├── before_05727_frame_28_jpg.rf.6b5415ff65cc2c9935533bb2165998dd.txt
+│   │   │   ├── before_05727_frame_29_jpg.rf.62f79234f4e0a3ab8ad57d6ada4d0a7a.txt
+│   │   │   ├── before_05727_frame_30_jpg.rf.43c1136e202cf4df1c2143f58eb4f5ea.txt
+│   │   │   ├── before_05727_frame_32_jpg.rf.dc244085aeabf4465468b4a88c9bb594.txt
+│   │   │   ├── before_05727_frame_33_jpg.rf.0fad04bd3db423a5d620e3b6c8bc7077.txt
+│   │   │   ├── before_05727_frame_34_jpg.rf.8d543207f9bf83a59670a52a5898d191.txt
+│   │   │   ├── before_05727_frame_35_jpg.rf.33d9bcff36bb8ecf7533f439537f2ec1.txt
+│   │   │   ├── before_05727_frame_37_jpg.rf.351dc832b39ead7e068ad81b84ce066d.txt
+│   │   │   ├── before_05727_frame_39_jpg.rf.fd26bdec2bb6c242c9df574b19d8b794.txt
+│   │   │   ├── before_05727_frame_40_jpg.rf.74096ffedc1f2d2bc39b25ba54b974cb.txt
+│   │   │   ├── before_05727_frame_41_jpg.rf.84e956a41286bf084f5dd3f417f89077.txt
+│   │   │   ├── before_05727_frame_43_jpg.rf.ca1a21b3bab77fbfc209d22881a017cf.txt
+│   │   │   ├── before_05727_frame_44_jpg.rf.75be6707ddb11c5b300581191c6728f2.txt
+│   │   │   ├── before_05727_frame_45_jpg.rf.313a5f37c6c14f35a7b847e585f046c9.txt
+│   │   │   ├── before_05727_frame_46_jpg.rf.aaa17fb08c3fe83eb668416b97f6e122.txt
+│   │   │   ├── before_05727_frame_48_jpg.rf.43f13274c39db2cb14e2222770ecd5f5.txt
+│   │   │   ├── before_05727_frame_49_jpg.rf.6cfe333b0e7597d33249a2ffa5e00b0c.txt
+│   │   │   ├── before_05728_frame_10_jpg.rf.8298a9ca5be3a34e255fe01fe888e476.txt
+│   │   │   ├── before_05728_frame_12_jpg.rf.63207c8007c667b4645a99f7f8f7041e.txt
+│   │   │   ├── before_05728_frame_15_jpg.rf.4fc4195aeb6025377d47267064cec93b.txt
+│   │   │   ├── before_05728_frame_17_jpg.rf.0480f86868d4b7ec3d42adafbe0533e9.txt
+│   │   │   ├── before_05728_frame_18_jpg.rf.faafad14353e2fe702680ea379966c8e.txt
+│   │   │   ├── before_05728_frame_19_jpg.rf.e040b810300ec1d097ad9f9b6a9d3fb0.txt
+│   │   │   ├── before_05728_frame_20_jpg.rf.7370aa3d711d0d5ee714e8f820c5d519.txt
+│   │   │   ├── before_05728_frame_3_jpg.rf.6f73b5d48428c92307dccf8f09fe592e.txt
+│   │   │   ├── before_05728_frame_4_jpg.rf.74fecb779b9ac11973e01ea1d0984b22.txt
+│   │   │   ├── before_05728_frame_6_jpg.rf.d411d7a317e806aa4c87e6745ab50276.txt
+│   │   │   ├── before_05728_frame_7_jpg.rf.b7efba5bd2d4ac71de84cff7f41ec16e.txt
+│   │   │   ├── before_05728_frame_9_jpg.rf.65d8c7c2b8fa31448394a84804d01662.txt
+│   │   │   ├── before_05729_frame_10_jpg.rf.5ba8721fc616719f9eff8d21225e83ab.txt
+│   │   │   ├── before_05729_frame_11_jpg.rf.3df3718770407dddf0f7f7bf55651001.txt
+│   │   │   ├── before_05729_frame_13_jpg.rf.051cf9a72ea18b615a94d3e5b3e6da30.txt
+│   │   │   ├── before_05729_frame_16_jpg.rf.bbeeb40391e1ffd916ed6f2ef178f190.txt
+│   │   │   ├── before_05729_frame_17_jpg.rf.2d6d5e7c358c7311e14977e8634e7fd9.txt
+│   │   │   ├── before_05729_frame_18_jpg.rf.9022912993c9fe53ef5864eb2f0df036.txt
+│   │   │   ├── before_05729_frame_19_jpg.rf.857f494bdbb67aca3aa64fa7e750d91f.txt
+│   │   │   ├── before_05729_frame_20_jpg.rf.6bedb5f69385027a562e0c8de5e32061.txt
+│   │   │   ├── before_05729_frame_22_jpg.rf.2bdd7460361050d173a74edaf52fc54c.txt
+│   │   │   ├── before_05729_frame_24_jpg.rf.ec0f4f9b9d320bce76607f5bb25e9387.txt
+│   │   │   ├── before_05730_frame_11_jpg.rf.7db69e174c47306d865880d7bac64aa3.txt
+│   │   │   ├── before_05730_frame_12_jpg.rf.99e9a8755fa7da4b5b9fc3bf44bb9bc0.txt
+│   │   │   ├── before_05730_frame_14_jpg.rf.0800029dd0e9a524838318837c7c6083.txt
+│   │   │   ├── before_05730_frame_19_jpg.rf.80526f5b8bcfb541bc6078f98312226c.txt
+│   │   │   ├── before_05730_frame_20_jpg.rf.8ca735c83ec29f492642c6836f39c1a0.txt
+│   │   │   ├── before_05732_frame_13_jpg.rf.b9ae7614ff04ee7323dd166e5382bcb2.txt
+│   │   │   ├── before_05732_frame_17_jpg.rf.c4a1976bf372243fe63b0bf7105610a6.txt
+│   │   │   ├── before_05732_frame_18_jpg.rf.5058ce422dc72195f4ede61bc20365ab.txt
+│   │   │   ├── before_05732_frame_19_jpg.rf.85351336fbe61f04456c1b8f143dff55.txt
+│   │   │   ├── before_05732_frame_21_jpg.rf.5444e763e0eb31f66633f3edb34dfb45.txt
+│   │   │   ├── before_05732_frame_22_jpg.rf.69642b489abf30acc52d69ad0c3df6f9.txt
+│   │   │   ├── before_05732_frame_24_jpg.rf.f077b78a68ebdd8c1feb1c6a124c9d7d.txt
+│   │   │   ├── before_05732_frame_26_jpg.rf.e9a5eb34f0b5697616d78e23ee604487.txt
+│   │   │   ├── before_05732_frame_27_jpg.rf.8f516648265c2a61e224f0064ee1c7e5.txt
+│   │   │   ├── before_05732_frame_28_jpg.rf.0385b0e43d00052478a40b71a14097f4.txt
+│   │   │   ├── before_05732_frame_29_jpg.rf.52540b26db8d43b0c7a1b85574f21e28.txt
+│   │   │   ├── before_05732_frame_31_jpg.rf.dcc2b4415ac7668c8392761203358c5b.txt
+│   │   │   ├── before_05732_frame_33_jpg.rf.5ec1b5f88d72ef6239451c0bf03f86dd.txt
+│   │   │   ├── before_05732_frame_34_jpg.rf.386a26bcf59f19daaca0ce4dd39a2ea8.txt
+│   │   │   ├── before_05732_frame_35_jpg.rf.85149887ae6d55b940794eb99aa32417.txt
+│   │   │   ├── before_05732_frame_36_jpg.rf.46517593435dafebcac1549001582898.txt
+│   │   │   ├── before_05732_frame_37_jpg.rf.f8981816feb80b0463dc182dc307ee65.txt
+│   │   │   ├── before_05732_frame_38_jpg.rf.d63f70bf797843a9adeb9d859f90b1ef.txt
+│   │   │   ├── before_05732_frame_42_jpg.rf.1399968de54534405c4f672e4f75af44.txt
+│   │   │   ├── before_05732_frame_43_jpg.rf.f1cf0e5180064eb0f5ee660d815d7773.txt
+│   │   │   ├── before_05732_frame_44_jpg.rf.8f369b5296cb0998aae627da3243ce51.txt
+│   │   │   ├── before_05732_frame_46_jpg.rf.2db473a1ed0854e0072d7a78017266a0.txt
+│   │   │   ├── before_05732_frame_47_jpg.rf.f5c30124b9caf52978c21ff39bbf7ffd.txt
+│   │   │   ├── before_05732_frame_50_jpg.rf.30be20a1642c9057935da7f0f59f0fd7.txt
+│   │   │   ├── before_05732_frame_52_jpg.rf.c88594fd4cc8aad186b9abf74f1bb4fa.txt
+│   │   │   ├── before_05733_frame_25_jpg.rf.0f6b3a7daa01eb8f58a9f68100a0ffd7.txt
+│   │   │   ├── before_05739_frame_28_jpg.rf.b2fbd26f106a99cdd6455021e511c293.txt
+│   │   │   ├── before_05739_frame_29_jpg.rf.7bab841c25adaa60e62304ce561893a5.txt
+│   │   │   ├── before_05739_frame_32_jpg.rf.06e76bd3dd573a81778a0c4a237175bc.txt
+│   │   │   ├── before_05739_frame_34_jpg.rf.307fadd25df6474856cde00acd530d3a.txt
+│   │   │   ├── before_05739_frame_36_jpg.rf.7433fc45edc5127911064352a94d4081.txt
+│   │   │   ├── before_05739_frame_37_jpg.rf.6069475655bd0f272d2b7cd5446322f8.txt
+│   │   │   ├── before_05739_frame_39_jpg.rf.7e4f1ad18de92eab519771a74badca2c.txt
+│   │   │   ├── before_05739_frame_3_jpg.rf.12a9c930995906f875489985c9d9692e.txt
+│   │   │   ├── before_05739_frame_40_jpg.rf.5cf3857c2c813338ad460de7f0c8846d.txt
+│   │   │   ├── before_05739_frame_41_jpg.rf.926752e310bded859464c444f98422e0.txt
+│   │   │   ├── before_05739_frame_42_jpg.rf.e20ff82e62290986cf302a8784ddb225.txt
+│   │   │   ├── before_05739_frame_43_jpg.rf.3fbc7ce243bd0cf2a0b8c57b9b954e14.txt
+│   │   │   ├── before_05739_frame_45_jpg.rf.8ba11f7d2ab60e97ed9aecf1edda8f5c.txt
+│   │   │   ├── before_05739_frame_47_jpg.rf.30d3c9bb1196fde9b85035f461e32363.txt
+│   │   │   ├── before_05739_frame_49_jpg.rf.822fdbc3d21d14818a5098b0adb9857b.txt
+│   │   │   ├── before_05739_frame_50_jpg.rf.6f475d082b56c31c725e21030382fdc3.txt
+│   │   │   ├── before_05739_frame_5_jpg.rf.1979ba20e96f744c409215e5fc7ac3a7.txt
+│   │   │   ├── before_05739_frame_7_jpg.rf.284c1b3e3247315216e5ad75a10ef6cb.txt
+│   │   │   ├── before_05740_frame_0_jpg.rf.2d8bb0f28f163798f0e126fc17ac5a13.txt
+│   │   │   ├── before_05740_frame_11_jpg.rf.6bb095e2829cfbcfab8cb06ea7f547b1.txt
+│   │   │   ├── before_05740_frame_12_jpg.rf.fec6af39c89861d404cef728e47a3653.txt
+│   │   │   ├── before_05740_frame_13_jpg.rf.39aa0c38e497c2b86dcc268a93e589d0.txt
+│   │   │   ├── before_05740_frame_14_jpg.rf.cdb64fdd86417e562516c3bbd76c84bb.txt
+│   │   │   ├── before_05740_frame_16_jpg.rf.7a237ff95b532d09a965df71643a71f6.txt
+│   │   │   ├── before_05740_frame_17_jpg.rf.3c202dd9e10d8aed6a9e6d2bdb61aeb6.txt
+│   │   │   ├── before_05740_frame_18_jpg.rf.7f7f6bb083f5684605c74d53cc935652.txt
+│   │   │   ├── before_05740_frame_19_jpg.rf.a92f9737da500ac7cb5f23007a7ec9d2.txt
+│   │   │   ├── before_05740_frame_1_jpg.rf.2a194c1fb7387af0f06d540b2a969242.txt
+│   │   │   ├── before_05740_frame_20_jpg.rf.46ccb34d0cf9dfe2c53be44cb7bc6b78.txt
+│   │   │   ├── before_05740_frame_21_jpg.rf.3d8f139a6c06eb0da4b349d3d88b331c.txt
+│   │   │   ├── before_05740_frame_23_jpg.rf.fbb85dae832d79ed034ac80798f8ad75.txt
+│   │   │   ├── before_05740_frame_24_jpg.rf.93a7478f3cce901a231d77302d23a191.txt
+│   │   │   ├── before_05740_frame_25_jpg.rf.1bcc83d8857ee35c45e51e6c733cf283.txt
+│   │   │   ├── before_05740_frame_26_jpg.rf.c101c12ff717d81daa5aadb8cbeb49a8.txt
+│   │   │   ├── before_05740_frame_29_jpg.rf.ed6020771aa77bed6329766e4a38b30a.txt
+│   │   │   ├── before_05740_frame_2_jpg.rf.80eac2e5dc5d97e230f27f499e51a61f.txt
+│   │   │   ├── before_05740_frame_36_jpg.rf.7f57888d3bef2d067622a50b9d324c78.txt
+│   │   │   ├── before_05741_frame_0_jpg.rf.1f829e7e2e496b324117efcffc656aeb.txt
+│   │   │   ├── before_05741_frame_12_jpg.rf.6a2928fe019772aad2f1f3cc57b8e4be.txt
+│   │   │   ├── before_05741_frame_14_jpg.rf.8102e3b0738769a130d8aecd0be5424b.txt
+│   │   │   ├── before_05741_frame_16_jpg.rf.a80af1ca8e45f9553f61420150958929.txt
+│   │   │   ├── before_05741_frame_17_jpg.rf.9c8e2f5f2fd88a95ecc265b049373e35.txt
+│   │   │   ├── before_05741_frame_18_jpg.rf.918d350e19b1a06639b7aa3330f8ef7f.txt
+│   │   │   ├── before_05741_frame_19_jpg.rf.07e58c151f89cf45e2e652c6bc58a241.txt
+│   │   │   ├── before_05741_frame_1_jpg.rf.a78177a9c71223de576e830b13f504be.txt
+│   │   │   ├── before_05741_frame_20_jpg.rf.2676f1894b5b2fc25f48425ada40f1b2.txt
+│   │   │   ├── before_05741_frame_21_jpg.rf.63c1045c29a3a1ad831ba2f6770dc8d2.txt
+│   │   │   ├── before_05741_frame_22_jpg.rf.d77dafb466508ddeaeee172431b732e5.txt
+│   │   │   ├── before_05741_frame_23_jpg.rf.46cfcbe7bbabb532fbb431361eca7dda.txt
+│   │   │   ├── before_05741_frame_24_jpg.rf.f45e3b1805faf6431f6ed9d243c2bdc2.txt
+│   │   │   ├── before_05741_frame_25_jpg.rf.0f57cbfca63b85225746a6e35630fc76.txt
+│   │   │   ├── before_05741_frame_26_jpg.rf.5bba4afc2b8043056fc1089f8952bb7f.txt
+│   │   │   ├── before_05741_frame_28_jpg.rf.36da410fe2c1382b2367ed630ee3ea9b.txt
+│   │   │   ├── before_05741_frame_29_jpg.rf.ef1555781de856bfb16311df3b42ea8a.txt
+│   │   │   ├── before_05741_frame_2_jpg.rf.dd795ec06a8a76dc18e521815ba63eab.txt
+│   │   │   ├── before_05741_frame_30_jpg.rf.5273e16ae8aa1a4c9f6534fd93e5f6bd.txt
+│   │   │   ├── before_05741_frame_3_jpg.rf.223a94eaa75d429af5e0b308f087e634.txt
+│   │   │   ├── before_05741_frame_4_jpg.rf.5232da8adf847ca8e172d9ed1f3a5430.txt
+│   │   │   ├── before_05741_frame_5_jpg.rf.08816dbaf8db8f9242e9f7c3fc55b6b8.txt
+│   │   │   ├── before_05741_frame_6_jpg.rf.aa43b03726a6027210c1159b455e9a27.txt
+│   │   │   ├── before_05742_frame_10_jpg.rf.7f1d25e82c7d871c55676cd93f37ed57.txt
+│   │   │   ├── before_05742_frame_11_jpg.rf.45b53700b99860ccb524a508941cef0a.txt
+│   │   │   ├── before_05742_frame_17_jpg.rf.a92100b569b679b9f2064b487d842e54.txt
+│   │   │   ├── before_05742_frame_23_jpg.rf.23b953b05e6f42e342fc47b9ec840c7e.txt
+│   │   │   ├── before_05742_frame_25_jpg.rf.ad92f345289b24e9077abced62b2d1af.txt
+│   │   │   ├── before_05742_frame_27_jpg.rf.8d8298f5429ec6e365b44608d4c5be8d.txt
+│   │   │   ├── before_05742_frame_2_jpg.rf.863ceee7a770e4748c159ed476b97751.txt
+│   │   │   ├── before_05742_frame_4_jpg.rf.8cb2867f6768df4c780dd6cb695a6a34.txt
+│   │   │   ├── before_05742_frame_8_jpg.rf.a970d14d35d7c88c85f427ff98698a04.txt
+│   │   │   ├── before_05743_frame_10_jpg.rf.65b7d89f940591b35efdd39481e0a210.txt
+│   │   │   ├── before_05743_frame_19_jpg.rf.fe09a109fe4d633a367843fd7503054c.txt
+│   │   │   ├── before_05743_frame_1_jpg.rf.f0a49e6eba074f57bda6c2013a27f446.txt
+│   │   │   ├── before_05743_frame_27_jpg.rf.0d5ac66b23d5932d193d3cead17d1287.txt
+│   │   │   ├── before_65167_frame_13_jpg.rf.06159643f83435db17092a2339bd0ef3.txt
+│   │   │   ├── before_65167_frame_23_jpg.rf.e017da2a819f0e81adef67e1337cf02a.txt
+│   │   │   └── before_65167_frame_29_jpg.rf.9fc3ee5a3c42ef8f30c2da2e70dfa39e.txt
+│   │   └── labels.cache
+│   └── valid
+│       ├── images
+│       │   ├── before_05727_frame_23_jpg.rf.2d9aaf907fa5c77a55246b726ef3462b.jpg
+│       │   ├── before_05727_frame_25_jpg.rf.b9a07e44e1f5d8250f64dcaba5f7f5c7.jpg
+│       │   ├── before_05727_frame_31_jpg.rf.444eba0016970cf3ed1238cb71ee7edb.jpg
+│       │   ├── before_05727_frame_36_jpg.rf.0837024c0737f4d67a26151035a97bbe.jpg
+│       │   ├── before_05727_frame_38_jpg.rf.f38e766808ab14851e7c842ce3e00ffb.jpg
+│       │   ├── before_05727_frame_42_jpg.rf.c589685a8369ddf659ea32d79ba1e598.jpg
+│       │   ├── before_05728_frame_11_jpg.rf.7282a447d5836ad4bb7aa8c3a6404612.jpg
+│       │   ├── before_05728_frame_13_jpg.rf.74f1fd62c9be8ac579b9f70f6dbfba3d.jpg
+│       │   ├── before_05728_frame_16_jpg.rf.5bc482c992c27fe46cdb71b2c757768e.jpg
+│       │   ├── before_05729_frame_12_jpg.rf.ba6d5c49ed6935c990ddb860ebb2a6e7.jpg
+│       │   ├── before_05730_frame_16_jpg.rf.fa2d516385ee5fea686dd04710d17fba.jpg
+│       │   ├── before_05732_frame_15_jpg.rf.2fc64fdb813a9f6082a57766a152d42c.jpg
+│       │   ├── before_05732_frame_16_jpg.rf.b73b46d83232809dca02d819d0244287.jpg
+│       │   ├── before_05732_frame_23_jpg.rf.bab56f0aa46ec9a1c6ad0c4d3c259410.jpg
+│       │   ├── before_05732_frame_25_jpg.rf.b2e5cee17402fcc2e230fd80794544ac.jpg
+│       │   ├── before_05732_frame_30_jpg.rf.ab7cb3406d2fb92e1ecc186ead2b00b0.jpg
+│       │   ├── before_05732_frame_32_jpg.rf.e8155b7137cd5163bcd4b1cdce8255c5.jpg
+│       │   ├── before_05732_frame_39_jpg.rf.6c7e21566141340e577c4dcb59f15f01.jpg
+│       │   ├── before_05732_frame_40_jpg.rf.a5be6e6376d293e5939f18e1114884d2.jpg
+│       │   ├── before_05732_frame_41_jpg.rf.49d3f336f26e29d2df87376196528c18.jpg
+│       │   ├── before_05732_frame_45_jpg.rf.361ff828fff27c3e12de14d7e06f6311.jpg
+│       │   ├── before_05732_frame_49_jpg.rf.53718293e77254d3c95832cd4b3d1c9d.jpg
+│       │   ├── before_05732_frame_55_jpg.rf.bf67f6e4f5569fd2dd38ab5c6ec1e1ae.jpg
+│       │   ├── before_05739_frame_31_jpg.rf.1a9abdba32af508ab8a5dd0a08d89a70.jpg
+│       │   ├── before_05739_frame_33_jpg.rf.da333c1c062ed14d1cde1eb83fbd8648.jpg
+│       │   ├── before_05739_frame_44_jpg.rf.d8bacfbe49f9975d91b0a03790bb4642.jpg
+│       │   ├── before_05739_frame_46_jpg.rf.3bff3eb84c15e3e9ab40002e417d2adf.jpg
+│       │   ├── before_05739_frame_48_jpg.rf.a970d71ddbb924ebcfe3a65b89696723.jpg
+│       │   ├── before_05739_frame_4_jpg.rf.1227611a8b9c9500c2b1347da08956c1.jpg
+│       │   ├── before_05739_frame_9_jpg.rf.8a94d2c004fdfb79d1847a7e19a0351c.jpg
+│       │   ├── before_05740_frame_15_jpg.rf.b1ede303620c004f51d87a95d83451d9.jpg
+│       │   ├── before_05741_frame_10_jpg.rf.3b15e58d36b7f6019b61dab0cfb89d97.jpg
+│       │   ├── before_05741_frame_13_jpg.rf.845564274880ff110e903407793359e0.jpg
+│       │   ├── before_05741_frame_15_jpg.rf.9ad161698268bfc46daa456b5fa33b41.jpg
+│       │   ├── before_05741_frame_27_jpg.rf.c26243a9082a61659b4a58977f2de9dc.jpg
+│       │   ├── before_05741_frame_7_jpg.rf.df4248712b7fcf19fbb77163c13d9647.jpg
+│       │   ├── before_05741_frame_9_jpg.rf.cc37df7b7eaa2625a6c39f5b117e58ae.jpg
+│       │   ├── before_05742_frame_0_jpg.rf.2c1718e093fdf5d07ec6f24c4ae03c6f.jpg
+│       │   ├── before_05742_frame_15_jpg.rf.757c7b7c4c722064ec571fce7a709a6b.jpg
+│       │   ├── before_05742_frame_16_jpg.rf.545b63c5fdb9d674b2a2040340a21f4c.jpg
+│       │   ├── before_05742_frame_1_jpg.rf.5efb7dd0d01658aa4540a0568215d2fe.jpg
+│       │   ├── before_05743_frame_15_jpg.rf.ab646113f8f78eb613ee6183315328c4.jpg
+│       │   └── before_65167_frame_18_jpg.rf.4b5e4e1b298940f6694393ab9aa1f682.jpg
+│       ├── labels
+│       │   ├── before_05727_frame_23_jpg.rf.2d9aaf907fa5c77a55246b726ef3462b.txt
+│       │   ├── before_05727_frame_25_jpg.rf.b9a07e44e1f5d8250f64dcaba5f7f5c7.txt
+│       │   ├── before_05727_frame_31_jpg.rf.444eba0016970cf3ed1238cb71ee7edb.txt
+│       │   ├── before_05727_frame_36_jpg.rf.0837024c0737f4d67a26151035a97bbe.txt
+│       │   ├── before_05727_frame_38_jpg.rf.f38e766808ab14851e7c842ce3e00ffb.txt
+│       │   ├── before_05727_frame_42_jpg.rf.c589685a8369ddf659ea32d79ba1e598.txt
+│       │   ├── before_05728_frame_11_jpg.rf.7282a447d5836ad4bb7aa8c3a6404612.txt
+│       │   ├── before_05728_frame_13_jpg.rf.74f1fd62c9be8ac579b9f70f6dbfba3d.txt
+│       │   ├── before_05728_frame_16_jpg.rf.5bc482c992c27fe46cdb71b2c757768e.txt
+│       │   ├── before_05729_frame_12_jpg.rf.ba6d5c49ed6935c990ddb860ebb2a6e7.txt
+│       │   ├── before_05730_frame_16_jpg.rf.fa2d516385ee5fea686dd04710d17fba.txt
+│       │   ├── before_05732_frame_15_jpg.rf.2fc64fdb813a9f6082a57766a152d42c.txt
+│       │   ├── before_05732_frame_16_jpg.rf.b73b46d83232809dca02d819d0244287.txt
+│       │   ├── before_05732_frame_23_jpg.rf.bab56f0aa46ec9a1c6ad0c4d3c259410.txt
+│       │   ├── before_05732_frame_25_jpg.rf.b2e5cee17402fcc2e230fd80794544ac.txt
+│       │   ├── before_05732_frame_30_jpg.rf.ab7cb3406d2fb92e1ecc186ead2b00b0.txt
+│       │   ├── before_05732_frame_32_jpg.rf.e8155b7137cd5163bcd4b1cdce8255c5.txt
+│       │   ├── before_05732_frame_39_jpg.rf.6c7e21566141340e577c4dcb59f15f01.txt
+│       │   ├── before_05732_frame_40_jpg.rf.a5be6e6376d293e5939f18e1114884d2.txt
+│       │   ├── before_05732_frame_41_jpg.rf.49d3f336f26e29d2df87376196528c18.txt
+│       │   ├── before_05732_frame_45_jpg.rf.361ff828fff27c3e12de14d7e06f6311.txt
+│       │   ├── before_05732_frame_49_jpg.rf.53718293e77254d3c95832cd4b3d1c9d.txt
+│       │   ├── before_05732_frame_55_jpg.rf.bf67f6e4f5569fd2dd38ab5c6ec1e1ae.txt
+│       │   ├── before_05739_frame_31_jpg.rf.1a9abdba32af508ab8a5dd0a08d89a70.txt
+│       │   ├── before_05739_frame_33_jpg.rf.da333c1c062ed14d1cde1eb83fbd8648.txt
+│       │   ├── before_05739_frame_44_jpg.rf.d8bacfbe49f9975d91b0a03790bb4642.txt
+│       │   ├── before_05739_frame_46_jpg.rf.3bff3eb84c15e3e9ab40002e417d2adf.txt
+│       │   ├── before_05739_frame_48_jpg.rf.a970d71ddbb924ebcfe3a65b89696723.txt
+│       │   ├── before_05739_frame_4_jpg.rf.1227611a8b9c9500c2b1347da08956c1.txt
+│       │   ├── before_05739_frame_9_jpg.rf.8a94d2c004fdfb79d1847a7e19a0351c.txt
+│       │   ├── before_05740_frame_15_jpg.rf.b1ede303620c004f51d87a95d83451d9.txt
+│       │   ├── before_05741_frame_10_jpg.rf.3b15e58d36b7f6019b61dab0cfb89d97.txt
+│       │   ├── before_05741_frame_13_jpg.rf.845564274880ff110e903407793359e0.txt
+│       │   ├── before_05741_frame_15_jpg.rf.9ad161698268bfc46daa456b5fa33b41.txt
+│       │   ├── before_05741_frame_27_jpg.rf.c26243a9082a61659b4a58977f2de9dc.txt
+│       │   ├── before_05741_frame_7_jpg.rf.df4248712b7fcf19fbb77163c13d9647.txt
+│       │   ├── before_05741_frame_9_jpg.rf.cc37df7b7eaa2625a6c39f5b117e58ae.txt
+│       │   ├── before_05742_frame_0_jpg.rf.2c1718e093fdf5d07ec6f24c4ae03c6f.txt
+│       │   ├── before_05742_frame_15_jpg.rf.757c7b7c4c722064ec571fce7a709a6b.txt
+│       │   ├── before_05742_frame_16_jpg.rf.545b63c5fdb9d674b2a2040340a21f4c.txt
+│       │   ├── before_05742_frame_1_jpg.rf.5efb7dd0d01658aa4540a0568215d2fe.txt
+│       │   ├── before_05743_frame_15_jpg.rf.ab646113f8f78eb613ee6183315328c4.txt
+│       │   └── before_65167_frame_18_jpg.rf.4b5e4e1b298940f6694393ab9aa1f682.txt
+│       └── labels.cache
+├── dir.txt
+├── extract_features.py
+├── LSTM_features
+├── train_words.py
+└── yolov8n.pt
+
+15 directories, 456 files

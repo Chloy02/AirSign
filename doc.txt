@@ -1,0 +1,41 @@
+Of course. Here is a clear, high-level explanation of the model and workflow you have built. You can use this to explain it to your guide.
+
+The Goal: Recognizing Dynamic ASL Words
+
+The primary challenge is to recognize complete ASL words, many of which are dynamic gestures that rely on motion. A simple image classifier that looks at a single picture isn't enough because it cannot understand the context of movement over time.
+
+To solve this, we've designed a hybrid, two-stage model pipeline that intelligently processes video sequences.
+
+Our Solution: A Two-Stage "Hybrid" Model
+
+We use two different models that work together as a team: one acts as the "Eyes" to see what's happening in each frame, and the other acts as the "Brain" to understand the pattern of motion over time.
+
+1. The "Eyes": A YOLOv8 Object Detector
+
+First, we use a powerful and fast YOLOv8 object detection model. We specifically trained this model on our custom dataset of ASL signs. Its job is twofold:
+
+    To Find the Hands: In any given video frame, its primary task is to find the location of the hand(s).
+
+    To Describe the Hands: Instead of just classifying the sign, we use the model to extract a simple feature vector—a list of numbers ([x, y, width, height, confidence])—that describes the position and size of the hand in that single frame.
+
+2. The "Brain": An LSTM Sequence Classifier
+
+The features from the YOLOv8 model are then fed into a Long Short-Term Memory (LSTM) network.
+
+    What it does: An LSTM is a special type of neural network designed specifically to find patterns in sequences of data. It takes the stream of feature vectors from the YOLO model (representing the hand's movement over the last ~50 frames) and analyzes the entire sequence at once.
+
+    Why it's needed: By analyzing the sequence, the LSTM can understand the pattern of motion, which is crucial for distinguishing dynamic signs. This allows it to learn the difference between gestures that might have similar handshapes but different movements.
+
+How It Works in Real-Time
+
+When you run the final script, here is the step-by-step process that happens continuously:
+
+    Capture Frame: The webcam captures a single frame of video.
+
+    Extract Features (The "Eyes"): The trained YOLOv8 model processes this frame, finds the hand(s), and outputs a simple feature vector describing their location.
+
+    Collect a Sequence: The script keeps a running list of the most recent feature vectors (e.g., the last 54). This list represents the recent motion of the hands.
+
+    Analyze Motion (The "Brain"): This complete sequence is fed into our trained LSTM model.
+
+    Final Prediction: The LSTM analyzes the pattern of the entire sequence and makes the final prediction (e.g., "book" or "before"), which is then displayed on the screen.

@@ -1,0 +1,20 @@
+
+# For YOLOv8
+ultralytics==8.0.229
+
+# For Hand Detection in the processing script
+mediapipe==0.10.11
+
+# For Image and Video Processing
+opencv-python==4.9.0.80
+
+# The Deep Learning Framework
+# Note: These are standard versions. For specific GPU/CUDA acceleration,
+# it's best to use the command from the official PyTorch website.
+torch==2.2.1
+torchvision==0.17.1
+torchaudio==2.2.1
+
+# Pinning common dependencies to prevent conflicts
+numpy==1.26.4
+protobuf==3.20.3

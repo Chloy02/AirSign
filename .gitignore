@@ -259,4 +259,17 @@ docker-compose.yaml
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db 
+Thumbs.db
+
+###########################
+# Project-Specific Ignores
+###########################
+
+# Ignore the raw WLASL dataset and processed data folders
+WASL_data/
+WLASL_intelligent_frames/
+Trail/LSTM_features*/
+Trail/ASL_Words_Project_words.yolov8
+
+# Ignore the YOLO and LSTM training run outputs
+# ASL-Words-Project/

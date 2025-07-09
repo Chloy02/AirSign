@@ -1,0 +1,1000 @@
+   21  flatpak update
+   22  sudo dnf upgrade --refresh 
+   23  exit
+   24  sudo dnf upgrade 
+   25  flatpak update
+   26  sudo dnf upgrade 
+   27  sudo dnf upgrade --refresh 
+   28  sudo dnf upgrade
+   29  flatpak update
+   30  sudo reboot 
+   31  sudo dnf upgrade --refresh 
+   32  flatpak update
+   33  sudo dnf clean all
+   34  sudo dnf autoremove 
+   35  sudo dnf upgrade 
+   36  sudo dnf upgrade --refresh 
+   37  flatpak update
+   38  exit
+   39  sudo dnf upgrade
+   40  exit
+   41  curl -fsSL https://ollama.com/install.sh | sh
+   42  sudo rm -rf /usr/local/lib/ollama
+   43  sudo rm -rf /usr/local/bin/ollama 
+   44  sudo rm -rf /tmp/*ollama*
+   45  curl -fsSL https://ollama.com/install.sh | sh
+   46  sudo dnf upgrade 
+   47  sudo dnf upgrade --refresh 
+   48  clear
+   49  ollama run mistral
+   50  clear
+   51  ollama run openhermes
+   52  clear
+   53  ollama run openhermes
+   54  systemctl ollama status 
+   55  sudo dnf upgrade --refresh 
+   56  flatpak update
+   57  clear
+   58  pip install upgrade pip
+   59  hello
+   60  clear
+   61  sudo dnf autoremove 
+   62  sudo dnf clean all
+   63  clear
+   64  eit
+   65  exit
+   66  git --version
+   67  exit
+   68  sudo dnf upgrade --refresh 
+   69  flatpak update
+   70  sudo dnf clean all
+   71  ollama list
+   72  ollama run mistral
+   73  ollama run openhermes
+   74  clear
+   75  sudo dnf upgrade --refresh 
+   76  flatpak update
+   77  sudo dnf autoremove 
+   78  sudo dnf clean all
+   79  sudo dnf upgrade 
+   80  sudo dnf upgrade --refresh 
+   81  sudo dnf upgrade 
+   82  flatpak update
+   83  dnf search ulauncher
+   84  sudo dnf install ulauncher
+   85  sudo dnf upgrade --refresh 
+   86  sudo vi `which ulauncher-toggle`
+   87  quit
+   88  exit
+   89  dnf search vmctrl
+   90  dnf search wmctrl
+   91  sudo dnf install vmctrl
+   92  sudo dnf install wmctrl
+   93  cd ~/.config/
+   94  ls
+   95  cd ulauncher/
+   96  ls
+   97  mkdir user-themes/
+   98  ls
+   99  mv ~/Downloads/mcOS-Monterey-THEMES-PACK ./user-themes/
+  100  ls
+  101  ls ./user-themes/
+  102  exit
+  103  cd ulauncher/
+  104  cd ~/.config/
+  105  cd ulauncher/
+  106  ls
+  107  cd user-themes/
+  108  ls
+  109  ls mcOS-Monterey-THEMES-PACK/
+  110  mv ./mcOS-Monterey-THEMES-PACK/ .
+  111  mv ./mcOS-Monterey-THEMES-PACK/mcOS-Monterey-Dark .
+  112  ls
+  113  mv ./mcOS-Monterey-THEMES-PACK/mcOS-Monterey-Light .
+  114  ls
+  115  rm -rv mcOS-Monterey-THEMES-PACK/
+  116  ls
+  117  sudo dnf autoremove 
+  118  cd
+  119  sudo dnf clean 
+  120  sudo dnf clean all
+  121  sudo dnf upgrade --refresh 
+  122  clear 
+  123  shutdown now
+  124  sudo dnf upgrade --refresh 
+  125  flatpak update
+  126  sudo dnf clean all
+  127  sudo dnf autoremove 
+  128  sudo dnf upgrade 
+  129  flatpak update
+  130  exit
+  131  sudo dnf upgrade 
+  132  sudo dnf upgrade --refresh 
+  133  flatpak update 
+  134  exit
+  135  sudo dnf upgrade --refresh 
+  136  exit
+  137  rustup update
+  138  sudo dnf upgrade --refresh 
+  139  exit
+  140  sudo dnf upgrade --refresh 
+  141  flatpak update 
+  142  clear
+  143  exit
+  144  sudo dnf upgrade --refresh 
+  145  exit
+  146  sudo dnf upgrade --refresh 
+  147  flatpak update
+  148  sudo dnf clean all
+  149  sudo dnf autoremove 
+  150  exit
+  151  sudo dnf upgrade --refresh 
+  152  flatpak update
+  153  sudo dnf upgrade --refresh 
+  154  rustup update
+  155  sudo dnf upgrade
+  156  clear
+  157  exit
+  158  sudo dnf upgrade --refresh 
+  159  flatpak update 
+  160  whoami
+  161  who
+  162  exit
+  163  git clone git@github.com:Chloy02/Fashion_Fusion.git
+  164  git@github.com:Chloy02/Fashion_Fusion.git
+  165  git clone git@github.com:Chloy02/Fashion_Fusion.git
+  166  ls ~/.ssh/id_ed25519.pub
+  167  ssh-keygen -t ed25519 -C "chloycostac@gmail.com"
+  168  eval "$(ssh-agent -s)"
+  169  ssh-add ~/.ssh/id_ed25519
+  170  cat ~/.ssh/id_ed25519.pub
+  171  ssh -T git@github.com
+  172  git clone git@github.com:Chloy02/Fashion_Fusion.git
+  173  sudo dnf upgrade --refresh 
+  174  flatpak update
+  175  cd 
+  176  sudo dnf upgrade --refresh 
+  177  exiy
+  178  exit
+  179  sudo dnf upgrade --refresh 
+  180  code .
+  181  source ~/Documents/College_code/projects/venv/lib/python3.11
+  182  source ~/Documents/College_code/projects/venv/bin/activate
+  183  deactivate 
+  184  git clone https://github.com/prnvbaraiya/Air-Writing-and-Character-Recognition.git
+  185  cd Air-Writing-and-Character-Recognition/
+  186  source ~/Documents/College_code/projects/venv/bin/activate
+  187  pip install requirement.txt
+  188  [200~python3 -m pip install --upgrade pip~
+  189  python3 -m pip install --upgrade pip
+  190  pip install requirement.txt
+  191  pip install -r requirement.txt
+  192  pip install mediapipe
+  193  ls
+  194  python app.py 
+  195  pip install flask
+  196  python app.py 
+  197  pip install opencv-python
+  198  python --version
+  199  python3 --version
+  200  deactivate 
+  201  source ~/Documents/College_code/projects/venv/bin/activate
+  202  python --version
+  203  exit
+  204  source venv/bin/activate
+  205  python --version
+  206  deactivate
+  207  source venv/bin/activate
+  208  source ~/venv/bin/activate
+  209  source ~/Documents/College_code/projects/venv/bin/activate
+  210  python --version
+  211  deactivate 
+  212  ls
+  213  python --version
+  214  sudo dnf install python3.9
+  215  python --version
+  216  ls
+  217  python3.9 -m venv .
+  218  ls
+  219  cd ..
+  220  ls
+  221  python3.9 -m venv ~/Documents/College_code/Spec_Project
+  222  ls
+  223  cd Air-Writing-and-Character-Recognition/
+  224  ls
+  225  source bin/activate
+  226  python --version
+  227  pip install -r requirement.txt 
+  228  exit
+  229  sudo dnf upgrade --refresh 
+  230  flatpak update
+  231  sudo dnf upgrade --refresh 
+  232  flatpak update
+  233  sudo dnf upgrade
+  234  sudo dnf upgrade 
+  235  sudo dnf clean
+  236  sudo dnf clean all
+  237  sudo dnf autoremove 
+  238  flatpak update
+  239  sudo dnf upgrade --refresh 
+  240  sudo dnf upgrade
+  241  ollama --version
+  242  ollamma list
+  243  ollamma --help
+  244  ollama list
+  245  ollama run mistral
+  246  sudo dnf upgrade
+  247  sudo dnf upgrade --refresh 
+  248  flatpak update
+  249  ls
+  250  ls -a
+  251  cd ..
+  252  ls
+  253  ls -a
+  254  cd .venv/bin/
+  255  ls
+  256  cd ../..
+  257  ls -a
+  258  source .venv/bin/activate
+  259  pip install pandas numpy matplotlib seaborn
+  260  python --version
+  261  pip install pandas numpy matplotlib seaborn
+  262  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  263  sudo dnf install pandoc
+  264  sudo dnf install texlive-scheme-full
+  265  sudo dnf install texlive-xetex
+  266  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  267  cd Documents/College_code/
+  268  ls
+  269  ls -a
+  270  cd ADA/
+  271  ls
+  272  ls -a
+  273  ls a
+  274  ls -a
+  275  source .venv/bin/activate
+  276  python --vers
+  277  python --version
+  278  pip install pandas numpy seaborn matplotlib
+  279  pip install scikit-learn
+  280  pip install opencv-python
+  281  deactivate 
+  282  cd 
+  283  ls
+  284  sudo dnf install texlive-scheme-full
+  285  sudo dnf clean all 
+  286  sudo dnf autoremove 
+  287  sudo dnf upgrade --refresh 
+  288  clear
+  289  flatpak update
+  290  vim TasksLab1.txt
+  291  cat TasksLab1.txt 
+  292  cd
+  293  clear
+  294  sudo dnf upgrade --refr
+  295  sudo dnf upgrade --refresh 
+  296  flatpak update
+  297  sudo dnf upgrade --re
+  298  sudo dnf upgrade --refresh 
+  299  flatpak update
+  300  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  301  git clone git@github.com:Christinathattil/Attendance-monitoring-using-Computer-Vision.git
+  302  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  303  ls 
+  304  source .venv/bin/activate
+  305  python --version
+  306  pip install requirements.txt
+  307  pip install numpy==1.23.5
+  308  tensorflow-macos==2.15.0
+  309  tensorflow-metal==1.1.0
+  310  torch==2.0.1
+  311  torchvision==0.15.2
+  312  torchaudio==2.0.2
+  313  pip install numpy==1.23.5 tensorflow-macos==2.15.0 tensorflow-metal==1.1.0 torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
+  314  python --version
+  315  pip install tensorflow-macos
+  316  pip install tensorflow-metal
+  317  pip install tensorflow torch 
+  318  deactivate 
+  319  git clone git@github.com:Christinathattil/Attendance-monitoring-using-Computer-Vision.git
+  320  python --version
+  321  sudo dnf install python==3.10
+  322  pyeve install 3.10.12
+  323  sudo dnf install python3.10
+  324  sudo dnf install python3.10 python3.10-devel
+  325  python --version
+  326  python3.10 -m venv .
+  327  ls
+  328  ls -a
+  329  python -u "/home/chloycosta/Documents/College_code/projects/Attendance-monitoring-using-Computer-Vision/main.py"
+  330  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  331  python3.10 --version
+  332  python3.10 -m venv ./.venv
+  333  source activate .venv/bin/activate
+  334  source .venv/bin/activate
+  335  pip install -r requirements.txt 
+  336  python --version
+  337  pip install -upgrade pip 
+  338  pip install --upgrade pip 
+  339  pip install 0r requirements.txt 
+  340  pip install -r requirements.txt 
+  341  python --version
+  342  pip install tensorflow==2.15.0
+  343  pip install numpy==1.23.5 torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
+  344  pip install mtcnn==1.0.0 keras==2.15.0 scipy==1.10.1 h5py==3.10.0 tensorboard>=2.15,<2.16
+  345  pip install mtcnn==1.0.0 keras==2.15.0 scipy==1.10.1 h5py==3.10.0 tensorboard>=2.15
+  346  pip install ultralytics==8.1.0 opencv-python==4.11.0.86 deepface==0.0.86 facenet-pytorch==2.5.3
+  347  pip install filterpy==1.4.5 mysql-connector-python==8.0.33 pandas==2.0.1 pillow==9.5.0 scikit-learn==1.6.1
+  348  python --version
+  349  python run app.py 
+  350   code .
+  351  pip install SQLAlchemy
+  352  pip install pymysql python-dotenv cryptography gdown
+  353  python app.py 
+  354  python main.py 
+  355  python app.py 
+  356  code .
+  357  python -u "/home/chloycosta/Documents/College_code/projects/Attendance-monitoring-using-Computer-Vision/emotion_detector.py"
+  358  python -u "/home/chloycosta/Documents/College_code/projects/Attendance-monitoring-using-Computer-Vision/main.py"
+  359  python train.py
+  360  python main.py
+  361  cd
+  362  sudo dnf upgrade --refresh 
+  363  flatpak update
+  364  source .venv/bin/activate
+  365  python --version
+  366  python main.py 
+  367  ls
+  368  python app.py 
+  369  clear
+  370  deactivate 
+  371  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  372  sudo dnf upgrade -refr
+  373  sudo dnf upgrade --refresh 
+  374  code .
+  375  code .
+  376  ls -a
+  377  source .venv/bin/activate
+  378  pip install pandas numpy seaborn matplotlib scikit-learn
+  379  deactivate 
+  380  cd 
+  381  clear
+  382  sudo dnf upgrade --refresh 
+  383  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  384  flatpak update
+  385  clear
+  386  sudo dnf upgrade --refresh 
+  387  flatpak update
+  388  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  389  sudo dnf upgrade --refresh 
+  390  flatpak update
+  391  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  392  source .venv/bin/activate
+  393  pip install statsmodel
+  394  python -m pip install statsmodels
+  395  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  396  cd
+  397  clear
+  398  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  399  sudo dnf upgrade 
+  400  flatpak update
+  401  sudo dnf upgrade --refresh 
+  402  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  403  code .
+  404  cd
+  405  exit
+  406  cd
+  407  sudo dnf upgrade --refresh 
+  408  flatpak update
+  409  exit
+  410  cd Downloads/
+  411  ls
+  412  chmod +x Cursor-1.0.0-x86_64.AppImage
+  413  ls
+  414  sudo mkdir /opt/cursor
+  415  sudo mv Cursor-1.0.0-x86_64.AppImage /opt/cursor/
+  416  cd /opt/cursor/
+  417  ls
+  418  .
+  419  sudo mv Cursor-1.0.0-x86_64.AppImage ~/Downloads/
+  420  cd ~/Downloads/
+  421  ls
+  422  sudo mv Cursor-1.0.0-x86_64.AppImage /opt/cursor/cursor.appimage
+  423  ls /opt/cursor/
+  424  sudo mv cursor.png /opt/cursor/
+  425  sudo nano /usr/share/application/cursor.desktop
+  426  cd /usr/share/
+  427  ls
+  428  cd applications/
+  429  sudo nano /usr/share/application/cursor.desktop
+  430  sudo nano /usr/share/applications/cursor.desktop
+  431  cursor
+  432  cd
+  433  sudo dnf install community-mysql-server
+  434  sudo systemctl start mysqID
+  435  sudo systemctl start mysqld
+  436  sudo systemctl enable mysqld
+  437  mysql -u root -p
+  438  ls -la | grep -E "\.env"
+  439  echo "DB_USERNAME=root" > .env
+  440  echo "DB_PASSWORD=your_mysql_password" >> .env
+  441  echo "DB_HOST=localhost" >> .env && echo "DB_NAME=class_records" >> .env
+  442  cat .env
+  443  source .venv/bin/activate && python main.py --help
+  444  sed -i 's/your_mysql_password/YOUR_ACTUAL_PASSWORD_HERE/' .env
+  445  sed -i 's/YOUR_ACTUAL_PASSWORD_HERE//' .env
+  446  cat .env
+  447  source .venv/bin/activate && python main.py --help
+  448  find . -name "*.h5" -o -name "*.pt" -o -name "*.pkl" | head -10
+  449  find . -name "*facenet*" -o -name "*face*" | grep -v .venv
+  450  ls -la *.h5 *.pt *.pkl 2>/dev/null || echo "No model files in root directory"
+  451  ls -la encodings/
+  452  wget https://github.com/nyoki-mtl/keras-facenet/raw/master/model/facenet_keras.h5 -O facenet_keras_weights.h5
+  453  ls -la facenet_keras_weights.h5
+  454  curl -L -o facenet_keras_weights.h5 https://github.com/nyoki-mtl/keras-facenet/raw/master/model/facenet_keras.h5
+  455  ls -la facenet_keras_weights.h5
+  456  ls -lh facenet_keras_weights.h5
+  457  source .venv/bin/activate && python main.py --source 0
+  458  source .venv/bin/activate && pip install easydict
+  459  source .venv/bin/activate && python main.py --source 0
+  460  source .venv/bin/activate
+  461  python main.py --source 0
+  462  wget https://drive.google.com/uc?id=1M1aeAbOqQw8r6U6B6rQ1QK2r6kQ1QK2r -O facenet_keras_weights.h5
+  463  gdown 1M1aeAbOqQw8r6U6B6rQ1QK2r6kQ1QK2r -O facenet_keras_weights.h5
+  464  source .venv/bin/activate
+  465  python main.py --source ./test/Class.mp4 
+  466  source .venv/bin/activate
+  467  python --version
+  468  python main.py --source test/Class.mp4 
+  469  deactivate 
+  470  source .venv/bin/activate
+  471  python main.py --source 0
+  472  clear
+  473  deactivate 
+  474  cd
+  475  clear
+  476  sudo dnf upgrade --refresh 
+  477  flatpak update
+  478  source .venv/bin/activate
+  479  python --version
+  480  python main.py --source 0
+  481  python main.py --source test/Class.mp4 
+  482  cd 
+  483  clear
+  484  sudo dnf upgrade --refresh
+  485  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  486  source .venv/bin/activate
+  487  python main.py --source test/Class.mp4 
+  488  deactivate 
+  489  mysql -u root -p
+  490  source .venv/bin/activate
+  491  python main.py --source test/Class.mp4 
+  492  history
+  493  clear
+  494  cd
+  495  deactivate 
+  496  cd
+  497  clear
+  498  sudo dnf upgrade --refresh 
+  499  source .venv/bin/activate
+  500  python main.py --source 0
+  501  python main.py --source test/Class.mp4 
+  502  deactivate 
+  503  clear
+  504  cd
+  505  ls
+  506  clear
+  507  python3.10 -m venv .venv
+  508  source .venv/bin/activate
+  509  pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib selenium opencv-python face_recognition pillow
+  510  pip install --upgrade pip
+  511  sudo dnf install cmake gcc-c++ make
+  512  python --version
+  513  pip install --upgrade face_recognition
+  514  sudo dnf install geckodriver
+  515  dnf search gecko
+  516  wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
+  517  tar -xzf geckodriver-v0.34.0-linux64.tar.gz
+  518  chmod +x geckodriver
+  519  sudo mv geckodriver /usr/local/bin/
+  520  geckodriver --version
+  521  ls
+  522  python download_images.py 
+  523  python --version
+  524  source .venv/bin/activate
+  525  python --version
+  526  python download_images.py 
+  527  python --version
+  528  pip install googleapiclient
+  529     pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib selenium opencv-python face_recognition pillow
+  530  clear
+  531  python --version
+  532  pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib selenium opencv-python face_recognition pillow
+  533  python download_images.py 
+  534  python --version
+  535  pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib openpyxl pandas
+  536  python download_to_excel.py 
+  537  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  538  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  539  cd
+  540  sudo dnf upgrade --refresh 
+  541  cleqr
+  542  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  543  sudo dnf upgrade --refresh 
+  544  clear
+  545  ollama list
+  546  ollama run mistral
+  547  exit
+  548  source .venv/bin/activate
+  549  python download_to_excel.py 
+  550  deactivate 
+  551  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  552  code .
+  553  cd
+  554  clear
+  555  sudo dnf upgrade --refresh 
+  556  clear
+  557  exit
+  558  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  559  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  560  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  561  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  562  python --version
+  563  python main.py --source ./test/Class.mp4 
+  564  chmod +x deploy_to_cloud.py cloud_database_setup.py
+  565  chmod +x test_cloud_connection.py
+  566  git status
+  567  git clone git@github.com:Chloy02/Attendance-monitoring-using-Computer-Vision.git
+  568  git status 
+  569  git add .gitignore
+  570  git add requirements.txt sqlalchemy_database.py CLOUD_DATABASE_SETUP.md FACE_ENCODINGS_EXPLAINED.md QUICK_CLOUD_SETUP.md SETUP_GUIDE.md TECHNICAL_PRESENTATION.md cloud_database_setup.py deploy_to_cloud.py test_cloud_connection.py test/
+  571  git status
+  572  git commit -m "Add comprehensive documentation and cloud deployment features - Add .gitignore file to exclude sensitive and large files - Add cloud database setup and deployment scripts - Add comprehensive documentation (setup guides, technical presentation) - Add face encodings explanation and cloud setup guides - Update requirements.txt and database configuration - Add test directory and cloud connection testing"
+  573  git config --global user.name "chloycosta"
+  574  git config --global user.email "chloycosta@example.com"
+  575  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  576  git status
+  577  git commit -m "Fixed requirements for linux system from macos tensorflow, added improvements to code to be able to use online database as well as local. Fixed certain bugs"
+  578  git status
+  579  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  580  git config --global user.email "chloycostac@gmail.com"
+  581  git status
+  582  git push origin Main
+  583  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  584  git status
+  585  git add .
+  586  git status
+  587  git commit -m "Updated ReadMe"
+  588  git push origin main
+  589  git push origin Main 
+  590  ls
+  591  cd
+  592  sudo dnf upgrade --refresh 
+  593  ollama list
+  594  ollama run mistral
+  595  ollama run llama3.2
+  596  celar
+  597  clear
+  598  exit
+  599  cd
+  600  ls
+  601  sudo dnf remove docker                   docker-client                   docker-client-latest                   docker-common                   docker-latest                   docker-latest-logrotate                   docker-logrotate                   docker-selinux                   docker-engine-selinux                   docker-engine
+  602   sudo dnf -y install dnf-plugins-core
+  603  sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+  604  sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  605  sudo systemctl status docker
+  606  sudo systemctl start docker
+  607  sudi systemctl enable docker
+  608  sudo systemctl enable docker
+  609  dicker run hello-world
+  610  docker run hello-world
+  611  sudo docker run hello-world
+  612  clear
+  613  sudo systemctl status docker
+  614  sudo systemctl enable --now docker
+  615  sudo docker run hello-world
+  616  clear
+  617  systemctl --user start docker-desktop
+  618  sensors
+  619   sensors-detect
+  620  sudo sensors-detect
+  621  clear
+  622  sudo sensors-detect
+  623  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  624  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  625  cd
+  626  sudo dnf upgrade 
+  627  flatpak update
+  628  cd Downloads/
+  629  ls
+  630  sudo dnf install ./docker-desktop-x86_64.rpm
+  631  cd
+  632  ls /opt/
+  633  sudo dnf upgrade --refresh 
+  634  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  635  python3.10 -m venv .venv
+  636  source .venv/bin/activate
+  637  pip install flask
+  638  pip install --upgrade pip
+  639  pip install requests
+  640  code .
+  641  deactivate 
+  642  python -u "/home/chloycosta/Documents/College_code/flast_tut/flasktest.py"
+  643  deactivate
+  644  clear
+  645  ls
+  646  git init
+  647  git commit -m "Backend framework"
+  648  git add .
+  649  git commit -m "Backend framework"
+  650  git branch -M main
+  651  git remote add origin git@github.com:Chloy02/AirSign.git
+  652  git push -u origin main
+  653  python -m venv .venv
+  654  python3.10 -m venv .venv
+  655  git status
+  656  git add .
+  657  git commit -m "Added gitignore file"
+  658  git push origin main
+  659  source .venv/bin/activate
+  660  python flasktest.py 
+  661  python --version
+  662  mkdir meme_flask
+  663  ls
+  664  deactivate 
+  665  deactivate
+  666  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  667  cd ..
+  668  ls
+  669  cd Spec_Project/
+  670  ls
+  671  ls ./bac
+  672  ls backend/
+  673  pip install -r backend/requirements.txt 
+  674  clear
+  675  ls
+  676  ls -a
+  677  source .venv/bin/activate
+  678  python --version
+  679  pip install -r backend/requirements.txt 
+  680  pip install --upgrade pip
+  681  pip install -r backend/requirements.txt 
+  682  deactivate 
+  683  python --version
+  684  sudo dnf upgrade --refresh 
+  685  flatpak update
+  686  clear
+  687  exit
+  688  cd
+  689  clear
+  690  sudo dnf install portaudio-devel
+  691  exit
+  692  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  693  clea
+  694  clear
+  695  cd Documents/College_code/
+  696  ls
+  697  cd Spec_Project/
+  698  ls
+  699  git status 
+  700  cd
+  701  clear
+  702  exit
+  703  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  704  sudo dnf upgrade --refresh 
+  705  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  706  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  707  cd
+  708  python --version
+  709  python --versions
+  710  python -h
+  711  ls -a /opt/
+  712  ls -a /
+  713  ls -a /bin/
+  714  cd Documents/College_code/AIML/
+  715  ls -a
+  716  source .venv/bin/activate
+  717  pip install plotly
+  718  deactivate 
+  719  source .venv/bin/activate
+  720  python --version
+  721  pip install nbformat>=4.2.0
+  722  pip install nbformat
+  723  deactivate 
+  724  exit
+  725  upower -i $(upower -e |grep BAT)
+  726  sudo dnf upgrade --refresh 
+  727  flatpak update
+  728  sudo dnf copr enable kylegospo/preload -y && sudo dnf install preload -y && sudo systemctl enable --now preload
+  729  clear
+  730  sudo dnf install   https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+  731  sudo dnf install   https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm   https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+  732  sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
+  733  sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
+  734  sudo dnf install steam
+  735  sudo dnf upgrade --refresh 
+  736  flatpak update
+  737  exit
+  738  code .
+  739  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  740  cd
+  741  clear
+  742  sudo dnf upgrade --refresh 
+  743  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  744  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  745  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  746  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  747  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  748  code .
+  749  clear
+  750  exit
+  751  ls -a
+  752  source .venv/bin/activate
+  753  python --version
+  754  pip install pandas numpy matplotlib seaborn scikit-learn
+  755  deactivate 
+  756  deactivate
+  757  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  758  cd
+  759  clear
+  760  flatpak update
+  761  sudo dnf upgrade --refre
+  762  sudo dnf upgrade --refresh 
+  763  exit
+  764  ssh fedora
+  765  exit
+  766  ssh fedora
+  767  cd
+  768  sudo dnf upgrade --refresh 
+  769  shh fedora
+  770  ssh fedora
+  771  clear
+  772  ssh fedora
+  773  cl
+  774  clear
+  775  exit
+  776  exit
+  777  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  778  cd Documents/College_code/ADA/
+  779  ls
+  780  ls -a
+  781  source .venv/bin/activate
+  782  python --version
+  783  pip install nltk
+  784  pip install wordcloud
+  785  deactivate 
+  786  cd
+  787  clear
+  788  sudo dnf upgrade --refresh 
+  789  flatpak update
+  790  cd Documents/
+  791  cd College_code/
+  792  ls
+  793  cd Cloud_computing/
+  794  ls
+  795  vim cc_01.txt
+  796  cat cc_01.txt 
+  797  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  798  sudo dnf upgrade --refresh 
+  799  cd
+  800  clear
+  801  sudo dnf upgrade --refresh 
+  802  clear
+  803  sudo dnf install curl wget tar
+  804  dnf search discord
+  805  source .venv/bin/activate
+  806  pip install spacy
+  807  python --version
+  808  pip install spacy
+  809  python --version
+  810  pip install en_core_web_sm
+  811  python -m spacy download en_core_web_sm
+  812  python --version
+  813  ls
+  814  python text-analytics.ipynb 
+  815  deactivate 
+  816  deactivate
+  817  ssh fedora 
+  818  exit
+  819  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  820  sudo dnf upgrade --refresh 
+  821  exit
+  822  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  823  sudo dnf upgrade --refresh 
+  824  flatpak update
+  825  tar -xvzf heroku-linux-x64.tar.gz 
+  826  ls /usr/local/lib/
+  827  sudo mkdir -p /usr/local/lib/heroku
+  828  ls
+  829  sudo mv heroku /usr/local/lib/heroku/
+  830  cd /usr/local/lib/heroku/
+  831  ls
+  832  cd ..
+  833  ls
+  834  ls heroku/
+  835  ls heroku/heroku/
+  836  ls
+  837  sudo mv heroku/heroku .
+  838  ls 
+  839  sudo mv heroku ~/Documents
+  840  ls
+  841  cd ~/Documents/
+  842  ls
+  843  sudo rm -rv heroku/
+  844  cd ~/Downloads/
+  845  ls
+  846  tar -xvzf heroku-linux-x64.tar.gz 
+  847  sudo mv heroku /usr/local/lib/
+  848  ls
+  849  cd /usr/local/lib
+  850  ls
+  851  ls heroku/
+  852  cat heroku/README.md 
+  853  ls
+  854  cd heroku/
+  855  yarn
+  856  cd ..
+  857  ls
+  858  code .
+  859  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  860  cd
+  861  clear
+  862  sudo dnf upgrade --refresh 
+  863  flatpak update
+  864  cler
+  865  clear
+  866  exit
+  867  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  868  cd
+  869  dnf search backgrounds-gnome
+  870  sudo dnf install backgrounds-gnome
+  871  sudo dnf install how to get more gnome wallpapers fedora 42backgrounds-extras-gnome
+  872  sudo dnf install f41-backgrounds-extras-gnome
+  873  sudo dnf install f40-backgrounds-extras-gnome
+  874  sudo dnf install f39-backgrounds-extras-gnome
+  875  ipaddr
+  876  ipadder
+  877  hotnameI
+  878  ifconfig
+  879  ip
+  880  ip address
+  881  ssh fedora@192.168.1.255
+  882  ssh fedora@192.168.1.104
+  883  clear
+  884  ssh fedora@192.168.1.104
+  885  ssh fedora@192.168.1.255
+  886  ssh Chloycosta@192.168.1.104
+  887  celar
+  888  clear
+  889  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  890  code .
+  891  /bin/python /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.cursor/extensions/ms-python.python-2025.6.1-linux-x64/python_files/deactivate/bash/envVars.txt
+  892  cd
+  893  clear
+  894  npx https://github.com/google-gemini/gemini-cli
+  895  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+  896  \. "$HOME/.nvm/nvm.sh"
+  897  nvm install 22
+  898  node -v
+  899  nvm current
+  900  npm -v
+  901  npx https://github.com/google-gemini/gemini-cli
+  902  clear
+  903  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  904  sudo dnf upgrade --refresh 
+  905  flatpak update
+  906  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  907  code .
+  908  ls -alR
+  909  tree -d
+  910  cd ASL_data/
+  911  tree -d
+  912  cd ..
+  913  ls -alR
+  914  clear
+  915  ls -alR > directories.txt
+  916  file
+  917  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  918  ls
+  919  ls a
+  920  ls -a
+  921  source .venv/bin/activate
+  922  python --version
+  923  pip install labelImg
+  924  deactivate 
+  925  python --version
+  926  cd
+  927  clear
+  928  sudo dnf upgrade --refresh 
+  929  jupyter lab
+  930  exit
+  931  python3.9 venv .venv
+  932  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  933  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  934  ls
+  935  ls -a
+  936  cd ..
+  937  ls
+  938  cd Solar_Flare_Prediction/
+  939  python3.9 -m venv .venv
+  940  ls -a
+  941  source .venv/bin/activate
+  942  python --version
+  943  pip install pandas numpy astropy scikit-learn seaborn tensorflow matplotlib
+  944  pip install --upgrade pip
+  945  deactivate 
+  946  cleat
+  947  clear 
+  948  cd
+  949  clear
+  950  cd
+  951  sudo dnf upgrade --refresh 
+  952  flatpak update
+  953  /bin/python /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/printEnvVariablesToFile.py /home/chloycosta/.vscode/extensions/ms-python.python-2025.8.0-linux-x64/python_files/deactivate/bash/envVars.txt
+  954  cd Documents/College_code/
+  955  ls
+  956  cd Spec_Project/
+  957  ls
+  958  ls -a
+  959  source .venv/bin/activate
+  960  python --version
+  961  pip install torch torchvision torchaudio
+  962  pip install ultralytics opencv-python
+  963  ls 
+  964  vim train.py
+  965  cat train.py 
+  966  python train.py 
+  967  vim realtime_detect.py
+  968  python realtime_detect.py 
+  969  vim realtime_detect.py 
+  970  python realtime_detect.py 
+  971  deactivate 
+  972  exit
+  973  source .venv/bin/activate
+  974  python realtime_detect.py 
+  975  deactivate 
+  976  tree
+  977  tree > structure.txt
+  978  source .venv/bin/activate
+  979  python --version
+  980  vim process_videos.py
+  981  python process_videos.py 
+  982  deactivate 
+  983  source .venv/bin/activate
+  984  python --version
+  985  pip install mediapipe
+  986  deactivate 
+  987  ls -a
+  988  rm -rv .venv
+  989  ls -a
+  990  vim requirements.txt
+  991  python3.10 -m venv .venv
+  992  source .venv/bin/activate
+  993  python --version
+  994  pip install -r requirements.txt 
+  995  pip install --upgrade pip
+  996  vim intelligent_frame_extractor.py
+  997  python intelligent_frame_extractor.py 
+  998  deactivate 
+  999  exit
+ 1000  pwd
+ 1001  ls
+ 1002  ls LSTM_features/
+ 1003  ls -a
+ 1004  ls ASL-Words-Project/
+ 1005  ls
+ 1006  pwd
+ 1007  cd ..
+ 1008  source .venv/bin/activate
+ 1009  cd Trail/
+ 1010  python train_multi_words.py 
+ 1011  rm -rv train_multi_words.py 
+ 1012  vim train_multi_words.py
+ 1013  python train_multi_words.py 
+ 1014  ls
+ 1015  cat train_words.py 
+ 1016  rm -rv train_words.py 
+ 1017  vim train_words.py
+ 1018  python --version
+ 1019  python train_words.py 
+ 1020  history > history.txt
