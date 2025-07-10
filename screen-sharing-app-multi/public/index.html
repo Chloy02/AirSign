@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Google Sans', Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #202124;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        header nav {
+            display: flex;
+            gap: 24px;
+        }
+
+        header nav a {
+            text-decoration: none;
+            color: #5f6368;
+            font-size: 1em;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        header nav a:hover {
+            color: #202124;
+            background-color: #f1f3f4;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 24px;
+            margin-top: 60px;
+        }
+
+        main h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+
+        main p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            color: #5f6368;
+            max-width: 500px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .buttons button {
+            padding: 12px 24px;
+            font-size: 1em;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .buttons .create-meeting {
+            background-color: #1a73e8;
+        }
+
+        .buttons .create-meeting:hover {
+            background-color: #1557b0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons .join-meeting {
+            background-color: #ffffff;
+            color: #1a73e8;
+            border: 1px solid #dadce0;
+        }
+
+        .buttons .join-meeting:hover {
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: #ffffff;
+            text-align: center;
+            padding: 16px 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            font-size: 0.9em;
+            color: #5f6368;
+        }
+
+        @media (max-width: 600px) {
+            main h1 {
+                font-size: 2em;
+            }
+
+            .buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .buttons button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline-block;
+  position: relative;
+}
+
+nav ul li a {
+  text-decoration: none;
+  padding: 10px;
+  display: block;
+}
+
+nav .dropdown:hover .dropdown-content {
+  display: block;
+}
+
+nav .dropbtn:hover {
+  background-color: #ddd;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.logOut-btn
+{
+    border: none;
+    background-color: transparent;
+    font-size: 15px;
+    color:#5f6368;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Safe Share</a>
+        <nav>
+           <ul>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Features</a>
+                    <div class="dropdown-content">
+                      <a href="#">Video Sharing</a>
+                      <a href="#">Screen Sharing</a>
+                    </div>
+                  </li>
+                </ul>              
+            <a href="#help">Help</a>
+            <div class="user-profile">
+                <span id="username-display">Loading...</span>
+                <button class="logOut-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>One-on-one meetings for everyone.</h1>
+        <p>Secure video conferencing for staff and students.</p>
+        <div class="buttons">
+            <button class="create-meeting" onclick="window.location.href='meeting.html'">
+                <span>New meeting</span>
+            </button>
+            <button class="join-meeting" onclick="joinMeeting()">
+                <span>Join meeting</span>
+            </button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Safe Share.</p>
+    </footer>
+
+    <script>
+        // Function to get username from local storage
+        function displayUsername() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('username-display').textContent = username;
+            } else {
+                window.location.href = '/auth';
+            }
+        }
+
+        // Function to handle logout
+        function handleLogout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            window.location.href = '/auth';
+        }
+
+        // Display username when page loads
+        document.addEventListener('DOMContentLoaded', displayUsername);
+
+        function joinMeeting() {
+            const meetingCode = prompt('Enter meeting code:');
+            if (meetingCode) {
+                window.location.href = `meeting.html?room=${meetingCode}`;
+            }
+        }
+    </script>
+</body>
+</html>

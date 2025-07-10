@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeetClone Meeting Room</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Google Sans', Arial, sans-serif;
+            background-color: #202124;
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meeting-container {
+            flex: 1;
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            position: relative;
+            overflow: auto;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            align-items: center;
+            justify-items: center;
+            width: 100%;
+            height: 100vh; /* Ensures the grid takes full viewport height */
+            flex: 1;
+
+        }
+
+        .video-wrapper {
+        width: auto;
+        height: auto;
+        background-color: #3c4043;
+        border-radius: 0;
+        overflow: hidden;
+        position: relative;
+}
+
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            padding: 20px;
+            background: rgba(32, 33, 36, 0.9);
+            z-index: 100;
+        }
+
+        .control-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background-color: #3c4043;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 20px;
+        }
+
+        .control-button:hover {
+            background-color: #5f6368;
+        }
+
+        .control-button.active {
+            background-color: #ea4335;
+        }
+
+        .control-button.end-call {
+            background-color: #ea4335;
+        }
+
+        .control-button.end-call:hover {
+            background-color: #dc2626;
+        }
+
+        .participant-name {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        #room-info {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(60, 64, 67, 0.9);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 100;
+        }
+
+        .room-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(60, 64, 67, 0.9);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 100;
+            cursor: pointer;
+        }
+        
+        .room-link:hover {
+            background: rgba(80, 84, 87, 0.9);
+        }
+
+        /* Chat Sidebar Styles */
+        .chat-sidebar {
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            width: 350px !important;
+            height: 100vh !important;
+            background: #2d2f31 !important;
+            border-left: 1px solid #3c4043 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            z-index: 99999 !important;
+            transform: translateX(100%) !important;
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1) !important;
+            box-shadow: -2px 0 12px rgba(0,0,0,0.08) !important;
+        }
+
+        .chat-sidebar.active {
+            transform: translateX(0) !important;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid #3c4043;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1f2124;
+        }
+
+        .chat-header h3 {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: #9aa0a6;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .close-chat:hover {
+            background: #3c4043;
+        }
+
+        /* Participants Section */
+        .participants-section {
+            border-bottom: 1px solid #3c4043;
+            background: #1f2124;
+        }
+
+        .participants-header {
+            padding: 16px 20px 8px 20px;
+        }
+
+        .participants-header h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #9aa0a6;
+            margin: 0;
+        }
+
+        .participants-list {
+            padding: 0 20px 16px 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .participant-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .participant-avatar {
+            width: 32px;
+            height: 32px;
+            background: #8ab4f8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #202124;
+            font-size: 14px;
+        }
+
+        .participant-info {
+            flex: 1;
+        }
+
+        .participant-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .participant-status {
+            font-size: 12px;
+            color: #9aa0a6;
+            margin-top: 2px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            position: relative;
+        }
+
+        .message.sent {
+            background: #8ab4f8;
+            color: #202124;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.received {
+            background: #3c4043;
+            color: #ffffff;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message .sender {
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            opacity: 0.8;
+        }
+
+        .message .content {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message .time {
+            font-size: 11px;
+            opacity: 0.6;
+            margin-top: 4px;
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            border-top: 1px solid #3c4043;
+            background: #1f2124;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: #3c4043;
+            border: none;
+            border-radius: 20px;
+            padding: 12px 16px;
+            color: #ffffff;
+            font-size: 14px;
+            resize: none;
+            max-height: 100px;
+            min-height: 44px;
+            outline: none;
+        }
+
+        .chat-input::placeholder {
+            color: #9aa0a6;
+        }
+
+        .send-message {
+            background: #8ab4f8;
+            color: #202124;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .send-message:hover {
+            background: #aecbfa;
+        }
+
+        .send-message:disabled {
+            background: #3c4043;
+            color: #9aa0a6;
+            cursor: not-allowed;
+        }
+
+        /* Chat toggle button */
+        .chat-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(60, 64, 67, 0.9);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 150;
+            transition: background-color 0.2s;
+        }
+
+        .chat-toggle:hover {
+            background: rgba(80, 84, 87, 0.9);
+        }
+
+        .chat-toggle .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ea4335;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .chat-sidebar {
+                width: 100%;
+            }
+            
+            .chat-toggle {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .room-link {
+                top: 10px;
+                right: 60px;
+            }
+        }
+
+        /* Empty state for chat */
+        .chat-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #9aa0a6;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .chat-empty i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* Chat Bottom Bar */
+        .chat-bottom-bar {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            background: #ededf3;
+            padding: 16px 24px;
+            z-index: 120;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+        }
+
+        .chat-input-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 12px;
+            padding: 0 8px;
+            margin-right: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .chat-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 12px 8px;
+            font-size: 16px;
+            color: #222;
+            resize: none;
+            outline: none;
+            min-height: 32px;
+            max-height: 80px;
+        }
+
+        .send-message {
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-left: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .send-message:disabled {
+            background: #ccc;
+            color: #fff;
+            cursor: not-allowed;
+        }
+
+        .chat-toggle-bottom {
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-left: 8px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .chat-toggle-bottom:hover {
+            background: #554ee0;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #ea4335;
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: none;
+        }
+
+        /* Bottom Bar Layout */
+        .bottom-bar {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ededf3;
+            z-index: 120;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .controls-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0 0 0;
+        }
+        .control-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background-color: #3c4043;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 20px;
+        }
+        .control-button:hover {
+            background-color: #5f6368;
+        }
+        .control-button.active {
+            background-color: #ea4335;
+        }
+        .control-button.end-call {
+            background-color: #ea4335;
+        }
+        .control-button.end-call:hover {
+            background-color: #dc2626;
+        }
+
+        .chat-input-row {
+            display: flex;
+            align-items: center;
+            padding: 8px 24px 16px 24px;
+            background: #ededf3;
+        }
+        .chat-input-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 12px;
+            padding: 0 8px;
+            margin-right: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .chat-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 12px 8px;
+            font-size: 16px;
+            color: #222;
+            resize: none;
+            outline: none;
+            min-height: 32px;
+            max-height: 80px;
+        }
+        .send-message {
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-left: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .send-message:disabled {
+            background: #ccc;
+            color: #fff;
+            cursor: not-allowed;
+        }
+        .chat-toggle-bottom {
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-left: 8px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .chat-toggle-bottom:hover {
+            background: #554ee0;
+        }
+        .notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #ea4335;
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="room-info"></div>
+    <div class="room-link" onclick="copyRoomLink()">Copy Meeting Link</div>
+    
+    <div class="meeting-container">
+        <div class="video-grid">
+            <div class="video-wrapper">
+                <video id="localVideo" autoplay muted playsinline></video>
+                <div class="participant-name">You</div>
+            </div>
+            <!-- Remote videos will be added here dynamically -->
+        </div>
+    </div>
+
+    <!-- Controls and Chat at Bottom -->
+    <div class="bottom-bar">
+        <div class="controls-row">
+            <button class="control-button" id="toggleMic" title="Toggle microphone">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button class="control-button" id="toggleVideo" title="Toggle video">
+                <i class="fas fa-video"></i>
+            </button>
+            <button class="control-button" id="toggleScreen" title="Share screen">
+                <i class="fas fa-desktop"></i>
+            </button>
+            <button class="control-button end-call" id="endCall" title="End call">
+                <i class="fas fa-phone-slash"></i>
+            </button>
+        </div>
+        <div class="chat-input-row">
+            <div class="chat-input-wrapper">
+                <textarea 
+                    class="chat-input" 
+                    id="messageInput" 
+                    placeholder="Type a message..."
+                    rows="1"
+                ></textarea>
+                <button class="send-message" id="sendMessage" disabled>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <button class="chat-toggle-bottom" id="toggleChat" title="Open chat">
+                <i class="fas fa-comments"></i>
+                <span class="notification-badge" id="chatNotification">0</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Chat Sidebar -->
+    <div id="chatSidebar" class="chat-sidebar">
+        <div class="chat-header">
+            <h3>Meeting chat</h3>
+            <button class="close-chat" id="closeChat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="participants-section">
+            <div class="participants-header">
+                <h4>Participants (<span id="participantCount">1</span>)</h4>
+            </div>
+            <div class="participants-list" id="participantsList">
+                <div class="participant-item">
+                    <div class="participant-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="participant-info">
+                        <div class="participant-name">You</div>
+                        <div class="participant-status">Host</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-empty">
+                <i class="fas fa-comments"></i>
+                <p>No messages yet</p>
+                <p style="font-size: 12px; margin-top: 8px;">Send a message to start the conversation</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyRoomLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Meeting link copied to clipboard!');
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/client.js"></script>
+</body>
+</html>
