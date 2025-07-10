@@ -7,7 +7,7 @@ from torch.utils.data import Dataset, DataLoader, random_split
 import random
 
 # --- Configuration ---
-FEATURES_DIR = 'LSTM_features_landmarks' # <-- CORRECTED: Points to the new landmark features
+FEATURES_DIR = 'LSTM_features_landmarks_augmented' # <-- Using the augmented dataset
 TARGET_CLASSES = ['before', 'book', 'candy', 'chair', 'clothes']
 
 # Model Hyperparameters

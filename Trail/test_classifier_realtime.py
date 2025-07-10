@@ -42,14 +42,19 @@ def normalize_landmarks(landmarks_data):
 
 # --- LSTM Classifier Model Definition ---
 class LSTMClassifier(nn.Module):
-    def __init__(self, input_size, hidden_size, num_layers, output_size):
+    def __init__(self, input_size, hidden_size, num_layers, output_size, dropout=0.1, use_mean_pool=False):
         super(LSTMClassifier, self).__init__()
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, dropout=0.5)
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, dropout=dropout)
+        self.dropout = nn.Dropout(0.3)  # Dropout after LSTM output
         self.fc = nn.Linear(hidden_size, output_size)
+        self.use_mean_pool = use_mean_pool
 
     def forward(self, x):
-        _, (hidden, _) = self.lstm(x)
-        out = self.fc(hidden[-1])
+        outputs, (hidden, _) = self.lstm(x)
+        if self.use_mean_pool:
+            out = self.fc(self.dropout(outputs.mean(dim=1)))
+        else:
+            out = self.fc(self.dropout(hidden[-1]))
         return out
 
 def main():
@@ -58,8 +63,8 @@ def main():
     print(f"Loading LSTM model on {device}.")
     print(f"Recognizing words: {TARGET_CLASSES}")
 
-    # Load trained LSTM model
-    lstm_model = LSTMClassifier(INPUT_SIZE, HIDDEN_SIZE, NUM_LAYERS, NUM_CLASSES).to(device)
+    # Load trained LSTM model with correct parameters
+    lstm_model = LSTMClassifier(INPUT_SIZE, HIDDEN_SIZE, NUM_LAYERS, NUM_CLASSES, dropout=0.1, use_mean_pool=True).to(device)
     lstm_model.load_state_dict(torch.load(LSTM_MODEL_PATH, map_location=device))
     lstm_model.eval()
     print("Model loaded successfully.")
