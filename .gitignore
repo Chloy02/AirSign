@@ -193,8 +193,6 @@ firebase-config.json
 
 # ML Models and Data
 models/
-*.pt
-*.pth
 *.onnx
 *.tflite
 *.h5
