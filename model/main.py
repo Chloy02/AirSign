@@ -57,10 +57,30 @@ async def detect_asl(image: UploadFile = File(...)) -> Dict[str, str]:
             temp_file_path = temp_file.name
         
         # Run inference using Roboflow
-        result = client.infer(
-            temp_file_path,
-            model_id="specializationproject/asl-words-detection"
-        )
+        # Try different model ID formats
+        try:
+            # First try: workspace/model-id format
+            result = client.infer(
+                temp_file_path,
+                model_id="specializationproject/asl-words-detection"
+            )
+        except Exception as e1:
+            try:
+                # Second try: workspace/version format
+                result = client.infer(
+                    temp_file_path,
+                    model_id="specializationproject/1"
+                )
+            except Exception as e2:
+                try:
+                    # Third try: direct model name
+                    result = client.infer(
+                        temp_file_path,
+                        model_id="asl-words-detection"
+                    )
+                except Exception as e3:
+                    # If all fail, raise the original error with details
+                    raise Exception(f"All model ID formats failed. Errors: 1){str(e1)[:100]} 2){str(e2)[:100]} 3){str(e3)[:100]}")
         
         # Clean up temporary file
         os.unlink(temp_file_path)
