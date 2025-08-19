@@ -57,19 +57,16 @@ async def detect_asl(image: UploadFile = File(...)) -> Dict[str, str]:
             temp_file_path = temp_file.name
         
         # Run inference using Roboflow
-        result = client.run_workflow(
-            workspace_name="specializationproject",
-            workflow_id="detect-count-and-visualize",
-            images={"image": temp_file_path},
-            use_cache=True
+        result = client.infer(
+            temp_file_path,
+            model_id="specializationproject/asl-words-detection"
         )
         
         # Clean up temporary file
         os.unlink(temp_file_path)
         
         # Extract predictions
-        workflow_output = result[0]
-        predictions = workflow_output['predictions']['predictions']
+        predictions = result.get('predictions', [])
         
         if not predictions:
             return {"detected_word": ""}
