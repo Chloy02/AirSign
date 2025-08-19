@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: airsign-asl-api
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: ROBOFLOW_API_KEY
+        value: fJh6XuKHn8TCVn4jLU0w
+    healthCheckPath: /health

@@ -232,15 +232,20 @@ config.ini
 secrets.json
 credentials.json
 
+# Allow deployment files
+!model/Dockerfile
+!model/render.yaml
+!render.yaml
+!Dockerfile
+
 # Docker
 .dockerignore
-Dockerfile
 docker-compose.yml
 docker-compose.yaml
 
-# Kubernetes
-*.yaml
-*.yml
+# Kubernetes deployment files (but allow render.yaml)
+k8s/
+kubernetes/
 
 # Backup files
 *.bak
