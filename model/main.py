@@ -4,6 +4,10 @@ from inference_sdk import InferenceHTTPClient
 import tempfile
 import os
 from typing import Dict
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = FastAPI(title="ASL Detection API", version="1.0.0")
 
@@ -17,9 +21,13 @@ app.add_middleware(
 )
 
 # Initialize Roboflow client
+ROBOFLOW_API_KEY = os.environ.get("ROBOFLOW_API_KEY")
+if not ROBOFLOW_API_KEY:
+    raise ValueError("ROBOFLOW_API_KEY environment variable is required. Please set it in your .env file or environment.")
+
 client = InferenceHTTPClient(
     api_url="https://detect.roboflow.com",
-    api_key=os.environ.get("ROBOFLOW_API_KEY", "fJh6XuKHn8TCVn4jLU0w")
+    api_key=ROBOFLOW_API_KEY
 )
 
 @app.get("/")

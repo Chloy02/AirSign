@@ -8,6 +8,5 @@ services:
     envVars:
       - key: PORT
         value: 8000
-      - key: ROBOFLOW_API_KEY
-        value: fJh6XuKHn8TCVn4jLU0w
+      # ROBOFLOW_API_KEY will be set manually in Render dashboard for security
     healthCheckPath: /health
