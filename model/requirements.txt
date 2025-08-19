@@ -1,6 +1,7 @@
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 python-multipart==0.0.6
-inference-sdk==0.9.18
+inference-sdk
+inference
 python-jose[cryptography]==3.3.0
 python-dotenv==1.0.0
