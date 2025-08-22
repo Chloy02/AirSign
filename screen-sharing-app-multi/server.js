@@ -9,15 +9,23 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 
 // MongoDB connection with error handling
-mongoose.connect('mongodb://localhost:27017/videochat', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB connected successfully'))
-.catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-});
+let mongoConnected = false;
+
+const connectMongoDB = async () => {
+    try {
+        await mongoose.connect('mongodb://localhost:27017/videochat');
+        console.log('✅ MongoDB connected successfully');
+        mongoConnected = true;
+    } catch (err) {
+        console.warn('⚠️  MongoDB connection failed:', err.message);
+        console.log('📝 The app will run without database features (chat history, user management)');
+        console.log('💡 To enable database features, start MongoDB: mongod');
+        mongoConnected = false;
+    }
+};
+
+// Connect to MongoDB (non-blocking)
+connectMongoDB();
 
 // User schema
 const userSchema = new mongoose.Schema({
@@ -83,6 +91,13 @@ const authenticateToken = (req, res, next) => {
 
 // Auth routes
 app.post('/api/auth/signup', async (req, res) => {
+    if (!mongoConnected) {
+        return res.status(503).json({ 
+            message: 'Database unavailable. Please start MongoDB to enable user registration.',
+            error: 'DATABASE_UNAVAILABLE'
+        });
+    }
+
     try {
         const { name, email, password } = req.body;
 
@@ -117,9 +132,16 @@ app.post('/api/auth/signup', async (req, res) => {
         console.error('Signup error:', error);
         res.status(500).json({ message: 'Server error' });
     }
-});
+ });
 
 app.post('/api/auth/login', async (req, res) => {
+    if (!mongoConnected) {
+        return res.status(503).json({ 
+            message: 'Database unavailable. Please start MongoDB to enable user login.',
+            error: 'DATABASE_UNAVAILABLE'
+        });
+    }
+
     try {
         const { email, password } = req.body;
 
@@ -151,6 +173,13 @@ app.post('/api/auth/login', async (req, res) => {
 
 // Get user data route
 app.get('/api/user', authenticateToken, async (req, res) => {
+    if (!mongoConnected) {
+        return res.status(503).json({ 
+            message: 'Database unavailable. Please start MongoDB to access user data.',
+            error: 'DATABASE_UNAVAILABLE'
+        });
+    }
+
     try {
         const user = await User.findById(req.user.id);
         if (!user) {
@@ -165,6 +194,10 @@ app.get('/api/user', authenticateToken, async (req, res) => {
 
 // Get chat history for a room
 app.get('/api/chat/:roomId', authenticateToken, async (req, res) => {
+    if (!mongoConnected) {
+        return res.json([]); // Return empty array when MongoDB is unavailable
+    }
+
     try {
         const { roomId } = req.params;
         const messages = await ChatMessage.find({ roomId })
@@ -211,27 +244,35 @@ io.on('connection', async (socket) => {
             
             const room = rooms.get(roomId);
             
-            // Create or update active user in MongoDB
-            const activeUser = await ActiveUser.findOneAndUpdate(
-                { socketId: socket.id },
-                { 
-                    socketId: socket.id,
-                    userId: userId, // Now using the actual user ID from the token
-                    name: userName,
-                    roomId: roomId
-                },
-                { upsert: true, new: true }
-            );
-            
-            // Get all active users in the room
-            const roomUsers = await ActiveUser.find({ roomId });
-            const existingUsers = roomUsers
-                .filter(u => u.socketId !== socket.id)
-                .map(u => ({ id: u.socketId, name: u.name }));
-                
-            if (existingUsers.length > 0) {
-                console.log('Sending existing users to', socket.id, ':', existingUsers);
-                socket.emit('existingUsers', existingUsers);
+            // Create or update active user in MongoDB (if available)
+            if (mongoConnected) {
+                try {
+                    const activeUser = await ActiveUser.findOneAndUpdate(
+                        { socketId: socket.id },
+                        { 
+                            socketId: socket.id,
+                            userId: userId, // Now using the actual user ID from the token
+                            name: userName,
+                            roomId: roomId
+                        },
+                        { upsert: true, new: true }
+                    );
+                    
+                    // Get all active users in the room
+                    const roomUsers = await ActiveUser.find({ roomId });
+                    const existingUsers = roomUsers
+                        .filter(u => u.socketId !== socket.id)
+                        .map(u => ({ id: u.socketId, name: u.name }));
+                        
+                    if (existingUsers.length > 0) {
+                        console.log('Sending existing users to', socket.id, ':', existingUsers);
+                        socket.emit('existingUsers', existingUsers);
+                    }
+                } catch (error) {
+                    console.warn('MongoDB operation failed, continuing without database features:', error.message);
+                }
+            } else {
+                console.log('MongoDB unavailable, skipping user tracking');
             }
             
             // Notify all participants in the room about the new user
@@ -267,24 +308,56 @@ io.on('connection', async (socket) => {
 
     // Handle chat messages
     socket.on('chatMessage', async (data) => {
-        try {
-            // Store the message in MongoDB
-            const chatMessage = new ChatMessage({
-                roomId: data.roomId,
-                sender: data.sender,
-                message: data.message,
-                timestamp: new Date()
-            });
-            await chatMessage.save();
-            
-            // Broadcast the message to all users in the room
-            io.to(data.roomId).emit('chatMessage', {
-                message: data.message,
-                sender: data.sender,
-                timestamp: new Date()
-            });
-        } catch (error) {
-            console.error('Error saving chat message:', error);
+        // Broadcast the message to all users in the room
+        io.to(data.roomId).emit('chatMessage', {
+            message: data.message,
+            sender: data.sender,
+            timestamp: new Date()
+        });
+        
+        // Store the message in MongoDB (if available)
+        if (mongoConnected) {
+            try {
+                const chatMessage = new ChatMessage({
+                    roomId: data.roomId,
+                    sender: data.sender,
+                    message: data.message,
+                    timestamp: new Date()
+                });
+                await chatMessage.save();
+            } catch (error) {
+                console.warn('Failed to save chat message to MongoDB:', error.message);
+            }
+        }
+    });
+
+    // Handle ASL detection broadcasts
+    socket.on('asl-detection', (data) => {
+        console.log('🤟 ASL detection from', data.sender, ':', data.word);
+        
+        // Broadcast to all users in the room (including sender for consistency)
+        io.to(data.roomId).emit('asl-detection', {
+            word: data.word,
+            sender: data.sender,
+            timestamp: data.timestamp || new Date().toISOString(),
+            roomId: data.roomId
+        });
+        
+        // Optionally store ASL detections in MongoDB for history
+        if (mongoConnected) {
+            try {
+                const aslMessage = new ChatMessage({
+                    roomId: data.roomId,
+                    sender: data.sender,
+                    message: `🤟 ASL: ${data.word}`,
+                    timestamp: new Date()
+                });
+                aslMessage.save().catch(err => 
+                    console.warn('Failed to save ASL detection to MongoDB:', err.message)
+                );
+            } catch (error) {
+                console.warn('Failed to save ASL detection:', error.message);
+            }
         }
     });
 
@@ -299,8 +372,14 @@ io.on('connection', async (socket) => {
                 // Remove user from the room
                 room.delete(socket.id);
                 
-                // Remove active user from MongoDB
-                await ActiveUser.findOneAndDelete({ socketId: socket.id });
+                // Remove active user from MongoDB (if available)
+                if (mongoConnected) {
+                    try {
+                        await ActiveUser.findOneAndDelete({ socketId: socket.id });
+                    } catch (error) {
+                        console.warn('Failed to remove active user from MongoDB:', error.message);
+                    }
+                }
                 
                 // Notify all participants about the user leaving
                 io.to(socket.roomId).emit('userLeft', socket.id);
@@ -327,12 +406,68 @@ app.get('/meeting', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'meeting.html'));
 });
 
-// Serve the auth page
+// Serve the auth page (enhanced UI)
 app.get('/auth', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'auth.html'));
+    res.sendFile(path.join(__dirname, 'public', 'userAuth.html'));
+});
+
+// Serve the demo page
+app.get('/demo', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'demo.html'));
+});
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+    res.json({
+        status: 'OK',
+        timestamp: new Date().toISOString(),
+        mongodb: mongoConnected ? 'connected' : 'disconnected',
+        features: {
+            chat: true,
+            video: true,
+            asl: true,
+            userManagement: mongoConnected,
+            chatHistory: mongoConnected
+        }
+    });
+});
+
+// Demo mode endpoint (when MongoDB is not available)
+app.post('/api/demo/login', (req, res) => {
+    if (mongoConnected) {
+        return res.status(400).json({ 
+            message: 'Demo mode not available when MongoDB is connected. Use regular login instead.',
+            error: 'DEMO_NOT_AVAILABLE'
+        });
+    }
+
+    const { name } = req.body;
+    if (!name || name.trim().length < 2) {
+        return res.status(400).json({ 
+            message: 'Please provide a valid name (at least 2 characters)',
+            error: 'INVALID_NAME'
+        });
+    }
+
+    // Create a demo token with a demo user ID
+    const demoUserId = 'demo_' + Date.now();
+    const token = jwt.sign({ id: demoUserId, demo: true }, JWT_SECRET);
+    
+    res.json({
+        token,
+        name: name.trim(),
+        demo: true,
+        message: 'Demo mode active - no data will be saved'
+    });
 });
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
-    console.log(`Secure server running at https://0.0.0.0:${PORT}/`);
+    console.log(`🚀 Secure server running at https://0.0.0.0:${PORT}/`);
+    console.log(`📊 MongoDB Status: ${mongoConnected ? '✅ Connected' : '❌ Disconnected'}`);
+    if (!mongoConnected) {
+        console.log(`💡 Demo Mode: Available at /api/demo/login`);
+        console.log(`🔧 To enable full features: Start MongoDB with 'mongod' command`);
+    }
+    console.log(`🌐 Health Check: https://0.0.0.0:${PORT}/api/health`);
 });

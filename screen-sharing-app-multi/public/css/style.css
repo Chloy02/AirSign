@@ -76,6 +76,51 @@
     margin-top: 5px;
 }
 
+/* ASL Detection Messages */
+.message.asl {
+    background: linear-gradient(135deg, #6a5acd, #9370db);
+    color: white;
+    border-left: 4px solid #4b0082;
+    margin: 10px auto;
+    max-width: 90%;
+    animation: aslGlow 0.5s ease-in-out;
+}
+
+.message.asl .sender {
+    color: #e6e6fa;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.message.asl .sender::before {
+    content: "🤟";
+    font-size: 1.2em;
+}
+
+.message.asl .content {
+    font-weight: bold;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+@keyframes aslGlow {
+    0% {
+        box-shadow: 0 0 5px rgba(138, 43, 226, 0.5);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+        transform: scale(1.02);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(138, 43, 226, 0.5);
+        transform: scale(1);
+    }
+}
+
 .chat-input {
     padding: 15px;
     background: #2a2a2a;
@@ -264,5 +309,82 @@
     
     .auth-btn {
         padding: 0.5rem;
+    }
+}
+
+/* ASL Notification System */
+.asl-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 10000;
+    min-width: 300px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    animation: slideInRight 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.asl-notification.success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border-left: 4px solid #155724;
+}
+
+.asl-notification.error {
+    background: linear-gradient(135deg, #dc3545, #e74c3c);
+    border-left: 4px solid #721c24;
+}
+
+.asl-notification.info {
+    background: linear-gradient(135deg, #6a5acd, #9370db);
+    border-left: 4px solid #4b0082;
+}
+
+.asl-notification.warning {
+    background: linear-gradient(135deg, #ff8c00, #ffa500);
+    border-left: 4px solid #ff6347;
+}
+
+.asl-notification::before {
+    content: "🤟";
+    font-size: 20px;
+    animation: pulse 1.5s infinite;
+}
+
+.asl-notification.error::before {
+    content: "⚠️";
+}
+
+.asl-notification.info::before {
+    content: "ℹ️";
+}
+
+.asl-notification.warning::before {
+    content: "⚠️";
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
     }
 } 

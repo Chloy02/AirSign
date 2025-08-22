@@ -86,7 +86,7 @@
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('username', data.name);
                     // Redirect to home page
-                    window.location.href = '/';
+                    window.location.href = 'premeeting.html';
                 } else {
                     alert(data.message || 'Login failed');
                 }
@@ -103,6 +103,12 @@
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
 
+            // Show loading state
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Signing up...';
+            submitBtn.disabled = true;
+
             try {
                 const response = await fetch('/api/auth/signup', {
                     method: 'POST',
@@ -118,16 +124,106 @@
                     // Store token and username
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('username', data.name);
-                    // Redirect to home page
-                    window.location.href = '/';
+                    // Show success message
+                    showNotification('Signup successful! Redirecting...', 'success');
+                    // Redirect to home page after a short delay
+                    setTimeout(() => {
+                        window.location.href = 'premeeting.html';
+                    }, 1500);
                 } else {
-                    alert(data.message || 'Signup failed');
+                    showNotification(data.message || 'Signup failed. Please try again.', 'error');
                 }
             } catch (error) {
                 console.error('Signup error:', error);
-                alert('An error occurred during signup');
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    showNotification('Network error: Please check your connection and try again.', 'error');
+                } else {
+                    showNotification('An error occurred during signup. Please try again.', 'error');
+                }
+            } finally {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
             }
         });
+
+        // Login form handler
+        document.getElementById('loginFormElement').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Show loading state
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Logging in...';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Store token and username
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('username', data.name);
+                    // Show success message
+                    showNotification('Login successful! Redirecting...', 'success');
+                    // Redirect to home page after a short delay
+                    setTimeout(() => {
+                        window.location.href = 'premeeting.html';
+                    }, 1500);
+                } else {
+                    showNotification(data.message || 'Login failed. Please check your credentials.', 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    showNotification('Network error: Please check your connection and try again.', 'error');
+                } else {
+                    showNotification('An error occurred during login. Please try again.', 'error');
+                }
+            } finally {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <span class="notification-message">${message}</span>
+                    <button class="notification-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+                </div>
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 5 seconds for success/info, 8 seconds for errors
+            const autoRemoveTime = type === 'error' ? 8000 : 5000;
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, autoRemoveTime);
+        }
     </script>
 </body>
 </html> 

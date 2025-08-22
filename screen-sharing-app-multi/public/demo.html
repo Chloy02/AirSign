@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirSign - Demo Mode</title>
+    <style>
+        body {
+            font-family: 'Google Sans', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .demo-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .demo-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #3ecbff;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            color: #3ecbff;
+        }
+
+        .demo-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #b0cfff;
+            opacity: 0.9;
+        }
+
+        .demo-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .demo-info h3 {
+            color: #3ecbff;
+            margin-bottom: 15px;
+        }
+
+        .demo-info ul {
+            text-align: left;
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .demo-info li {
+            margin: 8px 0;
+            color: #b0cfff;
+        }
+
+        .demo-form {
+            margin: 30px 0;
+        }
+
+        .demo-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .demo-input:focus {
+            outline: none;
+            border-color: #3ecbff;
+            box-shadow: 0 0 0 3px rgba(62, 203, 255, 0.1);
+        }
+
+        .demo-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .demo-btn {
+            background: linear-gradient(45deg, #3ecbff, #2b9eff);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(62, 203, 255, 0.3);
+        }
+
+        .demo-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .demo-links {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .demo-link {
+            color: #3ecbff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid rgba(62, 203, 255, 0.3);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .demo-link:hover {
+            background: rgba(62, 203, 255, 0.1);
+            border-color: #3ecbff;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-connected {
+            background: #28a745;
+        }
+
+        .status-disconnected {
+            background: #dc3545;
+        }
+
+        .status-checking {
+            background: #ffc107;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-icon">🚀</div>
+        <h1>Demo Mode</h1>
+        <div class="demo-subtitle">MongoDB is not available - running in demo mode</div>
+        
+        <div class="demo-info">
+            <h3>Demo Mode Features:</h3>
+            <ul>
+                <li>✅ Video conferencing works normally</li>
+                <li>✅ ASL detection works normally</li>
+                <li>✅ Real-time chat (messages not saved)</li>
+                <li>❌ User accounts not available</li>
+                <li>❌ Chat history not saved</li>
+            </ul>
+        </div>
+
+        <div class="demo-form">
+            <input type="text" id="demoName" class="demo-input" placeholder="Enter your name" maxlength="50">
+            <button id="demoLoginBtn" class="demo-btn" onclick="demoLogin()">Enter Demo Meeting</button>
+        </div>
+
+        <div class="demo-links">
+            <a href="/" class="demo-link">← Back to Home</a>
+            <a href="/api/health" class="demo-link" target="_blank">Server Status</a>
+            <a href="https://www.mongodb.com/try/download/community" class="demo-link" target="_blank">Install MongoDB</a>
+        </div>
+    </div>
+
+    <script>
+        const demoNameInput = document.getElementById('demoName');
+        const demoLoginBtn = document.getElementById('demoLoginBtn');
+
+        // Enable/disable button based on input
+        demoNameInput.addEventListener('input', function() {
+            const name = this.value.trim();
+            demoLoginBtn.disabled = name.length < 2;
+        });
+
+        // Demo login function
+        async function demoLogin() {
+            const name = demoNameInput.value.trim();
+            
+            if (name.length < 2) {
+                alert('Please enter a valid name (at least 2 characters)');
+                return;
+            }
+
+            demoLoginBtn.disabled = true;
+            demoLoginBtn.textContent = 'Logging in...';
+
+            try {
+                const response = await fetch('/api/demo/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Store demo token and user info
+                    localStorage.setItem('demoToken', data.token);
+                    localStorage.setItem('demoUser', JSON.stringify({
+                        name: data.name,
+                        demo: true
+                    }));
+
+                    // Redirect to meeting
+                    window.location.href = '/meeting';
+                } else {
+                    const errorData = await response.json();
+                    alert(`Login failed: ${errorData.message}`);
+                }
+            } catch (error) {
+                console.error('Demo login error:', error);
+                alert('Login failed. Please check your connection and try again.');
+            } finally {
+                demoLoginBtn.disabled = false;
+                demoLoginBtn.textContent = 'Enter Demo Meeting';
+            }
+        }
+
+        // Check server status on load
+        async function checkServerStatus() {
+            try {
+                const response = await fetch('/api/health');
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Server status:', data);
+                }
+            } catch (error) {
+                console.warn('Could not check server status:', error);
+            }
+        }
+
+        // Check status on page load
+        checkServerStatus();
+
+        // Enter key to submit
+        demoNameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !demoLoginBtn.disabled) {
+                demoLogin();
+            }
+        });
+    </script>
+</body>
+</html>

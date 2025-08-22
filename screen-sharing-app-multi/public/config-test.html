@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirSign Configuration Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .config-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 AirSign Configuration System Test</h1>
+    
+    <div class="test-section">
+        <h2>1. Configuration Loading Test</h2>
+        <p>Check if the configuration files are loaded correctly:</p>
+        <div id="configStatus" class="config-display">Loading...</div>
+        <button onclick="testConfigLoading()">Test Configuration Loading</button>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Configuration Update Test</h2>
+        <p>Test updating the ASL API configuration:</p>
+        <div>
+            <label>New Base URL:</label><br>
+            <input type="text" id="newBaseUrl" placeholder="https://example.com" value="https://test-api.com">
+        </div>
+        <div>
+            <label>New Endpoint:</label><br>
+            <input type="text" id="newEndpoint" placeholder="/api/asl" value="/test-endpoint">
+        </div>
+        <button onclick="testConfigUpdate()">Update Configuration</button>
+        <button onclick="resetConfig()">Reset to Default</button>
+    </div>
+
+    <div class="test-section">
+        <h2>3. ASL Detector Test</h2>
+        <p>Test ASL detector configuration:</p>
+        <div id="aslDetectorStatus" class="config-display">Not initialized</div>
+        <button onclick="testASLDetector()">Initialize ASL Detector</button>
+        <button onclick="updateASLDetectorConfig()">Update ASL Detector Config</button>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Local Storage Test</h2>
+        <p>Test configuration persistence:</p>
+        <div id="localStorageStatus" class="config-display">Checking...</div>
+        <button onclick="testLocalStorage()">Test Local Storage</button>
+        <button onclick="clearLocalStorage()">Clear Local Storage</button>
+    </div>
+
+    <div class="test-section">
+        <h2>5. Full Configuration Display</h2>
+        <p>Current configuration state:</p>
+        <div id="fullConfig" class="config-display">Click "Show Full Config" to display</div>
+        <button onclick="showFullConfig()">Show Full Config</button>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/aslDetector.js"></script>
+    <script>
+        let aslDetector = null;
+
+        // Test 1: Configuration Loading
+        function testConfigLoading() {
+            const statusDiv = document.getElementById('configStatus');
+            try {
+                if (typeof CONFIG !== 'undefined') {
+                    statusDiv.innerHTML = `<span class="success">✅ Configuration loaded successfully!</span>\n\nASL API URL: ${getASLApiUrl()}\n\nConfig object: ${JSON.stringify(CONFIG, null, 2)}`;
+                } else {
+                    statusDiv.innerHTML = '<span class="error">❌ Configuration not loaded</span>';
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+            }
+        }
+
+        // Test 2: Configuration Update
+        function testConfigUpdate() {
+            const newBaseUrl = document.getElementById('newBaseUrl').value;
+            const newEndpoint = document.getElementById('newEndpoint').value;
+            
+            try {
+                updateConfig('ASL_API.BASE_URL', newBaseUrl);
+                updateConfig('ASL_API.ENDPOINT', newEndpoint);
+                
+                const statusDiv = document.getElementById('configStatus');
+                statusDiv.innerHTML = `<span class="success">✅ Configuration updated!</span>\n\nNew ASL API URL: ${getASLApiUrl()}`;
+                
+                // Save to localStorage
+                localStorage.setItem('aslConfig', JSON.stringify({
+                    BASE_URL: newBaseUrl,
+                    ENDPOINT: newEndpoint,
+                    TIMEOUT: CONFIG.ASL_API.TIMEOUT,
+                    RETRY_ATTEMPTS: CONFIG.ASL_API.RETRY_ATTEMPTS
+                }));
+                
+            } catch (error) {
+                console.error('Error updating config:', error);
+            }
+        }
+
+        function resetConfig() {
+            updateConfig('ASL_API.BASE_URL', 'https://airsign-api.onrender.com');
+            updateConfig('ASL_API.ENDPOINT', '/detect-asl');
+            updateConfig('ASL_API.TIMEOUT', 10000);
+            updateConfig('ASL_API.RETRY_ATTEMPTS', 3);
+            
+            localStorage.removeItem('aslConfig');
+            
+            const statusDiv = document.getElementById('configStatus');
+            statusDiv.innerHTML = `<span class="success">✅ Configuration reset to default!</span>\n\nASL API URL: ${getASLApiUrl()}`;
+        }
+
+        // Test 3: ASL Detector
+        function testASLDetector() {
+            try {
+                aslDetector = new ASLDetector();
+                const statusDiv = document.getElementById('aslDetectorStatus');
+                statusDiv.innerHTML = `<span class="success">✅ ASL Detector initialized!</span>\n\nStatus: ${JSON.stringify(aslDetector.getStatus(), null, 2)}`;
+            } catch (error) {
+                const statusDiv = document.getElementById('aslDetectorStatus');
+                statusDiv.innerHTML = `<span class="error">❌ Error initializing ASL Detector: ${error.message}</span>`;
+            }
+        }
+
+        function updateASLDetectorConfig() {
+            if (!aslDetector) {
+                alert('Please initialize ASL Detector first');
+                return;
+            }
+            
+            try {
+                aslDetector.updateApiConfig({
+                    BASE_URL: 'https://updated-api.com',
+                    ENDPOINT: '/updated-endpoint',
+                    TIMEOUT: 15000,
+                    RETRY_ATTEMPTS: 5
+                });
+                
+                const statusDiv = document.getElementById('aslDetectorStatus');
+                statusDiv.innerHTML = `<span class="success">✅ ASL Detector config updated!</span>\n\nStatus: ${JSON.stringify(aslDetector.getStatus(), null, 2)}`;
+            } catch (error) {
+                const statusDiv = document.getElementById('aslDetectorStatus');
+                statusDiv.innerHTML = `<span class="error">❌ Error updating ASL Detector: ${error.message}</span>`;
+            }
+        }
+
+        // Test 4: Local Storage
+        function testLocalStorage() {
+            const savedConfig = localStorage.getItem('aslConfig');
+            const statusDiv = document.getElementById('localStorageStatus');
+            
+            if (savedConfig) {
+                try {
+                    const config = JSON.parse(savedConfig);
+                    statusDiv.innerHTML = `<span class="success">✅ Local storage config found!</span>\n\n${JSON.stringify(config, null, 2)}`;
+                } catch (error) {
+                    statusDiv.innerHTML = `<span class="error">❌ Error parsing saved config: ${error.message}</span>`;
+                }
+            } else {
+                statusDiv.innerHTML = '<span class="error">❌ No saved configuration found in local storage</span>';
+            }
+        }
+
+        function clearLocalStorage() {
+            localStorage.removeItem('aslConfig');
+            const statusDiv = document.getElementById('localStorageStatus');
+            statusDiv.innerHTML = '<span class="success">✅ Local storage cleared!</span>';
+        }
+
+        // Test 5: Full Configuration
+        function showFullConfig() {
+            const fullConfigDiv = document.getElementById('fullConfig');
+            try {
+                const fullConfig = {
+                    CONFIG: CONFIG,
+                    getASLApiUrl: getASLApiUrl(),
+                    aslDetector: aslDetector ? aslDetector.getStatus() : 'Not initialized',
+                    localStorage: localStorage.getItem('aslConfig') ? JSON.parse(localStorage.getItem('aslConfig')) : 'No saved config'
+                };
+                
+                fullConfigDiv.innerHTML = JSON.stringify(fullConfig, null, 2);
+            } catch (error) {
+                fullConfigDiv.innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', function() {
+            testConfigLoading();
+            testLocalStorage();
+        });
+    </script>
+</body>
+</html>

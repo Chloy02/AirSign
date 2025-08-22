@@ -3,154 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Signup</title>
+    <title>AirSign • Login / Sign Up</title>
     <style>
-        /* General Styles */
+        :root {
+            --primary: #3ecbff;
+            --primary-dark: #2b9eff;
+            --bg-start: #0a1a2f;
+            --bg-end: #0b2347;
+            --glass: rgba(255,255,255,0.08);
+            --glass-border: rgba(255,255,255,0.18);
+            --text: #e9f0ff;
+            --muted: #b0cfff;
+            --danger: #ff6b6b;
+            --success: #22c55e;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) }
+            100% { transform: translateY(-10px) }
+        }
+
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: radial-gradient(ellipse at 60% 40%, var(--bg-start) 60%, var(--bg-end) 100%);
+            font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            color: var(--text);
         }
 
-        .container {
-            max-width: 400px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.76);
+        .auth-shell {
+            width: min(960px, 92vw);
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 28px;
+            align-items: stretch;
         }
 
-        h2 {
-            text-align: center;
-            color: #333;
+        .panel {
+            background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+            overflow: hidden;
+        }
+
+        .showcase {
+            padding: 36px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: radial-gradient(1200px 600px at -10% 0%, rgba(62,203,255,0.08), transparent 40%),
+                        radial-gradient(1200px 600px at 120% 100%, rgba(62,203,255,0.06), transparent 40%);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 0 24px rgba(62,203,255,0.35);
+        }
+
+        .title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .headline {
+            margin: 24px 0 8px;
+            font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+            font-weight: 700;
+            color: var(--primary);
+            text-shadow: 0 0 18px rgba(62,203,255,0.25);
+        }
+
+        .subhead {
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 0.98rem;
+        }
+
+        .side-list {
+            margin-top: 18px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .side-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 12px rgba(62,203,255,0.6);
+        }
+
+        .auth-panel {
+            padding: 28px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 6px;
+        }
+
+        .tab {
+            padding: 12px 14px;
+            background: transparent;
+            border: 0;
+            color: var(--muted);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 140ms ease;
+        }
+
+        .tab.active {
+            color: #0a1a2f;
+            background: var(--primary);
+            box-shadow: 0 6px 16px rgba(62,203,255,0.35);
         }
 
         form {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        .field {
+            display: grid;
+            gap: 6px;
         }
 
         label {
-            margin: 10px 0 5px;
-            font-size: 14px;
-            color: #555;
+            font-size: 0.9rem;
+            color: var(--muted);
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
+        .input {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 12px 14px;
         }
 
-        button {
-            background-color: #1a73e8;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
+        .input input {
+            background: transparent;
+            border: 0;
+            color: var(--text);
+            outline: none;
+            font-size: 0.98rem;
+        }
+
+        .input button {
+            background: transparent;
+            border: 0;
+            color: var(--muted);
             cursor: pointer;
-            font-size: 16px;
+            font-weight: 600;
         }
 
-        button:hover {
-            background-color: #1666c1;
+        .hint {
+            font-size: 0.82rem;
+            color: var(--muted);
+            opacity: 0.85;
         }
 
-        .link {
+        .actions {
+            display: grid;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .btn {
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: #0a1a2f;
+            box-shadow: 0 12px 30px rgba(62,203,255,0.28);
+        }
+
+        .btn-ghost {
+            background: rgba(255,255,255,0.06);
+            color: var(--text);
+        }
+
+        .meta {
             text-align: center;
-            margin-top: 10px;
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-top: 4px;
         }
 
-        .link a {
-            color: #1a73e8;
-            text-decoration: none;
+        .strength {
+            display: flex;
+            gap: 6px;
+            margin-top: -4px;
         }
 
-        .link a:hover {
-            text-decoration: underline;
+        .bar { flex: 1; height: 6px; border-radius: 6px; background: rgba(255,255,255,0.12) }
+        .bar.on { background: linear-gradient(90deg, #ff9f43, #22c55e) }
+
+        @media (max-width: 860px) {
+            .auth-shell { grid-template-columns: 1fr; }
+            .showcase { display: none }
         }
     </style>
 </head>
 <body>
 
-    <!-- Login Page -->
-    <div class="container" id="login-container">
-        <h2>Login</h2>
-        <form>
-            <label for="username">Username or Email</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username or email" required>
+    <div class="auth-shell">
+        <section class="panel showcase">
+            <div>
+                <div class="brand">
+                    <div class="logo"></div>
+                    <div class="title">AirSign</div>
+                </div>
+                <div class="headline">Sign in to brilliant meetings</div>
+                <p class="subhead">Join secure, real‑time meetings with ASL assistance baked in. Share your screen, chat live, and collaborate without friction.</p>
+                <div class="side-list">
+                    <div class="side-item"><span class="dot"></span> Crystal‑clear video and audio</div>
+                    <div class="side-item"><span class="dot"></span> Live ASL gesture detection</div>
+                    <div class="side-item"><span class="dot"></span> One‑click screen sharing</div>
+                </div>
+            </div>
+        </section>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <section class="panel auth-panel">
+            <div class="tabs">
+                <button class="tab active" data-tab="login">Login</button>
+                <button class="tab" data-tab="signup">Sign up</button>
+            </div>
 
-            <button type="submit">Login</button>
-        </form>
-        <div class="link">
-            <p>Don't have an account? <a href="#signup-container">Sign up here</a></p>
-        </div>
-    </div>
+            <form id="form-login" autocomplete="on">
+                <div class="field">
+                    <label for="login-email">Email</label>
+                    <div class="input">
+                        <input id="login-email" type="email" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="login-password">Password</label>
+                    <div class="input">
+                        <input id="login-password" type="password" placeholder="••••••••" required>
+                        <button type="button" data-toggle="login-password">Show</button>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-primary" type="submit">Login</button>
+                    <button class="btn btn-ghost" type="button" onclick="location.href='demo.html'">Try Demo Mode</button>
+                </div>
+            </form>
 
-    <!-- Signup Page -->
-    <div class="container" id="signup-container" style="display: none;">
-        <h2>Sign Up</h2>
-        <form>
-            <label for="new-username">Username</label>
-            <input type="text" id="new-username" name="new-username" placeholder="Choose a username" required>
-
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-
-            <label for="new-password">Password</label>
-            <input type="password" id="new-password" name="new-password" placeholder="Create a password" required>
-
-            <label for="confirm-password">Confirm Password</label>
-            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
-
-            <button type="submit">Sign Up</button>
-        </form>
-        <div class="link">
-            <p>Already have an account? <a href="#login-container">Login here</a></p>
-        </div>
+            <form id="form-signup" style="display:none" autocomplete="on">
+                <div class="field">
+                    <label for="su-name">Full name</label>
+                    <div class="input"><input id="su-name" type="text" placeholder="Jane Doe" minlength="2" required></div>
+                </div>
+                <div class="field">
+                    <label for="su-email">Email</label>
+                    <div class="input"><input id="su-email" type="email" placeholder="you@example.com" required></div>
+                </div>
+                <div class="field">
+                    <label for="su-password">Password</label>
+                    <div class="input">
+                        <input id="su-password" type="password" placeholder="At least 8 characters" minlength="8" required>
+                        <button type="button" data-toggle="su-password">Show</button>
+                    </div>
+                    <div class="strength" aria-hidden="true">
+                        <div class="bar" id="s1"></div>
+                        <div class="bar" id="s2"></div>
+                        <div class="bar" id="s3"></div>
+                        <div class="bar" id="s4"></div>
+                    </div>
+                    <div class="hint">Use 8+ characters with a mix of letters, numbers, and symbols.</div>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-primary" type="submit">Create account</button>
+                    <div class="meta">By continuing you agree to our Terms and Privacy Policy.</div>
+                </div>
+            </form>
+        </section>
     </div>
 
 </body>
 
 <script>
-    // Get references to both containers
-    const loginContainer = document.getElementById('login-container');
-    const signupContainer = document.getElementById('signup-container');
+    // Tabs
+    const tabs = document.querySelectorAll('.tab');
+    const formLogin = document.getElementById('form-login');
+    const formSignup = document.getElementById('form-signup');
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const isLogin = tab.dataset.tab === 'login';
+        formLogin.style.display = isLogin ? '' : 'none';
+        formSignup.style.display = isLogin ? 'none' : '';
+    }));
 
-    // Get all anchor links that toggle between login and signup
-    const loginLink = document.querySelector('.link a[href="#login-container"]');
-    const signupLink = document.querySelector('.link a[href="#signup-container"]');
-
-    // Function to show the login container and hide the signup container
-    function showLogin() {
-        loginContainer.style.display = 'block';
-        signupContainer.style.display = 'none';
-    }
-
-    // Function to show the signup container and hide the login container
-    function showSignup() {
-        signupContainer.style.display = 'block';
-        loginContainer.style.display = 'none';
-    }
-
-    // Add click event listeners to the links
-    loginLink.addEventListener('click', (event) => {
-        event.preventDefault(); // Prevent the default anchor link behavior
-        showLogin();
+    // Password visibility toggles
+    document.querySelectorAll('[data-toggle]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-toggle');
+            const input = document.getElementById(id);
+            const isPw = input.getAttribute('type') === 'password';
+            input.setAttribute('type', isPw ? 'text' : 'password');
+            btn.textContent = isPw ? 'Hide' : 'Show';
+        });
     });
 
-    signupLink.addEventListener('click', (event) => {
-        event.preventDefault(); // Prevent the default anchor link behavior
-        showSignup();
+    // Password strength meter (very lightweight heuristic)
+    const suPw = document.getElementById('su-password');
+    const bars = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3'), document.getElementById('s4')];
+    function scorePassword(pw){
+        let s = 0;
+        if (!pw) return 0;
+        if (pw.length >= 8) s++;
+        if (/[A-Z]/.test(pw)) s++;
+        if (/\d/.test(pw)) s++;
+        if (/[^A-Za-z0-9]/.test(pw)) s++;
+        return s;
+    }
+    suPw?.addEventListener('input', () => {
+        const sc = scorePassword(suPw.value);
+        bars.forEach((b,i)=> b.classList.toggle('on', i < sc));
+    });
+
+    // Submit handlers
+    document.getElementById('form-login').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value;
+        const btn = e.submitter; const label = btn.textContent; btn.textContent = 'Logging in…'; btn.disabled = true;
+        try {
+            const res = await fetch('/api/auth/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, password })});
+            const data = await res.json();
+            if (res.ok) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('username', data.name);
+                location.href = 'premeeting.html';
+            } else {
+                alert(data.message || 'Login failed');
+            }
+        } catch(err){
+            alert('Network error. Please try again.');
+        } finally { btn.textContent = label; btn.disabled = false; }
+    });
+
+    document.getElementById('form-signup').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('su-name').value.trim();
+        const email = document.getElementById('su-email').value.trim();
+        const password = document.getElementById('su-password').value;
+        const btn = e.submitter; const label = btn.textContent; btn.textContent = 'Creating…'; btn.disabled = true;
+        try {
+            const res = await fetch('/api/auth/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, email, password })});
+            const data = await res.json();
+            if (res.ok) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('username', data.name);
+                location.href = 'premeeting.html';
+            } else {
+                alert(data.message || 'Signup failed');
+            }
+        } catch(err){
+            alert('Network error. Please try again.');
+        } finally { btn.textContent = label; btn.disabled = false; }
     });
 </script>
 

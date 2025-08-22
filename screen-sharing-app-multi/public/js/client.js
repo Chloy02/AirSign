@@ -12,7 +12,52 @@ let pendingCandidates = {}; // Store pending ICE candidates
 // Chat functionality
 let chatVisible = false;
 let unreadMessages = 0;
+let chatListenerRegistered = false;
 let participants = new Map(); // Store participants with their info
+
+// ASL Detection
+let aslDetector = null;
+let aslDetectionActive = false;
+
+// Layout management
+let activeParticipants = 0;
+
+// Function to update video grid layout based on participant count
+function updateVideoLayout() {
+    const videoGrid = document.querySelector('.video-grid');
+    if (!videoGrid) {
+        console.warn('⚠️ Layout: Video grid not found');
+        return;
+    }
+
+    // Count active video elements
+    const activeVideos = videoGrid.querySelectorAll('.video-wrapper');
+    const participantCount = activeVideos.length;
+
+    console.log('🎬 Layout: Updating layout for', participantCount, 'participants');
+    console.log('🎬 Layout: Current video grid classes:', videoGrid.className);
+
+    // Remove all layout classes
+    videoGrid.classList.remove('single-participant', 'two-participants', 'multiple-participants');
+
+    // Apply appropriate layout class
+    if (participantCount === 1) {
+        videoGrid.classList.add('single-participant');
+        console.log('📺 Layout: Applied single-participant layout (full screen)');
+    } else if (participantCount === 2) {
+        videoGrid.classList.add('two-participants');
+        console.log('📺 Layout: Applied two-participants layout (split screen)');
+    } else if (participantCount >= 3) {
+        videoGrid.classList.add('multiple-participants');
+        console.log('📺 Layout: Applied multiple-participants layout (grid)');
+    }
+
+    console.log('🎬 Layout: New video grid classes:', videoGrid.className);
+    activeParticipants = participantCount;
+    
+    // Force a reflow to ensure styles are applied
+    videoGrid.offsetHeight;
+}
 
 const configuration = {
     iceServers: [
@@ -72,6 +117,12 @@ async function init() {
             localVideoElement.autoplay = true;
             localVideoElement.playsInline = true;
             localVideoElement.muted = true; // Mute local video to prevent audio feedback
+            
+            // Update layout when local video is ready
+            localVideoElement.addEventListener('loadedmetadata', () => {
+                console.log('📹 Local video loaded, updating layout');
+                updateVideoLayout();
+            });
         }
         
         // Join the room with user name and token
@@ -125,6 +176,30 @@ async function init() {
             handleUserDisconnected(userId);
             removeParticipant(userId);
             updateVideoLayout();
+        });
+
+        // Handle incoming chat messages (remove any existing listeners first)
+        socket.off('chatMessage');
+        socket.on('chatMessage', (data) => {
+            console.log('📨 socket.on chatMessage received:', data);
+            // Check if this message is from the current user
+            const isSent = data.sender === username;
+            addMessage(data.message, data.sender, isSent);
+        });
+
+        // Handle ASL detection broadcasts from other users
+        socket.off('asl-detection');
+        socket.on('asl-detection', (data) => {
+            console.log('🤟 ASL detection received from:', data.sender, '- word:', data.word);
+            
+            // Don't handle our own ASL detections (already handled locally)
+            if (data.sender !== username) {
+                // Show notification for other users' ASL
+                showASLNotification(`${data.sender} signed: ${data.word.toUpperCase()}`, 'info');
+                
+                // Add to chat with ASL styling
+                addMessage(data.word.toUpperCase(), data.sender, false, true);
+            }
         });
 
         // UI event handlers
@@ -191,7 +266,7 @@ function setupChatUI() {
                     message: message,
                     sender: username
                 });
-                addMessage(message, username, true);
+                // Don't add message immediately - let server broadcast handle it
                 input.value = '';
                 sendBtn.disabled = true;
             }
@@ -212,11 +287,6 @@ function setupChatUI() {
             }
         });
     }
-
-    // Handle incoming chat messages
-    socket.on('chatMessage', (data) => {
-        addMessage(data.message, data.sender);
-    });
 }
 
 // Helper function to add a remote video element - FIXED
@@ -631,6 +701,9 @@ function handleUserDisconnected(userId) {
         
         // Remove the wrapper element
         videoWrapper.remove();
+        
+        // Update layout after removing a video
+        updateVideoLayout();
     }
     
     // Clear any pending ICE candidates
@@ -758,7 +831,7 @@ function endCall() {
     }
     
     // Redirect to home page
-    window.location.href = '/';
+    window.location.href = 'premeeting.html';
 }
 
 // Handle page unload
@@ -954,7 +1027,7 @@ function removeParticipant(socketId) {
     updateParticipantsList();
 }
 
-function addMessage(message, sender, isSent = false) {
+function addMessage(message, sender, isSent = false, isASL = false) {
     const chatMessages = document.getElementById('chatMessages');
     
     // Remove empty state if it exists
@@ -964,14 +1037,31 @@ function addMessage(message, sender, isSent = false) {
     }
     
     const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${isSent ? 'sent' : 'received'}`;
+    let messageClass = 'message';
+    
+    if (isASL) {
+        messageClass += ' asl';
+    } else {
+        messageClass += isSent ? ' sent' : ' received';
+    }
+    
+    messageDiv.className = messageClass;
     
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    messageDiv.innerHTML = `
-        <div class="sender">${sender}</div>
-        <div class="content">${escapeHtml(message)}</div>
-        <div class="time">${time}</div>
-    `;
+    
+    if (isASL) {
+        messageDiv.innerHTML = `
+            <div class="sender">ASL Detection</div>
+            <div class="content">${escapeHtml(message)}</div>
+            <div class="time">${time}</div>
+        `;
+    } else {
+        messageDiv.innerHTML = `
+            <div class="sender">${sender}</div>
+            <div class="content">${escapeHtml(message)}</div>
+            <div class="time">${time}</div>
+        `;
+    }
     
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -980,7 +1070,9 @@ function addMessage(message, sender, isSent = false) {
     if (!chatVisible && !isSent) {
         unreadMessages++;
         updateChatNotification();
-        showMessageNotification(sender, message);
+        if (!isASL) { // Don't show chat notifications for ASL messages (they have their own notifications)
+            showMessageNotification(sender, message);
+        }
     }
 }
 
@@ -1082,4 +1174,288 @@ document.addEventListener('DOMContentLoaded', () => {
             joinMeetingBtn.addEventListener('click', joinMeeting);
         }
     }
+    
+    // Initialize ASL detection if on meeting page
+    if (window.location.search.includes('room')) {
+        // Wait for video to be ready before initializing ASL detection
+        waitForVideoAndInitASL();
+        
+        // Initialize video layout
+        setTimeout(() => {
+            updateVideoLayout();
+        }, 1000);
+    }
 });
+
+// Handle window resize to update video layout
+window.addEventListener('resize', () => {
+    updateVideoLayout();
+});
+
+// Debug function to manually test layout (call from browser console)
+window.testLayout = function(participantCount) {
+    console.log('🧪 Testing layout with', participantCount, 'participants');
+    const videoGrid = document.querySelector('.video-grid');
+    
+    // Remove all layout classes
+    videoGrid.classList.remove('single-participant', 'two-participants', 'multiple-participants');
+    
+    if (participantCount === 1) {
+        videoGrid.classList.add('single-participant');
+    } else if (participantCount === 2) {
+        videoGrid.classList.add('two-participants');
+    } else {
+        videoGrid.classList.add('multiple-participants');
+    }
+    
+    console.log('🧪 Applied classes:', videoGrid.className);
+};
+
+// Function to wait for video element and ensure it's ready
+function waitForVideoAndInitASL() {
+    console.log('Waiting for video and dependencies...');
+    
+    const checkDependencies = () => {
+        console.log('Checking dependencies:', {
+            ASLDetector: typeof ASLDetector,
+            CONFIG: typeof CONFIG,
+            localVideo: !!document.getElementById('localVideo')
+        });
+        
+        const localVideo = document.getElementById('localVideo');
+        
+        // Check if all dependencies are loaded
+        if (typeof ASLDetector === 'undefined') {
+            console.warn('ASLDetector not yet loaded, retrying...');
+            setTimeout(checkDependencies, 500);
+            return;
+        }
+        
+        if (!localVideo) {
+            console.warn('Local video element not found, retrying...');
+            setTimeout(checkDependencies, 500);
+            return;
+        }
+        
+        if (localVideo.readyState >= 2) {
+            // Video is ready, initialize ASL detection
+            console.log('All dependencies ready, initializing ASL detection...');
+            setTimeout(() => {
+                initASLDetection();
+            }, 1000);
+        } else {
+            // Video not ready yet, check again
+            console.log('Video not ready yet, readyState:', localVideo.readyState);
+            setTimeout(checkDependencies, 500);
+        }
+    };
+    
+    checkDependencies();
+}
+
+// ASL Detection Functions
+function initASLDetection() {
+    try {
+        // Check if ASLDetector class is available
+        if (typeof ASLDetector === 'undefined') {
+            console.error('ASLDetector class not found. Make sure aslDetector.js is loaded.');
+            showASLNotification('ASL detection not available. Please refresh the page.', 'error');
+            return;
+        }
+        
+        // Check if CONFIG is available
+        if (typeof CONFIG === 'undefined') {
+            console.warn('CONFIG not found, using default configuration');
+        }
+        
+        // Initialize ASL detector
+        try {
+            aslDetector = new ASLDetector();
+            // Expose on window for config modal updates
+            window.aslDetector = aslDetector;
+            console.log('ASL detector created successfully');
+            
+            // Wake up the API in the background
+            showASLNotification('Initializing ASL detection...', 'info');
+            aslDetector.wakeUpAPI().then(success => {
+                if (success) {
+                    showASLNotification('ASL detection ready', 'success');
+                } else {
+                    showASLNotification('ASL API may be slow to respond on first use', 'warning');
+                }
+            });
+            
+        } catch (e) {
+            console.error('ASLDetector constructor failed:', e);
+            showASLNotification(`Failed to initialize ASL detection: ${e.message || e}`, 'error');
+            return;
+        }
+        
+        // Initialize with saved configuration if available
+        if (typeof initializeASLDetector === 'function') {
+            try {
+                initializeASLDetector();
+            } catch (e) {
+                console.warn('initializeASLDetector function failed:', e);
+            }
+        }
+        
+        // Set up result callback
+        aslDetector.onResult((result) => {
+            handleASLResult(result);
+        });
+        
+        // Set up error callback
+        aslDetector.onError((error) => {
+            console.error('ASL detection error:', error);
+            showASLNotification('ASL detection error: ' + (error.message || error), 'error');
+        });
+        
+        console.log('ASL detection initialized successfully');
+        showASLNotification('ASL detection ready', 'success');
+        
+    } catch (error) {
+        console.error('Failed to initialize ASL detection:', error);
+        showASLNotification(`Failed to initialize ASL detection: ${error.message || error}`, 'error');
+    }
+}
+
+function toggleASLDetection() {
+    console.log('toggleASLDetection called, aslDetector:', aslDetector);
+    
+    if (!aslDetector) {
+        console.error('ASL detector not initialized');
+        showASLNotification('ASL detector not initialized. Please refresh the page and try again.', 'error');
+        
+        // Try to reinitialize
+        setTimeout(() => {
+            console.log('Attempting to reinitialize ASL detection...');
+            initASLDetection();
+        }, 1000);
+        return;
+    }
+    
+    const localVideo = document.getElementById('localVideo');
+    if (!localVideo) {
+        console.error('Local video element not found');
+        showASLNotification('Local video not found. Please ensure your camera is enabled.', 'error');
+        return;
+    }
+    
+    console.log('Local video found, readyState:', localVideo.readyState, 'dimensions:', localVideo.videoWidth, 'x', localVideo.videoHeight);
+    
+    // Check if video is ready
+    if (!localVideo.videoWidth || !localVideo.videoHeight) {
+        showASLNotification('Video not ready yet. Please wait a moment and try again.', 'warning');
+        return;
+    }
+    
+    if (aslDetectionActive) {
+        // Stop detection
+        aslDetector.stopDetection();
+        aslDetectionActive = false;
+        updateASLButton(false);
+        showASLNotification('ASL detection stopped', 'info');
+    } else {
+        // Start detection
+        // Use configured interval if available
+        const interval = (typeof CONFIG !== 'undefined' && CONFIG.VIDEO?.CAPTURE_INTERVAL) ? CONFIG.VIDEO.CAPTURE_INTERVAL : 3000;
+        console.log('Starting ASL detection with interval:', interval);
+        aslDetector.startDetection(localVideo, interval);
+        aslDetectionActive = true;
+        updateASLButton(true);
+        showASLNotification(`ASL detection started (every ${interval/1000}s)`, 'info');
+    }
+}
+
+function handleASLResult(result) {
+    try {
+        console.log('🤟 ASL Result received:', result);
+        
+        if (!result || typeof result !== 'object') {
+            console.warn('ASL result empty or invalid');
+            return;
+        }
+
+        // Handle your API response format: {"detected_word": "word"}
+        const detectedWord = result.detected_word;
+        
+        if (detectedWord && detectedWord.trim() !== '') {
+            console.log('✅ ASL word detected:', detectedWord);
+            
+            // Show popup notification
+            showASLNotification(`ASL Detected: ${detectedWord.toUpperCase()}`, 'success');
+            
+            // Add to chat automatically with ASL styling
+            addMessage(detectedWord.toUpperCase(), `${username}`, false, true);
+            
+            // Broadcast to other users via socket
+            if (socket && roomId) {
+                socket.emit('asl-detection', {
+                    roomId: roomId,
+                    word: detectedWord,
+                    sender: username,
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            return;
+        }
+
+        // If no word detected (empty string)
+        console.log('ℹ️ No ASL sign detected in this frame');
+        // Don't show notification for empty results to avoid spam
+        
+    } catch (e) {
+        console.error('❌ Error handling ASL result:', e);
+        showASLNotification('Error processing ASL detection result', 'error');
+    }
+}
+
+function updateASLButton(isActive) {
+    const aslButton = document.getElementById('aslToggleBtn');
+    if (aslButton) {
+        if (isActive) {
+            aslButton.textContent = '🤟 Stop ASL';
+            aslButton.className = 'control-button btn-danger';
+            aslButton.title = 'Stop ASL Detection';
+        } else {
+            aslButton.textContent = '🤟 Start ASL';
+            aslButton.className = 'control-button btn-success';
+            aslButton.title = 'Start ASL Detection';
+        }
+    }
+}
+
+function showASLNotification(message, type = 'info') {
+    // Remove any existing notifications to avoid clutter
+    const existingNotifications = document.querySelectorAll('.asl-notification');
+    existingNotifications.forEach(notification => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => notification.remove(), 300);
+    });
+
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `asl-notification ${type}`;
+    
+    notification.innerHTML = `
+        <span>${message}</span>
+        <button type="button" onclick="this.parentElement.remove()" 
+                style="background: none; border: none; color: rgba(255,255,255,0.8); 
+                       font-size: 18px; cursor: pointer; padding: 0; margin-left: auto;">
+            ×
+        </button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto-remove after timeout (longer for success messages)
+    const timeout = type === 'success' ? 5000 : 3000;
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, timeout);
+}
