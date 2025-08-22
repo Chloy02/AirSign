@@ -194,11 +194,11 @@ async function init() {
             
             // Don't handle our own ASL detections (already handled locally)
             if (data.sender !== username) {
-                // Show notification for other users' ASL
-                showASLNotification(`${data.sender} signed: ${data.word.toUpperCase()}`, 'info');
+                // Show snackbar for other users' ASL
+                showASLSnackbar(data.word, false, data.sender);
                 
-                // Add to chat with ASL styling
-                addMessage(data.word.toUpperCase(), data.sender, false, true);
+                // Remove chat message since snackbar works
+                // addMessage(data.word.toUpperCase(), data.sender, false, true);
             }
         });
 
@@ -1259,7 +1259,7 @@ function initASLDetection() {
         // Check if ASLDetector class is available
         if (typeof ASLDetector === 'undefined') {
             console.error('ASLDetector class not found. Make sure aslDetector.js is loaded.');
-            showASLNotification('ASL detection not available. Please refresh the page.', 'error');
+            console.log('🤟 ASL: ASL detection not available. Please refresh the page.');
             return;
         }
         
@@ -1276,18 +1276,21 @@ function initASLDetection() {
             console.log('ASL detector created successfully');
             
             // Wake up the API in the background
-            showASLNotification('Initializing ASL detection...', 'info');
+            console.log('🤟 ASL: Initializing ASL detection...');
             aslDetector.wakeUpAPI().then(success => {
                 if (success) {
-                    showASLNotification('ASL detection ready', 'success');
+                    console.log('🤟 ASL: ASL detection ready');
                 } else {
-                    showASLNotification('ASL API may be slow to respond on first use', 'warning');
+                    console.log('🤟 ASL: API may be slow to respond on first use');
                 }
             });
             
+            // Initialize snackbar system
+            initializeSnackbarSystem();
+            
         } catch (e) {
             console.error('ASLDetector constructor failed:', e);
-            showASLNotification(`Failed to initialize ASL detection: ${e.message || e}`, 'error');
+            console.log(`🤟 ASL: Failed to initialize ASL detection: ${e.message || e}`);
             return;
         }
         
@@ -1308,15 +1311,15 @@ function initASLDetection() {
         // Set up error callback
         aslDetector.onError((error) => {
             console.error('ASL detection error:', error);
-            showASLNotification('ASL detection error: ' + (error.message || error), 'error');
+            console.log('🤟 ASL: ASL detection error: ' + (error.message || error));
         });
         
         console.log('ASL detection initialized successfully');
-        showASLNotification('ASL detection ready', 'success');
+        console.log('🤟 ASL: ASL detection ready');
         
     } catch (error) {
         console.error('Failed to initialize ASL detection:', error);
-        showASLNotification(`Failed to initialize ASL detection: ${error.message || error}`, 'error');
+        console.log(`🤟 ASL: Failed to initialize ASL detection: ${error.message || error}`);
     }
 }
 
@@ -1325,7 +1328,7 @@ function toggleASLDetection() {
     
     if (!aslDetector) {
         console.error('ASL detector not initialized');
-        showASLNotification('ASL detector not initialized. Please refresh the page and try again.', 'error');
+        console.log('🤟 ASL: ASL detector not initialized. Please refresh the page and try again.');
         
         // Try to reinitialize
         setTimeout(() => {
@@ -1338,7 +1341,7 @@ function toggleASLDetection() {
     const localVideo = document.getElementById('localVideo');
     if (!localVideo) {
         console.error('Local video element not found');
-        showASLNotification('Local video not found. Please ensure your camera is enabled.', 'error');
+        console.log('🤟 ASL: Local video not found. Please ensure your camera is enabled.');
         return;
     }
     
@@ -1346,7 +1349,7 @@ function toggleASLDetection() {
     
     // Check if video is ready
     if (!localVideo.videoWidth || !localVideo.videoHeight) {
-        showASLNotification('Video not ready yet. Please wait a moment and try again.', 'warning');
+        console.log('🤟 ASL: Video not ready yet. Please wait a moment and try again.');
         return;
     }
     
@@ -1355,7 +1358,7 @@ function toggleASLDetection() {
         aslDetector.stopDetection();
         aslDetectionActive = false;
         updateASLButton(false);
-        showASLNotification('ASL detection stopped', 'info');
+        console.log('🤟 ASL: ASL detection stopped');
     } else {
         // Start detection
         // Use configured interval if available
@@ -1364,7 +1367,7 @@ function toggleASLDetection() {
         aslDetector.startDetection(localVideo, interval);
         aslDetectionActive = true;
         updateASLButton(true);
-        showASLNotification(`ASL detection started (every ${interval/1000}s)`, 'info');
+        console.log(`🤟 ASL: ASL detection started (every ${interval/1000}s)`);
     }
 }
 
@@ -1383,11 +1386,11 @@ function handleASLResult(result) {
         if (detectedWord && detectedWord.trim() !== '') {
             console.log('✅ ASL word detected:', detectedWord);
             
-            // Show popup notification
-            showASLNotification(`ASL Detected: ${detectedWord.toUpperCase()}`, 'success');
+            // Show snackbar notification (bottom of video)
+            showASLSnackbar(detectedWord, true);
             
-            // Add to chat automatically with ASL styling
-            addMessage(detectedWord.toUpperCase(), `${username}`, false, true);
+            // Remove chat message since snackbar works
+            // addMessage(detectedWord.toUpperCase(), `${username}`, false, true);
             
             // Broadcast to other users via socket
             if (socket && roomId) {
@@ -1408,7 +1411,7 @@ function handleASLResult(result) {
         
     } catch (e) {
         console.error('❌ Error handling ASL result:', e);
-        showASLNotification('Error processing ASL detection result', 'error');
+        console.log('🤟 ASL: Error processing detection result');
     }
 }
 
@@ -1427,35 +1430,156 @@ function updateASLButton(isActive) {
     }
 }
 
-function showASLNotification(message, type = 'info') {
-    // Remove any existing notifications to avoid clutter
-    const existingNotifications = document.querySelectorAll('.asl-notification');
-    existingNotifications.forEach(notification => {
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => notification.remove(), 300);
-    });
+// ASL Snackbar System
+let snackbarQueue = [];
+let currentSnackbars = [];
+let snackbarContainer = null;
 
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `asl-notification ${type}`;
+function initializeSnackbarSystem() {
+    snackbarContainer = document.getElementById('asl-snackbar-container');
+    console.log('🍿 Snackbar: Initializing snackbar system, container found:', !!snackbarContainer);
+    if (!snackbarContainer) {
+        console.warn('ASL snackbar container not found');
+    } else {
+        console.log('🍿 Snackbar: Container element:', snackbarContainer);
+    }
+}
+
+function showASLSnackbar(word, isOwn = true, otherUser = null) {
+    console.log('🍿 Snackbar: showASLSnackbar called with:', { word, isOwn, otherUser });
     
-    notification.innerHTML = `
-        <span>${message}</span>
-        <button type="button" onclick="this.parentElement.remove()" 
-                style="background: none; border: none; color: rgba(255,255,255,0.8); 
-                       font-size: 18px; cursor: pointer; padding: 0; margin-left: auto;">
-            ×
-        </button>
+    // Create snackbar with proper styling
+    const snackbar = document.createElement('div');
+    snackbar.id = 'asl-snackbar-' + Date.now();
+    snackbar.textContent = word.toUpperCase();
+    
+    // Style based on own vs other user
+    const backgroundColor = isOwn ? 
+        'linear-gradient(135deg, #6a5acd, #9370db)' : 
+        'linear-gradient(135deg, #ff6b6b, #ee5a24)';
+    
+    snackbar.style.cssText = `
+        position: fixed !important;
+        bottom: 140px !important;
+        left: 50% !important;
+        transform: translateX(-50%) translateY(60px) !important;
+        background: ${backgroundColor} !important;
+        color: white !important;
+        padding: 16px 24px !important;
+        font-size: 24px !important;
+        font-weight: 600 !important;
+        letter-spacing: 1px !important;
+        text-transform: uppercase !important;
+        border-radius: 12px !important;
+        z-index: 9999 !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+        opacity: 0 !important;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+        min-width: 120px !important;
+        text-align: center !important;
+        cursor: pointer !important;
     `;
     
-    document.body.appendChild(notification);
+    // Add click to dismiss
+    snackbar.onclick = () => {
+        console.log('🍿 Snackbar: Clicked, removing...');
+        snackbar.style.transform = 'translateX(-50%) translateY(60px)';
+        snackbar.style.opacity = '0';
+        setTimeout(() => snackbar.remove(), 300);
+    };
     
-    // Auto-remove after timeout (longer for success messages)
-    const timeout = type === 'success' ? 5000 : 3000;
+    // Add to body
+    document.body.appendChild(snackbar);
+    console.log('🍿 Snackbar: Added snackbar for word:', word);
+    
+    // Animate in
     setTimeout(() => {
-        if (notification.parentElement) {
-            notification.style.transform = 'translateX(100%)';
-            setTimeout(() => notification.remove(), 300);
+        snackbar.style.transform = 'translateX(-50%) translateY(0)';
+        snackbar.style.opacity = '1';
+    }, 10);
+    
+    // Auto dismiss after 2 seconds
+    setTimeout(() => {
+        if (snackbar.parentElement) {
+            console.log('🍿 Snackbar: Auto-removing snackbar');
+            snackbar.style.transform = 'translateX(-50%) translateY(60px)';
+            snackbar.style.opacity = '0';
+            setTimeout(() => snackbar.remove(), 300);
         }
-    }, timeout);
+    }, 2000);
+}
+
+function showDualSnackbar(word1, word2, user1, user2) {
+    // Clear existing snackbars
+    currentSnackbars.forEach(s => dismissSnackbar(s.element, true));
+    
+    const dualContainer = document.createElement('div');
+    dualContainer.className = 'asl-snackbar-dual';
+    
+    const snackbar1 = document.createElement('div');
+    snackbar1.className = 'asl-snackbar own';
+    snackbar1.textContent = word1.toUpperCase();
+    snackbar1.onclick = () => dismissSnackbar(dualContainer);
+    
+    const snackbar2 = document.createElement('div');
+    snackbar2.className = 'asl-snackbar other';
+    snackbar2.textContent = word2.toUpperCase();
+    snackbar2.onclick = () => dismissSnackbar(dualContainer);
+    
+    dualContainer.appendChild(snackbar1);
+    dualContainer.appendChild(snackbar2);
+    
+    snackbarContainer.appendChild(dualContainer);
+    
+    // Track dual snackbar
+    currentSnackbars.push({ element: dualContainer, word: `${word1}+${word2}`, isOwn: 'dual' });
+    
+    // Show animation
+    setTimeout(() => {
+        snackbar1.classList.add('show');
+        snackbar2.classList.add('show');
+    }, 10);
+    
+    // Auto dismiss
+    setTimeout(() => dismissSnackbar(dualContainer), 2000);
+}
+
+function dismissSnackbar(snackbarElement, immediate = false) {
+    if (!snackbarElement || !snackbarElement.parentElement) return;
+    
+    if (immediate) {
+        snackbarElement.remove();
+    } else {
+        snackbarElement.classList.remove('show');
+        snackbarElement.classList.add('hide');
+        setTimeout(() => {
+            if (snackbarElement.parentElement) {
+                snackbarElement.remove();
+            }
+        }, 300);
+    }
+    
+    // Remove from tracking
+    currentSnackbars = currentSnackbars.filter(s => s.element !== snackbarElement);
+    
+    // Process queue if any
+    processSnackbarQueue();
+}
+
+function processSnackbarQueue() {
+    if (snackbarQueue.length > 0 && currentSnackbars.length === 0) {
+        const next = snackbarQueue.shift();
+        showASLSnackbar(next.word, next.isOwn, next.otherUser);
+    }
+}
+
+// Legacy function for compatibility - now redirects to snackbar
+function showASLNotification(message, type = 'info') {
+    // For initialization messages, we still want some feedback
+    if (message.includes('Initializing') || message.includes('ready') || message.includes('error')) {
+        console.log(`🤟 ASL: ${message}`);
+        // Could add a brief status indicator if needed
+    }
+    // All detection notifications now go through snackbar system
 }

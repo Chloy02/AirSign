@@ -312,79 +312,105 @@
     }
 }
 
-/* ASL Notification System */
-.asl-notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 16px 20px;
-    border-radius: 8px;
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-    z-index: 10000;
-    min-width: 300px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    animation: slideInRight 0.3s ease-out;
+/* Video Grid Positioning Fix */
+.video-grid {
+    position: relative !important;
+}
+
+/* ASL Snackbar System */
+.asl-snackbar-container {
+    position: fixed !important;
+    bottom: 140px !important; /* Above the control buttons */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 90%;
+    max-width: 600px;
+    pointer-events: none;
+    z-index: 9999 !important; /* Very high z-index */
     display: flex;
+    flex-direction: column;
+    gap: 8px;
     align-items: center;
-    gap: 12px;
+    background: rgba(255, 0, 0, 0.1); /* Temporary red background for debugging */
+    min-height: 50px; /* Temporary minimum height */
 }
 
-.asl-notification.success {
-    background: linear-gradient(135deg, #28a745, #20c997);
-    border-left: 4px solid #155724;
+.asl-snackbar {
+    background: rgba(255, 255, 255, 0.95) !important; /* White background for visibility */
+    backdrop-filter: blur(10px);
+    color: black !important; /* Black text for contrast */
+    padding: 20px 30px !important;
+    border-radius: 12px;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+    border: 3px solid #6a5acd !important; /* Purple border */
+    pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s ease;
+    transform: translateY(0) !important; /* Force visible */
+    opacity: 1 !important; /* Force visible */
+    min-width: 150px !important;
+    text-align: center;
+    z-index: 10000 !important;
 }
 
-.asl-notification.error {
-    background: linear-gradient(135deg, #dc3545, #e74c3c);
-    border-left: 4px solid #721c24;
+.asl-snackbar.show {
+    transform: translateY(0);
+    opacity: 1;
+    animation: slideUpBounce 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.asl-notification.info {
+.asl-snackbar.hide {
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.asl-snackbar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.asl-snackbar.own {
     background: linear-gradient(135deg, #6a5acd, #9370db);
-    border-left: 4px solid #4b0082;
+    border: 1px solid rgba(106, 90, 205, 0.3);
 }
 
-.asl-notification.warning {
-    background: linear-gradient(135deg, #ff8c00, #ffa500);
-    border-left: 4px solid #ff6347;
+.asl-snackbar.other {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border: 1px solid rgba(255, 107, 107, 0.3);
 }
 
-.asl-notification::before {
-    content: "🤟";
-    font-size: 20px;
-    animation: pulse 1.5s infinite;
+.asl-snackbar-dual {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
 }
 
-.asl-notification.error::before {
-    content: "⚠️";
+.asl-snackbar-dual .asl-snackbar {
+    margin: 0;
+    flex: 0 0 auto;
 }
 
-.asl-notification.info::before {
-    content: "ℹ️";
-}
-
-.asl-notification.warning::before {
-    content: "⚠️";
-}
-
-@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
+@keyframes slideUpBounce {
+    0% {
+        transform: translateY(100px);
         opacity: 0;
     }
-    to {
-        transform: translateX(0);
+    60% {
+        transform: translateY(-10px);
         opacity: 1;
     }
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
+    80% {
+        transform: translateY(5px);
     }
-    50% {
-        transform: scale(1.1);
+    100% {
+        transform: translateY(0);
+        opacity: 1;
     }
 } 
