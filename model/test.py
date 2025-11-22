@@ -1,8 +1,12 @@
 from inference_sdk import InferenceHTTPClient
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 client = InferenceHTTPClient(
     api_url = "https://detect.roboflow.com",
-    api_key="fJh6XuKHn8TCVn4jLU0w"
+    api_key=os.environ.get("ROBOFLOW_API_KEY")
 )
 
 result = client.run_workflow(

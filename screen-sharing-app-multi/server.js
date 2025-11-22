@@ -69,7 +69,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // JWT Secret
 // JWT Secret
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'; // Use environment variable if available
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+    console.error('FATAL: JWT_SECRET environment variable is not set.');
+    process.exit(1);
+}
 
 // Authentication middleware
 const authenticateToken = (req, res, next) => {

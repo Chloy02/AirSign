@@ -2,10 +2,13 @@
 const CONFIG = {
     // ASL Detection API Configuration
     ASL_API: {
-        BASE_URL: 'http://localhost:8000',
+        // Automatically determine URL based on environment
+        BASE_URL: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:8000'
+            : 'https://airsign-api.onrender.com', // Production URL
         ENDPOINT: '/detect-asl',
         TIMEOUT: 15000, // 15 seconds
-        FIRST_REQUEST_TIMEOUT: 5000, // 5 seconds for local
+        FIRST_REQUEST_TIMEOUT: 30000, // 30 seconds for cold start
         RETRY_ATTEMPTS: 3
     },
 
