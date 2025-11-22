@@ -5,9 +5,17 @@ import tempfile
 import os
 from typing import Dict
 from dotenv import load_dotenv
+import logging
+import io
+from PIL import Image
+import numpy as np
 
 # Load environment variables from .env file
 load_dotenv()
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="ASL Detection API", version="1.0.0")
 
@@ -50,24 +58,25 @@ async def detect_asl(image: UploadFile = File(...)) -> Dict[str, str]:
         raise HTTPException(status_code=400, detail="File must be an image")
     
     try:
-        # Save uploaded file temporarily
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
-            content = await image.read()
+        # Read image content
+        content = await image.read()
+        
+        # Create a temporary file that is automatically deleted
+        with tempfile.NamedTemporaryFile(delete=True, suffix=".png") as temp_file:
             temp_file.write(content)
+            temp_file.flush()
             temp_file_path = temp_file.name
+            
+            # Run inference using Roboflow
+            # Note: InferenceHTTPClient typically expects a file path or url
+            result = client.run_workflow(
+                workspace_name="specializationproject",
+                workflow_id="detect-count-and-visualize",
+                images={"image": temp_file_path},
+                use_cache=True
+            )
         
-        # Run inference using Roboflow (same as working test.py)
-        result = client.run_workflow(
-            workspace_name="specializationproject",
-            workflow_id="detect-count-and-visualize",
-            images={"image": temp_file_path},
-            use_cache=True
-        )
-        
-        # Clean up temporary file
-        os.unlink(temp_file_path)
-        
-        # Extract predictions (same as working test.py)
+        # Extract predictions
         workflow_output = result[0]
         predictions = workflow_output['predictions']['predictions']
         
@@ -78,13 +87,11 @@ async def detect_asl(image: UploadFile = File(...)) -> Dict[str, str]:
         highest_confidence_prediction = max(predictions, key=lambda x: x['confidence'])
         detected_word = highest_confidence_prediction['class']
         
+        logger.info(f"Detected word: {detected_word} with confidence: {highest_confidence_prediction['confidence']}")
         return {"detected_word": detected_word}
         
     except Exception as e:
-        # Clean up temp file if it exists
-        if 'temp_file_path' in locals() and os.path.exists(temp_file_path):
-            os.unlink(temp_file_path)
-        
+        logger.error(f"Detection failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Detection failed: {str(e)}")
 
 if __name__ == "__main__":

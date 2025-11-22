@@ -264,4 +264,13 @@ kubernetes/
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db 
+Thumbs.db
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Model outputs
+model/output.txt
+model/test.mkv
