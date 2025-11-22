@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AirSign Meeting Room</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Montserrat:wght@400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <!-- Header -->
     <div class="header-section">
@@ -33,19 +36,22 @@
 
     <!-- Bottom Controls -->
     <div class="bottom-bar">
-        <button class="control-button" id="toggleMic" title="Toggle Microphone">
+        <button class="control-button" id="toggleMic" title="Toggle Microphone" aria-label="Toggle Microphone">
             <i class="fas fa-microphone"></i>
         </button>
-        <button class="control-button" id="toggleVideo" title="Toggle Camera">
+        <button class="control-button" id="toggleVideo" title="Toggle Camera" aria-label="Toggle Camera">
             <i class="fas fa-video"></i>
         </button>
-        <button class="control-button" id="toggleScreen" title="Share Screen">
+        <button class="control-button" id="toggleScreen" title="Share Screen" aria-label="Share Screen">
             <i class="fas fa-desktop"></i>
         </button>
-        <button class="control-button end-call" id="endCall" title="End Call">
+        <button class="control-button" id="aslToggleBtn" title="Toggle ASL Detection" aria-label="Toggle ASL Detection">
+            <i class="fas fa-sign-language"></i>
+        </button>
+        <button class="control-button end-call" id="endCall" title="End Call" aria-label="End Call">
             <i class="fas fa-phone-slash"></i>
         </button>
-        <button class="control-button" id="toggleChat" title="Toggle Chat">
+        <button class="control-button" id="toggleChat" title="Toggle Chat" aria-label="Toggle Chat">
             <i class="fas fa-comment-alt"></i>
             <div class="notification-badge" id="chatBadge" style="display: none;">0</div>
         </button>
@@ -55,16 +61,17 @@
     <div class="chat-sidebar" id="chatSidebar">
         <div class="chat-header">
             <h3>Meeting Chat</h3>
-            <button class="close-chat" id="closeChat">
+            <button class="close-chat" id="closeChat" aria-label="Close Chat">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <div class="chat-messages" id="chatMessages">
+        <div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-label="Chat Messages">
             <!-- Messages will appear here -->
         </div>
         <div class="chat-input-area">
-            <textarea class="chat-input" id="messageInput" placeholder="Type a message..."></textarea>
-            <button class="send-btn" id="sendMessage" disabled>
+            <textarea class="chat-input" id="messageInput" placeholder="Type a message..."
+                aria-label="Type a message"></textarea>
+            <button class="send-btn" id="sendMessage" disabled aria-label="Send Message">
                 <i class="fas fa-paper-plane"></i>
             </button>
         </div>
@@ -77,4 +84,5 @@
     <script src="js/aslDetector.js"></script>
     <script src="js/client.js"></script>
 </body>
+
 </html>

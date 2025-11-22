@@ -209,6 +209,7 @@ async function init() {
         document.getElementById('toggleMic')?.addEventListener('click', toggleMic);
         document.getElementById('toggleVideo')?.addEventListener('click', toggleVideo);
         document.getElementById('toggleScreen')?.addEventListener('click', toggleScreen);
+        document.getElementById('aslToggleBtn')?.addEventListener('click', toggleASLDetection);
         document.getElementById('endCall')?.addEventListener('click', endCall);
 
         // Perform initial layout update
@@ -770,7 +771,7 @@ function endCall() {
     }
 
     // Redirect to home page
-    window.location.href = 'premeeting.html';
+    window.location.href = '/premeeting';
 }
 
 // Handle page unload
@@ -1375,7 +1376,7 @@ let currentSnackbars = [];
 let snackbarContainer = null;
 
 function initializeSnackbarSystem() {
-    snackbarContainer = document.getElementById('asl-snackbar-container');
+    snackbarContainer = document.getElementById('aslSnackbarContainer');
     console.log('🍿 Snackbar: Initializing snackbar system, container found:', !!snackbarContainer);
     if (!snackbarContainer) {
         console.warn('ASL snackbar container not found');

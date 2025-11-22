@@ -191,45 +191,260 @@
     <div class="title">Ready to Meet?</div>
     <div class="subtitle">Start a new meeting or join an existing one. Your futuristic, secure, and brilliant meeting
       experience awaits.</div>
-    <div class="button-row">
-      <button class="main-btn" id="newMeetingBtn">New Meeting</button>
-      <button class="main-btn" id="joinMeetingBtn">Join Meeting</button>
-    </div>
-    <div class="meeting-code-box" id="meetingCodeBox"></div>
-  </div>
-  <script>
-    // Logout function
-    function logout() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('username');
-      window.location.href = '/auth';
-    }
-    canvas.width = w; canvas.height = h;
-    let particles = Array.from({ length: 60 }, () => ({
-      x: Math.random() * w, y: Math.random() * h,
-      r: Math.random() * 2 + 1, dx: (Math.random() - 0.5) * 0.7, dy: (Math.random() - 0.5) * 0.7
-    }));
-    function animate() {
-      ctx.clearRect(0, 0, w, h);
-      for (let p of particles) {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(62,203,255,0.18)';
-        ctx.shadowColor = '#3ecbff';
-        ctx.shadowBlur = 8;
-        ctx.fill();
-        p.x += p.dx; p.y += p.dy;
-        if (p.x < 0 || p.x > w) p.dx *= -1;
-        if (p.y < 0 || p.y > h) p.dy *= -1;
-      }
-      requestAnimationFrame(animate);
-    }
-    animate();
-    window.addEventListener('resize', () => {
-      w = window.innerWidth; h = window.innerHeight;
-      canvas.width = w; canvas.height = h;
-    });
-  </script>
-</body>
+    <!DOCTYPE html>
+    <html lang="en">
 
-</html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>AirSign – Pre-Meeting</title>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Montserrat:wght@400;600&display=swap"
+        rel="stylesheet">
+      <style>
+        body {
+          margin: 0;
+          padding: 0;
+          min-height: 100vh;
+          font-family: 'Montserrat', Arial, sans-serif;
+          background: linear-gradient(135deg, #0a1a2f 0%, #0b2347 100%);
+          color: #fff;
+          overflow-x: hidden;
+          position: relative;
+        }
+
+        .navbar {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 48px;
+          height: 80px;
+          background: rgba(10, 26, 47, 0.95);
+          position: fixed;
+          top: 0;
+          left: 0;
+          z-index: 100;
+          box-sizing: border-box;
+        }
+
+        .navbar .logo {
+          font-family: 'Orbitron', sans-serif;
+          font-size: 2.2rem;
+          color: #3ecbff;
+          letter-spacing: 2px;
+          font-weight: 700;
+          text-shadow: 0 0 16px #3ecbff88;
+        }
+
+        .navbar .logout-btn {
+          background: none;
+          border: 2px solid #3ecbff;
+          color: #3ecbff;
+          font-size: 1rem;
+          font-family: 'Montserrat', sans-serif;
+          border-radius: 24px;
+          padding: 8px 24px;
+          cursor: pointer;
+          font-weight: 600;
+          transition: background 0.2s, color 0.2s;
+        }
+
+        .navbar .logout-btn:hover {
+          background: #3ecbff;
+          color: #0a1a2f;
+        }
+
+        .container {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 120px 24px 40px;
+          z-index: 2;
+          position: relative;
+          max-width: 960px;
+          margin: 0 auto;
+          box-sizing: border-box;
+          text-align: center;
+        }
+
+        .title {
+          font-family: 'Orbitron', sans-serif;
+          font-size: 2.8rem;
+          color: #3ecbff;
+          font-weight: 700;
+          margin-bottom: 0.5em;
+          text-shadow: 0 0 24px #3ecbff55;
+          letter-spacing: 1px;
+          text-align: center;
+        }
+
+        .subtitle {
+          font-size: 1.2rem;
+          color: #b0cfff;
+          margin-bottom: 2.5em;
+          font-weight: 400;
+          text-align: center;
+          max-width: 500px;
+        }
+
+        .button-row {
+          display: flex;
+          gap: 36px;
+          margin-bottom: 2em;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .main-btn {
+          padding: 1.1em 2.8em;
+          font-size: 1.3rem;
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 700;
+          color: #3ecbff;
+          background: transparent;
+          border: 2px solid #3ecbff;
+          border-radius: 40px;
+          cursor: pointer;
+          transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+          box-shadow: 0 0 18px #3ecbff33;
+          margin: 0 8px;
+        }
+
+        .main-btn:hover {
+          background: #3ecbff;
+          color: #0a1a2f;
+          box-shadow: 0 0 32px #3ecbff99;
+        }
+
+        .meeting-code-box {
+          margin-top: 1.5em;
+          background: #16233a;
+          border-radius: 18px;
+          padding: 1.2em 2em;
+          color: #3ecbff;
+          font-size: 1.1rem;
+          font-family: 'Orbitron', sans-serif;
+          letter-spacing: 2px;
+          box-shadow: 0 0 12px #3ecbff22;
+          display: none;
+          text-align: center;
+          width: fit-content;
+          margin-left: auto;
+          margin-right: auto;
+          user-select: all;
+        }
+
+        /* Animated background particles */
+        .bg {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          z-index: 0;
+          pointer-events: none;
+        }
+
+        @media (max-width: 700px) {
+          .navbar {
+            padding: 0 16px;
+            height: 60px;
+          }
+
+          .container {
+            padding: 100px 16px 32px;
+            max-width: 640px;
+          }
+
+          .title {
+            font-size: 2rem;
+          }
+
+          .button-row {
+            gap: 16px;
+          }
+
+          .main-btn {
+            font-size: 1rem;
+            padding: 0.8em 1.5em;
+          }
+        }
+      </style>
+    </head>
+
+    <body>
+      <canvas class="bg" id="bg-particles"></canvas>
+      <div class="navbar">
+        <div class="logo">AirSign</div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+      <div class="container">
+        <div class="title">Ready to Meet?</div>
+        <div class="subtitle">Start a new meeting or join an existing one. Your futuristic, secure, and brilliant
+          meeting
+          experience awaits.</div>
+        <div class="button-row">
+          <button class="main-btn" id="newMeetingBtn">New Meeting</button>
+          <button class="main-btn" id="joinMeetingBtn">Join Meeting</button>
+        </div>
+        <div class="meeting-code-box" id="meetingCodeBox"></div>
+      </div>
+      <script>
+        // Logout function
+        function logout() {
+          localStorage.removeItem('token');
+          localStorage.removeItem('username');
+          window.location.href = '/auth';
+        }
+
+        // Meeting functions
+        document.getElementById('newMeetingBtn').addEventListener('click', () => {
+          const roomId = Math.random().toString(36).substring(7);
+          window.location.href = `/meeting.html?room=${roomId}`;
+        });
+
+        document.getElementById('joinMeetingBtn').addEventListener('click', () => {
+          const meetingCode = prompt('Enter meeting code:');
+          if (meetingCode) {
+            window.location.href = `/meeting.html?room=${meetingCode}`;
+          }
+        });
+
+        // Particle Animation
+        const canvas = document.getElementById('bg-particles');
+        const ctx = canvas.getContext('2d');
+        let w = window.innerWidth;
+        let h = window.innerHeight;
+
+        canvas.width = w; canvas.height = h;
+        let particles = Array.from({ length: 60 }, () => ({
+          x: Math.random() * w, y: Math.random() * h,
+          r: Math.random() * 2 + 1, dx: (Math.random() - 0.5) * 0.7, dy: (Math.random() - 0.5) * 0.7
+        }));
+        function animate() {
+          ctx.clearRect(0, 0, w, h);
+          for (let p of particles) {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(62,203,255,0.18)';
+            ctx.shadowColor = '#3ecbff';
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            p.x += p.dx; p.y += p.dy;
+            if (p.x < 0 || p.x > w) p.dx *= -1;
+            if (p.y < 0 || p.y > h) p.dy *= -1;
+          }
+          requestAnimationFrame(animate);
+        }
+        animate();
+        window.addEventListener('resize', () => {
+          w = window.innerWidth; h = window.innerHeight;
+          canvas.width = w; canvas.height = h;
+        });
+      </script>
+    </body>
+
+    </html>
