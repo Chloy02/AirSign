@@ -1,5 +1,6 @@
 const express = require('express');
 const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const { Server } = require('socket.io');
 const path = require('path');
@@ -38,7 +39,7 @@ const userSchema = new mongoose.Schema({
 // Active user schema for video chat
 const activeUserSchema = new mongoose.Schema({
     socketId: String,
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    userId: String, // Changed from ObjectId to String to support demo users
     name: String,
     roomId: String,
     createdAt: { type: Date, default: Date.now }
@@ -64,7 +65,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // JWT Secret
 // JWT Secret
@@ -226,7 +227,13 @@ try {
 }
 
 // Create HTTPS server
-const server = https.createServer(options, app);
+// Create server (HTTPS if certs found, otherwise HTTP)
+let server;
+if (Object.keys(options).length > 0) {
+    server = https.createServer(options, app);
+} else {
+    server = http.createServer(app);
+}
 const io = new Server(server);
 
 // Socket.io connection handling
@@ -419,6 +426,11 @@ app.get('/auth', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'userAuth.html'));
 });
 
+// Serve the pre-meeting page
+app.get('/premeeting', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'premeeting.html'));
+});
+
 // Serve the demo page
 app.get('/demo', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'demo.html'));
@@ -440,14 +452,11 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Demo mode endpoint (when MongoDB is not available)
+// Demo mode endpoint
 app.post('/api/demo/login', (req, res) => {
-    if (mongoConnected) {
-        return res.status(400).json({
-            message: 'Demo mode not available when MongoDB is connected. Use regular login instead.',
-            error: 'DEMO_NOT_AVAILABLE'
-        });
-    }
+    // Allow demo login even if MongoDB is connected
+    // This is useful for testing or quick access without creating an account
+
 
     const { name } = req.body;
     if (!name || name.trim().length < 2) {
@@ -471,13 +480,14 @@ app.post('/api/demo/login', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Secure server running at https://0.0.0.0:${PORT}/`);
+    const protocol = Object.keys(options).length > 0 ? 'https' : 'http';
+    console.log(`🚀 Server running at ${protocol}://0.0.0.0:${PORT}/`);
     console.log(`📊 MongoDB Status: ${mongoConnected ? '✅ Connected' : '❌ Disconnected'}`);
     if (!mongoConnected) {
         console.log(`💡 Demo Mode: Available at /api/demo/login`);
         console.log(`🔧 To enable full features: Start MongoDB with 'mongod' command`);
     }
-    console.log(`🌐 Health Check: https://0.0.0.0:${PORT}/api/health`);
+    console.log(`🌐 Health Check: ${protocol}://0.0.0.0:${PORT}/api/health`);
 });
 
 // Graceful shutdown

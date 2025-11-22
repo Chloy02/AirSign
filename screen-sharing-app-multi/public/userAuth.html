@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +11,8 @@
             --primary-dark: #2b9eff;
             --bg-start: #0a1a2f;
             --bg-end: #0b2347;
-            --glass: rgba(255,255,255,0.08);
-            --glass-border: rgba(255,255,255,0.18);
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
             --text: #e9f0ff;
             --muted: #b0cfff;
             --danger: #ff6b6b;
@@ -19,8 +20,13 @@
         }
 
         @keyframes float {
-            0% { transform: translateY(0px) }
-            100% { transform: translateY(-10px) }
+            0% {
+                transform: translateY(0px)
+            }
+
+            100% {
+                transform: translateY(-10px)
+            }
         }
 
         body {
@@ -42,10 +48,10 @@
         }
 
         .panel {
-            background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
             border: 1px solid var(--glass-border);
             border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
             overflow: hidden;
         }
 
@@ -54,8 +60,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            background: radial-gradient(1200px 600px at -10% 0%, rgba(62,203,255,0.08), transparent 40%),
-                        radial-gradient(1200px 600px at 120% 100%, rgba(62,203,255,0.06), transparent 40%);
+            background: radial-gradient(1200px 600px at -10% 0%, rgba(62, 203, 255, 0.08), transparent 40%),
+                radial-gradient(1200px 600px at 120% 100%, rgba(62, 203, 255, 0.06), transparent 40%);
         }
 
         .brand {
@@ -69,7 +75,7 @@
             height: 44px;
             border-radius: 12px;
             background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-            box-shadow: 0 0 24px rgba(62,203,255,0.35);
+            box-shadow: 0 0 24px rgba(62, 203, 255, 0.35);
         }
 
         .title {
@@ -83,7 +89,7 @@
             font-size: clamp(1.6rem, 2.8vw, 2.2rem);
             font-weight: 700;
             color: var(--primary);
-            text-shadow: 0 0 18px rgba(62,203,255,0.25);
+            text-shadow: 0 0 18px rgba(62, 203, 255, 0.25);
         }
 
         .subhead {
@@ -111,7 +117,7 @@
             height: 8px;
             border-radius: 50%;
             background: var(--primary);
-            box-shadow: 0 0 12px rgba(62,203,255,0.6);
+            box-shadow: 0 0 12px rgba(62, 203, 255, 0.6);
         }
 
         .auth-panel {
@@ -144,7 +150,7 @@
         .tab.active {
             color: #0a1a2f;
             background: var(--primary);
-            box-shadow: 0 6px 16px rgba(62,203,255,0.35);
+            box-shadow: 0 6px 16px rgba(62, 203, 255, 0.35);
         }
 
         form {
@@ -168,7 +174,7 @@
             grid-template-columns: 1fr auto;
             align-items: center;
             gap: 6px;
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             padding: 12px 14px;
@@ -214,11 +220,11 @@
         .btn-primary {
             background: linear-gradient(45deg, var(--primary), var(--primary-dark));
             color: #0a1a2f;
-            box-shadow: 0 12px 30px rgba(62,203,255,0.28);
+            box-shadow: 0 12px 30px rgba(62, 203, 255, 0.28);
         }
 
         .btn-ghost {
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
             color: var(--text);
         }
 
@@ -235,15 +241,29 @@
             margin-top: -4px;
         }
 
-        .bar { flex: 1; height: 6px; border-radius: 6px; background: rgba(255,255,255,0.12) }
-        .bar.on { background: linear-gradient(90deg, #ff9f43, #22c55e) }
+        .bar {
+            flex: 1;
+            height: 6px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.12)
+        }
+
+        .bar.on {
+            background: linear-gradient(90deg, #ff9f43, #22c55e)
+        }
 
         @media (max-width: 860px) {
-            .auth-shell { grid-template-columns: 1fr; }
-            .showcase { display: none }
+            .auth-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .showcase {
+                display: none
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="auth-shell">
@@ -254,7 +274,8 @@
                     <div class="title">AirSign</div>
                 </div>
                 <div class="headline">Sign in to brilliant meetings</div>
-                <p class="subhead">Join secure, real‑time meetings with ASL assistance baked in. Share your screen, chat live, and collaborate without friction.</p>
+                <p class="subhead">Join secure, real‑time meetings with ASL assistance baked in. Share your screen, chat
+                    live, and collaborate without friction.</p>
                 <div class="side-list">
                     <div class="side-item"><span class="dot"></span> Crystal‑clear video and audio</div>
                     <div class="side-item"><span class="dot"></span> Live ASL gesture detection</div>
@@ -285,14 +306,15 @@
                 </div>
                 <div class="actions">
                     <button class="btn btn-primary" type="submit">Login</button>
-                    <button class="btn btn-ghost" type="button" onclick="location.href='demo.html'">Try Demo Mode</button>
+                    <button class="btn btn-ghost" type="button" onclick="location.href='/demo'">Try Demo Mode</button>
                 </div>
             </form>
 
             <form id="form-signup" style="display:none" autocomplete="on">
                 <div class="field">
                     <label for="su-name">Full name</label>
-                    <div class="input"><input id="su-name" type="text" placeholder="Jane Doe" minlength="2" required></div>
+                    <div class="input"><input id="su-name" type="text" placeholder="Jane Doe" minlength="2" required>
+                    </div>
                 </div>
                 <div class="field">
                     <label for="su-email">Email</label>
@@ -301,7 +323,8 @@
                 <div class="field">
                     <label for="su-password">Password</label>
                     <div class="input">
-                        <input id="su-password" type="password" placeholder="At least 8 characters" minlength="8" required>
+                        <input id="su-password" type="password" placeholder="At least 8 characters" minlength="8"
+                            required>
                         <button type="button" data-toggle="su-password">Show</button>
                     </div>
                     <div class="strength" aria-hidden="true">
@@ -349,7 +372,7 @@
     // Password strength meter (very lightweight heuristic)
     const suPw = document.getElementById('su-password');
     const bars = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3'), document.getElementById('s4')];
-    function scorePassword(pw){
+    function scorePassword(pw) {
         let s = 0;
         if (!pw) return 0;
         if (pw.length >= 8) s++;
@@ -360,7 +383,7 @@
     }
     suPw?.addEventListener('input', () => {
         const sc = scorePassword(suPw.value);
-        bars.forEach((b,i)=> b.classList.toggle('on', i < sc));
+        bars.forEach((b, i) => b.classList.toggle('on', i < sc));
     });
 
     // Submit handlers
@@ -370,7 +393,7 @@
         const password = document.getElementById('login-password').value;
         const btn = e.submitter; const label = btn.textContent; btn.textContent = 'Logging in…'; btn.disabled = true;
         try {
-            const res = await fetch('/api/auth/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, password })});
+            const res = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
             const data = await res.json();
             if (res.ok) {
                 localStorage.setItem('token', data.token);
@@ -379,7 +402,7 @@
             } else {
                 alert(data.message || 'Login failed');
             }
-        } catch(err){
+        } catch (err) {
             alert('Network error. Please try again.');
         } finally { btn.textContent = label; btn.disabled = false; }
     });
@@ -391,7 +414,7 @@
         const password = document.getElementById('su-password').value;
         const btn = e.submitter; const label = btn.textContent; btn.textContent = 'Creating…'; btn.disabled = true;
         try {
-            const res = await fetch('/api/auth/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, email, password })});
+            const res = await fetch('/api/auth/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password }) });
             const data = await res.json();
             if (res.ok) {
                 localStorage.setItem('token', data.token);
@@ -400,7 +423,7 @@
             } else {
                 alert(data.message || 'Signup failed');
             }
-        } catch(err){
+        } catch (err) {
             alert('Network error. Please try again.');
         } finally { btn.textContent = label; btn.disabled = false; }
     });

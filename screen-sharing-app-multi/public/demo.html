@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -165,18 +166,27 @@
         }
 
         @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="demo-container">
         <div class="demo-icon">🚀</div>
         <h1>Demo Mode</h1>
         <div class="demo-subtitle">MongoDB is not available - running in demo mode</div>
-        
+
         <div class="demo-info">
             <h3>Demo Mode Features:</h3>
             <ul>
@@ -196,7 +206,8 @@
         <div class="demo-links">
             <a href="/" class="demo-link">← Back to Home</a>
             <a href="/api/health" class="demo-link" target="_blank">Server Status</a>
-            <a href="https://www.mongodb.com/try/download/community" class="demo-link" target="_blank">Install MongoDB</a>
+            <a href="https://www.mongodb.com/try/download/community" class="demo-link" target="_blank">Install
+                MongoDB</a>
         </div>
     </div>
 
@@ -205,7 +216,7 @@
         const demoLoginBtn = document.getElementById('demoLoginBtn');
 
         // Enable/disable button based on input
-        demoNameInput.addEventListener('input', function() {
+        demoNameInput.addEventListener('input', function () {
             const name = this.value.trim();
             demoLoginBtn.disabled = name.length < 2;
         });
@@ -213,7 +224,7 @@
         // Demo login function
         async function demoLogin() {
             const name = demoNameInput.value.trim();
-            
+
             if (name.length < 2) {
                 alert('Please enter a valid name (at least 2 characters)');
                 return;
@@ -233,13 +244,12 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    
+
                     // Store demo token and user info
-                    localStorage.setItem('demoToken', data.token);
-                    localStorage.setItem('demoUser', JSON.stringify({
-                        name: data.name,
-                        demo: true
-                    }));
+                    // Store token and user info using standard keys
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('username', data.name);
+                    localStorage.setItem('isDemo', 'true');
 
                     // Redirect to meeting
                     window.location.href = '/meeting';
@@ -273,11 +283,12 @@
         checkServerStatus();
 
         // Enter key to submit
-        demoNameInput.addEventListener('keypress', function(e) {
+        demoNameInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter' && !demoLoginBtn.disabled) {
                 demoLogin();
             }
         });
     </script>
 </body>
+
 </html>
