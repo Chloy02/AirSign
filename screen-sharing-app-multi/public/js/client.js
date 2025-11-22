@@ -24,39 +24,42 @@ let activeParticipants = 0;
 
 // Function to update video grid layout based on participant count
 function updateVideoLayout() {
-    const videoGrid = document.querySelector('.video-grid');
-    if (!videoGrid) {
-        console.warn('⚠️ Layout: Video grid not found');
-        return;
+    const videoGrid = document.getElementById('videoGrid');
+    if (!videoGrid) return;
+
+    const videoWrappers = videoGrid.querySelectorAll('.video-wrapper');
+    const count = videoWrappers.length;
+
+    console.log(`Updating video layout for ${count} participants`);
+
+    // Calculate optimal grid dimensions
+    let columns, rows;
+    if (count <= 1) {
+        columns = 1;
+        rows = 1;
+    } else if (count === 2) {
+        columns = 2;
+        rows = 1;
+    } else if (count === 3 || count === 4) {
+        columns = 2;
+        rows = 2;
+    } else {
+        columns = Math.ceil(Math.sqrt(count));
+        rows = Math.ceil(count / columns);
     }
 
-    // Count active video elements
-    const activeVideos = videoGrid.querySelectorAll('.video-wrapper');
-    const participantCount = activeVideos.length;
+    // Apply grid styles
+    videoGrid.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+    videoGrid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 
-    console.log('🎬 Layout: Updating layout for', participantCount, 'participants');
-    console.log('🎬 Layout: Current video grid classes:', videoGrid.className);
-
-    // Remove all layout classes
-    videoGrid.classList.remove('single-participant', 'two-participants', 'multiple-participants');
-
-    // Apply appropriate layout class
-    if (participantCount === 1) {
-        videoGrid.classList.add('single-participant');
-        console.log('📺 Layout: Applied single-participant layout (full screen)');
-    } else if (participantCount === 2) {
-        videoGrid.classList.add('two-participants');
-        console.log('📺 Layout: Applied two-participants layout (split screen)');
-    } else if (participantCount >= 3) {
-        videoGrid.classList.add('multiple-participants');
-        console.log('📺 Layout: Applied multiple-participants layout (grid)');
-    }
-
-    console.log('🎬 Layout: New video grid classes:', videoGrid.className);
-    activeParticipants = participantCount;
-    
-    // Force a reflow to ensure styles are applied
-    videoGrid.offsetHeight;
+    // Reset wrapper styles to let grid handle it
+    videoWrappers.forEach(wrapper => {
+        wrapper.style.width = '100%';
+        wrapper.style.height = '100%';
+        wrapper.style.position = 'relative';
+        wrapper.style.left = 'auto';
+        wrapper.style.top = 'auto';
+    });
 }
 
 const configuration = {
@@ -74,7 +77,7 @@ async function init() {
     // Check if user is authenticated
     const token = localStorage.getItem('token');
     username = localStorage.getItem('username');
-    
+
     if (!token || !username) {
         window.location.href = '/auth';
         return;
@@ -85,31 +88,31 @@ async function init() {
     if (usernameDisplay) {
         usernameDisplay.textContent = username;
     }
-    
+
     // Initialize socket connection
     socket = io();
-    roomId = new URLSearchParams(window.location.search).get('room') || 
-             Math.random().toString(36).substring(7);
-    
+    roomId = new URLSearchParams(window.location.search).get('room') ||
+        Math.random().toString(36).substring(7);
+
     // Update URL with room ID if not already there
     if (!window.location.search.includes('room')) {
         window.history.pushState(null, null, `?room=${roomId}`);
     }
-    
+
     const roomInfo = document.getElementById('room-info');
     if (roomInfo) {
         roomInfo.textContent = `Room: ${roomId}`;
     }
-    
+
     try {
-        localStream = await navigator.mediaDevices.getUserMedia({ 
+        localStream = await navigator.mediaDevices.getUserMedia({
             video: {
                 width: { ideal: 1280 },
                 height: { ideal: 720 }
-            }, 
-            audio: true 
+            },
+            audio: true
         });
-        
+
         // Display local video
         const localVideoElement = document.getElementById('localVideo');
         if (localVideoElement) {
@@ -117,17 +120,17 @@ async function init() {
             localVideoElement.autoplay = true;
             localVideoElement.playsInline = true;
             localVideoElement.muted = true; // Mute local video to prevent audio feedback
-            
+
             // Update layout when local video is ready
             localVideoElement.addEventListener('loadedmetadata', () => {
                 console.log('📹 Local video loaded, updating layout');
                 updateVideoLayout();
             });
         }
-        
+
         // Join the room with user name and token
-        socket.emit('join', { 
-            roomId: roomId, 
+        socket.emit('join', {
+            roomId: roomId,
             userName: username,
             token: token
         });
@@ -191,12 +194,12 @@ async function init() {
         socket.off('asl-detection');
         socket.on('asl-detection', (data) => {
             console.log('🤟 ASL detection received from:', data.sender, '- word:', data.word);
-            
+
             // Don't handle our own ASL detections (already handled locally)
             if (data.sender !== username) {
                 // Show snackbar for other users' ASL
                 showASLSnackbar(data.word, false, data.sender);
-                
+
                 // Remove chat message since snackbar works
                 // addMessage(data.word.toUpperCase(), data.sender, false, true);
             }
@@ -207,19 +210,19 @@ async function init() {
         document.getElementById('toggleVideo')?.addEventListener('click', toggleVideo);
         document.getElementById('toggleScreen')?.addEventListener('click', toggleScreen);
         document.getElementById('endCall')?.addEventListener('click', endCall);
-        
+
         // Perform initial layout update
         updateVideoLayout();
 
         // Initialize chat after socket connection
         setupChatUI();
-        
+
         // Initialize participants list
         updateParticipantsList();
-        
+
         // Initialize chat functionality
         initChat();
-        
+
         // Add keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             // Ctrl/Cmd + Enter to toggle chat
@@ -227,7 +230,7 @@ async function init() {
                 e.preventDefault();
                 toggleChat();
             }
-            
+
             // Escape to close chat
             if (e.key === 'Escape' && chatVisible) {
                 e.preventDefault();
@@ -251,7 +254,7 @@ function setupChatUI() {
     if (toggleBtn) {
         toggleBtn.addEventListener('click', toggleChat);
     }
-    
+
     if (closeBtn) {
         closeBtn.addEventListener('click', toggleChat);
     }
@@ -273,7 +276,7 @@ function setupChatUI() {
         });
 
         // Auto-resize textarea and enable/disable send button
-        input.addEventListener('input', function() {
+        input.addEventListener('input', function () {
             this.style.height = 'auto';
             this.style.height = Math.min(this.scrollHeight, 100) + 'px';
             sendBtn.disabled = !this.value.trim();
@@ -293,7 +296,7 @@ function setupChatUI() {
 function addRemoteVideo(userId, stream, userName) {
     // Check if video element already exists
     let videoElement = document.querySelector(`video[data-peer="${userId}"]`);
-    
+
     if (!videoElement) {
         console.log(`Creating new video element for user ${userId}`);
         // Create new video container
@@ -302,39 +305,39 @@ function addRemoteVideo(userId, stream, userName) {
             console.error('Video grid not found in DOM');
             return null;
         }
-        
+
         const videoWrapper = document.createElement('div');
         videoWrapper.className = 'video-wrapper';
         videoWrapper.setAttribute('data-peer-wrapper', userId);
-        
+
         videoElement = document.createElement('video');
         videoElement.autoplay = true;
         videoElement.playsInline = true;
         videoElement.setAttribute('data-peer', userId);
-        
+
         const nameTag = document.createElement('div');
         nameTag.className = 'participant-name';
         nameTag.textContent = userName || `User ${userId.substring(0, 5)}`;
-        
+
         // Add network quality indicator
         const qualityIndicator = document.createElement('div');
         qualityIndicator.className = 'network-quality';
         qualityIndicator.textContent = 'Connecting...';
-        
+
         videoWrapper.appendChild(videoElement);
         videoWrapper.appendChild(nameTag);
         videoWrapper.appendChild(qualityIndicator);
         videoGrid.appendChild(videoWrapper);
-        
+
         // Update layout after adding a new video
         updateVideoLayout();
     }
-    
+
     // Set the stream as the source for this video element
     if (stream) {
         console.log(`Setting stream for user ${userId}`);
         videoElement.srcObject = stream;
-        
+
         // Make sure we handle play promise correctly
         videoElement.play()
             .then(() => console.log(`Remote video for user ${userId} playing successfully`))
@@ -346,7 +349,7 @@ function addRemoteVideo(userId, stream, userName) {
                         .then(() => console.log(`Remote video for user ${userId} playing after click`))
                         .catch(err => console.error(`Still failed to play: ${err}`));
                 });
-                
+
                 // Show play overlay
                 const playOverlay = document.createElement('div');
                 playOverlay.className = 'play-overlay';
@@ -356,7 +359,7 @@ function addRemoteVideo(userId, stream, userName) {
     } else {
         console.warn(`Stream for user ${userId} is null or undefined`);
     }
-    
+
     return videoElement;
 }
 
@@ -385,12 +388,12 @@ async function createPeerConnection(targetUserId, createOffer = false, userName)
     // Handle remote tracks - IMPROVED
     peer.ontrack = (event) => {
         console.log('Received remote track from:', targetUserId, event.track.kind);
-        
+
         // Properly handle streams
         if (event.streams && event.streams[0]) {
             const stream = event.streams[0];
             console.log(`Adding stream with ${stream.getTracks().length} tracks from user ${targetUserId}`);
-            
+
             // Add a small delay to ensure all tracks are received
             setTimeout(() => {
                 addRemoteVideo(targetUserId, stream, userName);
@@ -420,7 +423,7 @@ async function createPeerConnection(targetUserId, createOffer = false, userName)
     // Ice connection state change monitoring - IMPROVED
     peer.oniceconnectionstatechange = () => {
         console.log(`ICE connection state with ${targetUserId}: ${peer.iceConnectionState}`);
-        
+
         // Update UI based on connection state
         const qualityIndicator = document.querySelector(`[data-peer-wrapper="${targetUserId}"] .network-quality`);
         if (qualityIndicator) {
@@ -433,7 +436,7 @@ async function createPeerConnection(targetUserId, createOffer = false, userName)
             } else if (peer.iceConnectionState === 'disconnected') {
                 qualityIndicator.className = 'network-quality poor';
                 qualityIndicator.textContent = 'Connection Issues';
-                
+
                 // Try to restart ICE after a brief delay if still disconnected
                 setTimeout(() => {
                     if (peer.iceConnectionState === 'disconnected') {
@@ -447,7 +450,7 @@ async function createPeerConnection(targetUserId, createOffer = false, userName)
             } else if (peer.iceConnectionState === 'failed') {
                 qualityIndicator.className = 'network-quality failed';
                 qualityIndicator.textContent = 'Connection Failed';
-                
+
                 // Try to restart ICE
                 try {
                     peer.restartIce();
@@ -491,76 +494,12 @@ async function createPeerConnection(targetUserId, createOffer = false, userName)
             console.error('Error creating offer:', err);
         }
     }
-    
+
     return peer;
 }
 
 // Update video layout based on number of participants - IMPROVED
-function updateVideoLayout() {
-    const videoWrappers = document.querySelectorAll('.video-wrapper');
-    const count = videoWrappers.length;
-    
-    console.log(`Updating video layout for ${count} participants`);
-    
-    // Calculate optimal grid dimensions
-    let columns, rows;
-    if (count <= 1) {
-        columns = 1;
-        rows = 1;
-    } else if (count === 2) {
-        columns = 2;
-        rows = 1;
-    } else if (count === 3) {
-        columns = 2;
-        rows = 2;
-    } else if (count === 4) {
-        columns = 2;
-        rows = 2;
-    } else {
-        // For more than 4 participants, calculate optimal grid
-        columns = Math.ceil(Math.sqrt(count));
-        rows = Math.ceil(count / columns);
-        
-        // Adjust for better aspect ratio
-        if (columns > rows) {
-            const temp = columns;
-            columns = rows;
-            rows = temp;
-        }
-    }
-    
-    // Apply the calculated dimensions
-    videoWrappers.forEach((wrapper, index) => {
-        // Calculate position in grid
-        const row = Math.floor(index / columns);
-        const col = index % columns;
-        
-        // Set dimensions
-        wrapper.style.width = `${100 / columns}%`;
-        wrapper.style.height = `${100 / rows}%`;
-        
-        // Position the wrapper
-        wrapper.style.position = 'absolute';
-        wrapper.style.left = `${col * (100 / columns)}%`;
-        wrapper.style.top = `${row * (100 / rows)}%`;
-        
-        // Ensure video fills the wrapper
-        const video = wrapper.querySelector('video');
-        if (video) {
-            video.style.width = '100%';
-            video.style.height = '100%';
-            video.style.objectFit = 'cover';
-        }
-    });
-    
-    // Update the video grid container
-    const videoGrid = document.querySelector('.video-grid');
-    if (videoGrid) {
-        videoGrid.style.display = 'grid';
-        videoGrid.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
-        videoGrid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-    }
-}
+// (Removed duplicate function, using the one defined at the top)
 
 // Handle received offer - IMPROVED
 async function handleOffer(senderId, sdp) {
@@ -570,18 +509,18 @@ async function handleOffer(senderId, sdp) {
         if (!peer) {
             peer = await createPeerConnection(senderId, false);
         }
-        
+
         // Set remote description (the offer)
         console.log(`Setting remote description for offer from ${senderId}`);
         await peer.setRemoteDescription(new RTCSessionDescription(sdp));
-        
+
         // Apply any pending ICE candidates
         if (pendingCandidates[senderId] && pendingCandidates[senderId].length > 0) {
             console.log(`Applying ${pendingCandidates[senderId].length} pending ICE candidates for ${senderId}`);
-            
+
             const candidates = pendingCandidates[senderId];
             pendingCandidates[senderId] = [];
-            
+
             for (const candidate of candidates) {
                 try {
                     await peer.addIceCandidate(new RTCIceCandidate(candidate));
@@ -591,13 +530,13 @@ async function handleOffer(senderId, sdp) {
                 }
             }
         }
-        
+
         // Create and send answer
         console.log(`Creating answer for ${senderId}`);
         const answer = await peer.createAnswer();
         console.log(`Setting local description (answer) for ${senderId}`);
         await peer.setLocalDescription(answer);
-        
+
         console.log(`Sending answer to ${senderId}`);
         socket.emit('answer', {
             targetUserId: senderId,
@@ -615,14 +554,14 @@ async function handleAnswer(senderId, sdp) {
         try {
             console.log(`Setting remote description (answer) from ${senderId}`);
             await peer.setRemoteDescription(new RTCSessionDescription(sdp));
-            
+
             // Apply any pending ICE candidates
             if (pendingCandidates[senderId] && pendingCandidates[senderId].length > 0) {
                 console.log(`Applying ${pendingCandidates[senderId].length} pending ICE candidates after setting answer from ${senderId}`);
-                
+
                 const candidates = pendingCandidates[senderId];
                 pendingCandidates[senderId] = [];
-                
+
                 for (const candidate of candidates) {
                     try {
                         await peer.addIceCandidate(new RTCIceCandidate(candidate));
@@ -643,7 +582,7 @@ async function handleAnswer(senderId, sdp) {
 // Handle received ICE candidate - IMPROVED
 async function handleIceCandidate(senderId, candidate) {
     const peer = peers[senderId];
-    
+
     // Store candidate if peer doesn't exist yet or remote description isn't set
     if (!peer || !peer.remoteDescription || !peer.remoteDescription.type) {
         console.log(`Queueing ICE candidate from ${senderId} - peer or remote description not ready`);
@@ -653,7 +592,7 @@ async function handleIceCandidate(senderId, candidate) {
         pendingCandidates[senderId].push(candidate);
         return;
     }
-    
+
     try {
         console.log(`Adding ICE candidate from ${senderId}`);
         await peer.addIceCandidate(new RTCIceCandidate(candidate));
@@ -670,7 +609,7 @@ async function handleIceCandidate(senderId, candidate) {
 // Handle user disconnection
 function handleUserDisconnected(userId) {
     console.log('User disconnected:', userId);
-    
+
     // Close the peer connection
     if (peers[userId]) {
         try {
@@ -680,7 +619,7 @@ function handleUserDisconnected(userId) {
                     sender.track.stop();
                 }
             });
-            
+
             // Close the peer connection
             peers[userId].close();
             delete peers[userId];
@@ -688,7 +627,7 @@ function handleUserDisconnected(userId) {
             console.error('Error closing peer connection:', error);
         }
     }
-    
+
     // Remove the video element
     const videoWrapper = document.querySelector(`[data-peer-wrapper="${userId}"]`);
     if (videoWrapper) {
@@ -698,19 +637,19 @@ function handleUserDisconnected(userId) {
             videoElement.srcObject.getTracks().forEach(track => track.stop());
             videoElement.srcObject = null;
         }
-        
+
         // Remove the wrapper element
         videoWrapper.remove();
-        
+
         // Update layout after removing a video
         updateVideoLayout();
     }
-    
+
     // Clear any pending ICE candidates
     if (pendingCandidates[userId]) {
         delete pendingCandidates[userId];
     }
-    
+
     // Update the video layout
     updateVideoLayout();
 }
@@ -739,18 +678,18 @@ async function toggleScreen() {
         if (!isScreenSharing) {
             // Start screen sharing
             console.log('Starting screen sharing');
-            screenStream = await navigator.mediaDevices.getDisplayMedia({ 
+            screenStream = await navigator.mediaDevices.getDisplayMedia({
                 video: {
                     cursor: 'always',
                     displaySurface: 'monitor'
                 }
             });
-            
+
             const videoTrack = screenStream.getVideoTracks()[0];
             if (!videoTrack) {
                 throw new Error('No video track in screen sharing stream');
             }
-            
+
             // Replace video track in all peer connections
             Object.values(peers).forEach(peer => {
                 const sender = peer.getSenders().find(s => s.track && s.track.kind === 'video');
@@ -759,18 +698,18 @@ async function toggleScreen() {
                     sender.replaceTrack(videoTrack);
                 }
             });
-            
+
             // Update local video display
             document.getElementById('localVideo').srcObject = screenStream;
-            
+
             // Handle screen sharing stop
             videoTrack.onended = async () => {
                 await stopScreenSharing();
             };
-            
+
             document.getElementById('toggleScreen').classList.add('active');
             isScreenSharing = true;
-            
+
         } else {
             await stopScreenSharing();
         }
@@ -785,7 +724,7 @@ async function stopScreenSharing() {
         console.log('Stopping screen sharing');
         screenStream.getTracks().forEach(track => track.stop());
         screenStream = null;
-        
+
         // Restore camera video track in all peer connections
         const videoTrack = localStream.getVideoTracks()[0];
         if (videoTrack) {
@@ -797,7 +736,7 @@ async function stopScreenSharing() {
                 }
             });
         }
-        
+
         // Update local video display
         document.getElementById('localVideo').srcObject = localStream;
         document.getElementById('toggleScreen').classList.remove('active');
@@ -816,7 +755,7 @@ function endCall() {
     });
     peers = {};
     pendingCandidates = {};
-    
+
     // Stop all media tracks
     if (localStream) {
         localStream.getTracks().forEach(track => track.stop());
@@ -824,27 +763,27 @@ function endCall() {
     if (screenStream) {
         screenStream.getTracks().forEach(track => track.stop());
     }
-    
+
     // Disconnect socket
     if (socket) {
         socket.disconnect();
     }
-    
+
     // Redirect to home page
     window.location.href = 'premeeting.html';
 }
 
 // Handle page unload
-window.addEventListener('beforeunload', function() {
+window.addEventListener('beforeunload', function () {
     endCall();
 });
 
 // Initialize when the page loads
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     init();
-    
+
     // Copy room link functionality
-    document.getElementById('copyLink')?.addEventListener('click', function() {
+    document.getElementById('copyLink')?.addEventListener('click', function () {
         const roomLink = window.location.href;
         navigator.clipboard.writeText(roomLink).then(() => {
             alert('Room link copied to clipboard!');
@@ -860,7 +799,7 @@ window.addEventListener('load', function() {
             alert('Room link copied to clipboard!');
         });
     });
-    
+
     // Add these CSS styles for video grid
     const style = document.createElement('style');
     style.textContent = `
@@ -949,9 +888,9 @@ window.addEventListener('load', function() {
         }
     `;
     document.head.appendChild(style);
-    
+
     // Handle window resize for responsive layout
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         updateVideoLayout();
     });
 });
@@ -977,12 +916,12 @@ function toggleChat() {
 function updateParticipantsList() {
     const participantsList = document.getElementById('participantsList');
     const participantCount = document.getElementById('participantCount');
-    
+
     if (!participantsList || !participantCount) return;
-    
+
     // Clear existing list
     participantsList.innerHTML = '';
-    
+
     // Add current user first
     const currentUserItem = document.createElement('div');
     currentUserItem.className = 'participant-item';
@@ -996,7 +935,7 @@ function updateParticipantsList() {
         </div>
     `;
     participantsList.appendChild(currentUserItem);
-    
+
     // Add other participants
     participants.forEach((participant, socketId) => {
         const participantItem = document.createElement('div');
@@ -1012,7 +951,7 @@ function updateParticipantsList() {
         `;
         participantsList.appendChild(participantItem);
     });
-    
+
     // Update count
     participantCount.textContent = participants.size + 1; // +1 for current user
 }
@@ -1029,26 +968,26 @@ function removeParticipant(socketId) {
 
 function addMessage(message, sender, isSent = false, isASL = false) {
     const chatMessages = document.getElementById('chatMessages');
-    
+
     // Remove empty state if it exists
     const emptyState = chatMessages.querySelector('.chat-empty');
     if (emptyState) {
         emptyState.remove();
     }
-    
+
     const messageDiv = document.createElement('div');
     let messageClass = 'message';
-    
+
     if (isASL) {
         messageClass += ' asl';
     } else {
         messageClass += isSent ? ' sent' : ' received';
     }
-    
+
     messageDiv.className = messageClass;
-    
+
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
+
     if (isASL) {
         messageDiv.innerHTML = `
             <div class="sender">ASL Detection</div>
@@ -1062,10 +1001,10 @@ function addMessage(message, sender, isSent = false, isASL = false) {
             <div class="time">${time}</div>
         `;
     }
-    
+
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
-    
+
     // Add notification if chat is not visible and message is not from current user
     if (!chatVisible && !isSent) {
         unreadMessages++;
@@ -1108,12 +1047,12 @@ function showMessageNotification(sender, message) {
 async function initChat() {
     const messageInput = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendMessage');
-    
+
     // Request notification permission
     if ('Notification' in window && Notification.permission === 'default') {
         Notification.requestPermission();
     }
-    
+
     // Fetch chat history
     try {
         const token = localStorage.getItem('token');
@@ -1122,7 +1061,7 @@ async function initChat() {
                 'Authorization': `Bearer ${token}`
             }
         });
-        
+
         if (response.ok) {
             const messages = await response.json();
             messages.forEach(msg => {
@@ -1132,7 +1071,7 @@ async function initChat() {
     } catch (error) {
         console.error('Error fetching chat history:', error);
     }
-    
+
     // Add welcome message only if no messages exist
     const chatMessages = document.getElementById('chatMessages');
     if (chatMessages && !chatMessages.querySelector('.message')) {
@@ -1160,26 +1099,26 @@ function joinMeeting() {
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize the app
     init();
-    
+
     // Add meeting button listeners if on home page
     if (!window.location.search.includes('room')) {
         const newMeetingBtn = document.getElementById('newMeetingBtn');
         const joinMeetingBtn = document.getElementById('joinMeetingBtn');
-        
+
         if (newMeetingBtn) {
             newMeetingBtn.addEventListener('click', createNewMeeting);
         }
-        
+
         if (joinMeetingBtn) {
             joinMeetingBtn.addEventListener('click', joinMeeting);
         }
     }
-    
+
     // Initialize ASL detection if on meeting page
     if (window.location.search.includes('room')) {
         // Wait for video to be ready before initializing ASL detection
         waitForVideoAndInitASL();
-        
+
         // Initialize video layout
         setTimeout(() => {
             updateVideoLayout();
@@ -1193,13 +1132,13 @@ window.addEventListener('resize', () => {
 });
 
 // Debug function to manually test layout (call from browser console)
-window.testLayout = function(participantCount) {
+window.testLayout = function (participantCount) {
     console.log('🧪 Testing layout with', participantCount, 'participants');
     const videoGrid = document.querySelector('.video-grid');
-    
+
     // Remove all layout classes
     videoGrid.classList.remove('single-participant', 'two-participants', 'multiple-participants');
-    
+
     if (participantCount === 1) {
         videoGrid.classList.add('single-participant');
     } else if (participantCount === 2) {
@@ -1207,36 +1146,36 @@ window.testLayout = function(participantCount) {
     } else {
         videoGrid.classList.add('multiple-participants');
     }
-    
+
     console.log('🧪 Applied classes:', videoGrid.className);
 };
 
 // Function to wait for video element and ensure it's ready
 function waitForVideoAndInitASL() {
     console.log('Waiting for video and dependencies...');
-    
+
     const checkDependencies = () => {
         console.log('Checking dependencies:', {
             ASLDetector: typeof ASLDetector,
             CONFIG: typeof CONFIG,
             localVideo: !!document.getElementById('localVideo')
         });
-        
+
         const localVideo = document.getElementById('localVideo');
-        
+
         // Check if all dependencies are loaded
         if (typeof ASLDetector === 'undefined') {
             console.warn('ASLDetector not yet loaded, retrying...');
             setTimeout(checkDependencies, 500);
             return;
         }
-        
+
         if (!localVideo) {
             console.warn('Local video element not found, retrying...');
             setTimeout(checkDependencies, 500);
             return;
         }
-        
+
         if (localVideo.readyState >= 2) {
             // Video is ready, initialize ASL detection
             console.log('All dependencies ready, initializing ASL detection...');
@@ -1249,7 +1188,7 @@ function waitForVideoAndInitASL() {
             setTimeout(checkDependencies, 500);
         }
     };
-    
+
     checkDependencies();
 }
 
@@ -1262,19 +1201,19 @@ function initASLDetection() {
             console.log('🤟 ASL: ASL detection not available. Please refresh the page.');
             return;
         }
-        
+
         // Check if CONFIG is available
         if (typeof CONFIG === 'undefined') {
             console.warn('CONFIG not found, using default configuration');
         }
-        
+
         // Initialize ASL detector
         try {
             aslDetector = new ASLDetector();
             // Expose on window for config modal updates
             window.aslDetector = aslDetector;
             console.log('ASL detector created successfully');
-            
+
             // Wake up the API in the background
             console.log('🤟 ASL: Initializing ASL detection...');
             aslDetector.wakeUpAPI().then(success => {
@@ -1284,16 +1223,16 @@ function initASLDetection() {
                     console.log('🤟 ASL: API may be slow to respond on first use');
                 }
             });
-            
+
             // Initialize snackbar system
             initializeSnackbarSystem();
-            
+
         } catch (e) {
             console.error('ASLDetector constructor failed:', e);
             console.log(`🤟 ASL: Failed to initialize ASL detection: ${e.message || e}`);
             return;
         }
-        
+
         // Initialize with saved configuration if available
         if (typeof initializeASLDetector === 'function') {
             try {
@@ -1302,21 +1241,21 @@ function initASLDetection() {
                 console.warn('initializeASLDetector function failed:', e);
             }
         }
-        
+
         // Set up result callback
         aslDetector.onResult((result) => {
             handleASLResult(result);
         });
-        
+
         // Set up error callback
         aslDetector.onError((error) => {
             console.error('ASL detection error:', error);
             console.log('🤟 ASL: ASL detection error: ' + (error.message || error));
         });
-        
+
         console.log('ASL detection initialized successfully');
         console.log('🤟 ASL: ASL detection ready');
-        
+
     } catch (error) {
         console.error('Failed to initialize ASL detection:', error);
         console.log(`🤟 ASL: Failed to initialize ASL detection: ${error.message || error}`);
@@ -1325,11 +1264,11 @@ function initASLDetection() {
 
 function toggleASLDetection() {
     console.log('toggleASLDetection called, aslDetector:', aslDetector);
-    
+
     if (!aslDetector) {
         console.error('ASL detector not initialized');
         console.log('🤟 ASL: ASL detector not initialized. Please refresh the page and try again.');
-        
+
         // Try to reinitialize
         setTimeout(() => {
             console.log('Attempting to reinitialize ASL detection...');
@@ -1337,22 +1276,22 @@ function toggleASLDetection() {
         }, 1000);
         return;
     }
-    
+
     const localVideo = document.getElementById('localVideo');
     if (!localVideo) {
         console.error('Local video element not found');
         console.log('🤟 ASL: Local video not found. Please ensure your camera is enabled.');
         return;
     }
-    
+
     console.log('Local video found, readyState:', localVideo.readyState, 'dimensions:', localVideo.videoWidth, 'x', localVideo.videoHeight);
-    
+
     // Check if video is ready
     if (!localVideo.videoWidth || !localVideo.videoHeight) {
         console.log('🤟 ASL: Video not ready yet. Please wait a moment and try again.');
         return;
     }
-    
+
     if (aslDetectionActive) {
         // Stop detection
         aslDetector.stopDetection();
@@ -1367,14 +1306,14 @@ function toggleASLDetection() {
         aslDetector.startDetection(localVideo, interval);
         aslDetectionActive = true;
         updateASLButton(true);
-        console.log(`🤟 ASL: ASL detection started (every ${interval/1000}s)`);
+        console.log(`🤟 ASL: ASL detection started (every ${interval / 1000}s)`);
     }
 }
 
 function handleASLResult(result) {
     try {
         console.log('🤟 ASL Result received:', result);
-        
+
         if (!result || typeof result !== 'object') {
             console.warn('ASL result empty or invalid');
             return;
@@ -1382,16 +1321,16 @@ function handleASLResult(result) {
 
         // Handle your API response format: {"detected_word": "word"}
         const detectedWord = result.detected_word;
-        
+
         if (detectedWord && detectedWord.trim() !== '') {
             console.log('✅ ASL word detected:', detectedWord);
-            
+
             // Show snackbar notification (bottom of video)
             showASLSnackbar(detectedWord, true);
-            
+
             // Remove chat message since snackbar works
             // addMessage(detectedWord.toUpperCase(), `${username}`, false, true);
-            
+
             // Broadcast to other users via socket
             if (socket && roomId) {
                 socket.emit('asl-detection', {
@@ -1401,14 +1340,14 @@ function handleASLResult(result) {
                     timestamp: new Date().toISOString()
                 });
             }
-            
+
             return;
         }
 
         // If no word detected (empty string)
         console.log('ℹ️ No ASL sign detected in this frame');
         // Don't show notification for empty results to avoid spam
-        
+
     } catch (e) {
         console.error('❌ Error handling ASL result:', e);
         console.log('🤟 ASL: Error processing detection result');
@@ -1447,17 +1386,17 @@ function initializeSnackbarSystem() {
 
 function showASLSnackbar(word, isOwn = true, otherUser = null) {
     console.log('🍿 Snackbar: showASLSnackbar called with:', { word, isOwn, otherUser });
-    
+
     // Create snackbar with proper styling
     const snackbar = document.createElement('div');
     snackbar.id = 'asl-snackbar-' + Date.now();
     snackbar.textContent = word.toUpperCase();
-    
+
     // Style based on own vs other user
-    const backgroundColor = isOwn ? 
-        'linear-gradient(135deg, #6a5acd, #9370db)' : 
+    const backgroundColor = isOwn ?
+        'linear-gradient(135deg, #6a5acd, #9370db)' :
         'linear-gradient(135deg, #ff6b6b, #ee5a24)';
-    
+
     snackbar.style.cssText = `
         position: fixed !important;
         bottom: 140px !important;
@@ -1480,7 +1419,7 @@ function showASLSnackbar(word, isOwn = true, otherUser = null) {
         text-align: center !important;
         cursor: pointer !important;
     `;
-    
+
     // Add click to dismiss
     snackbar.onclick = () => {
         console.log('🍿 Snackbar: Clicked, removing...');
@@ -1488,17 +1427,17 @@ function showASLSnackbar(word, isOwn = true, otherUser = null) {
         snackbar.style.opacity = '0';
         setTimeout(() => snackbar.remove(), 300);
     };
-    
+
     // Add to body
     document.body.appendChild(snackbar);
     console.log('🍿 Snackbar: Added snackbar for word:', word);
-    
+
     // Animate in
     setTimeout(() => {
         snackbar.style.transform = 'translateX(-50%) translateY(0)';
         snackbar.style.opacity = '1';
     }, 10);
-    
+
     // Auto dismiss after 2 seconds
     setTimeout(() => {
         if (snackbar.parentElement) {
@@ -1513,41 +1452,41 @@ function showASLSnackbar(word, isOwn = true, otherUser = null) {
 function showDualSnackbar(word1, word2, user1, user2) {
     // Clear existing snackbars
     currentSnackbars.forEach(s => dismissSnackbar(s.element, true));
-    
+
     const dualContainer = document.createElement('div');
     dualContainer.className = 'asl-snackbar-dual';
-    
+
     const snackbar1 = document.createElement('div');
     snackbar1.className = 'asl-snackbar own';
     snackbar1.textContent = word1.toUpperCase();
     snackbar1.onclick = () => dismissSnackbar(dualContainer);
-    
+
     const snackbar2 = document.createElement('div');
     snackbar2.className = 'asl-snackbar other';
     snackbar2.textContent = word2.toUpperCase();
     snackbar2.onclick = () => dismissSnackbar(dualContainer);
-    
+
     dualContainer.appendChild(snackbar1);
     dualContainer.appendChild(snackbar2);
-    
+
     snackbarContainer.appendChild(dualContainer);
-    
+
     // Track dual snackbar
     currentSnackbars.push({ element: dualContainer, word: `${word1}+${word2}`, isOwn: 'dual' });
-    
+
     // Show animation
     setTimeout(() => {
         snackbar1.classList.add('show');
         snackbar2.classList.add('show');
     }, 10);
-    
+
     // Auto dismiss
     setTimeout(() => dismissSnackbar(dualContainer), 2000);
 }
 
 function dismissSnackbar(snackbarElement, immediate = false) {
     if (!snackbarElement || !snackbarElement.parentElement) return;
-    
+
     if (immediate) {
         snackbarElement.remove();
     } else {
@@ -1559,10 +1498,10 @@ function dismissSnackbar(snackbarElement, immediate = false) {
             }
         }, 300);
     }
-    
+
     // Remove from tracking
     currentSnackbars = currentSnackbars.filter(s => s.element !== snackbarElement);
-    
+
     // Process queue if any
     processSnackbarQueue();
 }
