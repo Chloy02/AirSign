@@ -22,7 +22,8 @@ app = FastAPI(title="ASL Detection API", version="1.0.0")
 # Add CORS middleware for meeting app integration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "*"],  # Allow frontend access
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"], # Explicit allowed origins
+    allow_origin_regex="https?://.*",  # Allow all http/https origins for development
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
